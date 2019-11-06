@@ -62,6 +62,11 @@
 			font-style: normal;
 			src: url('https://at.alicdn.com/t/font_1078604_w4kpxh0rafi.ttf') format('truetype');
 		}
+		page,image{
+			width: 100%;
+			height: 100%;
+			color: #333;
+		}
 	
 		.yticon {
 			font-family: "yticon" !important;
