@@ -82,7 +82,8 @@
 				<list-cell icon="icon-share" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
 				<list-cell icon="icon-xuanzhong2" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
 				<list-cell icon="icon-bangzhu" iconColor="#fb7e06" title="帮助与客服"></list-cell>
-				<list-cell icon="icon-daifukuan" iconColor="#5fcda2" title="财务管理" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
+				<list-cell icon="icon-daifukuan" iconColor="#5fcda2" title="我的收益" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
+				<list-cell icon="icon-zuoshang" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 			
 		</view>

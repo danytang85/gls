@@ -312,6 +312,7 @@
 	    display: flex;
 	    flex-direction: row;
 	    justify-content: center;
+		margin-top:20upx;
 	}
 	
 	.action-row navigator {

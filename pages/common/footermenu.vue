@@ -1,5 +1,4 @@
 <template>
-	<view>
 		<view class="cu-bar tabbar foot bg-white">
 			<view class="action" @click="NavChange" data-cur="index">
 				<view class='cuIcon-cu-image'>
@@ -7,20 +6,20 @@
 				</view>
 				<view :class="PageCur=='index'?'menu_text_color_on':'menu_text_color_off'">首页</view>
 			</view>
-			<view class="action text-gray" @click="NavChange" data-cur="team">
+			<view class="action text-gray" @click="NavChange" data-cur="ptype">
 				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/team' + [PageCur == 'team'?'_cur':''] + '.png'"></image>
+					<image :src="'/static/tabbar/ptype' + [PageCur == 'ptype'?'_cur':''] + '.png'"></image>
 				</view>
-				<view :class="PageCur=='team'?'menu_text_color_on':'menu_text_color_off'">团队</view>
+				<view :class="PageCur=='ptype'?'menu_text_color_on':'menu_text_color_off'">分类</view>
 			</view>
 			
-			<view class="action text-gray" @click="NavChange" data-cur="money">
+			<view class="action text-gray" @click="NavChange" data-cur="cart">
 
 				<view class='cuIcon-cu-image'>
-					<image :src="'/static/tabbar/money' + [PageCur == 'money'?'_cur':''] + '.png'"></image>
+					<image :src="'/static/tabbar/cart' + [PageCur == 'cart'?'_cur':''] + '.png'"></image>
 
 				</view>
-				<view :class="PageCur=='money'?'menu_text_color_on':'menu_text_color_off'">收益</view>
+				<view :class="PageCur=='cart'?'menu_text_color_on':'menu_text_color_off'">购物车</view>
 			</view>
 			<view class="action text-gray" @click="NavChange" data-cur="person">
 				<view class='cuIcon-cu-image'>
@@ -30,7 +29,6 @@
 				<view :class="PageCur=='person'?'menu_text_color_on':'menu_text_color_off'">我的</view>
 			</view>
 		</view>
-	</view>
 </template>
 <script>
 	export default {
@@ -54,3 +52,7 @@
 		}
 	}
 </script>
+<style>
+	.menu_text_color_on{color:#fb7e06}
+	.menu_text_color_off{color:#a4a4a4}
+</style>

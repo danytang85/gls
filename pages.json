@@ -7,10 +7,10 @@
 			}
 		}
 	    ,{
-            "path" : "pages/team/home",
+            "path" : "pages/ptype/home",
             "style" : {}
         },{
-            "path" : "pages/money/home",
+            "path" : "pages/cart/home",
             "style" : {}
         },{
             "path" : "pages/person/home",
