@@ -50,7 +50,7 @@
     	<view class="f-header m-t">
     		<image src="/static/temp/h1.png"></image>
     		<view class="tit-box">
-    			<text class="tit">精品列表</text>
+    			<text class="tit">产品列表</text>
     			<text class="tit2">Guess You Like It</text>
     		</view>
     		<text class="yticon icon-you"></text>
@@ -70,13 +70,15 @@
     		</view>
     	</view>
     	
-    
+   
 	<footermenu PageCur="index"></footermenu>
 	</view>
 </template>
 <script>
     import {mapState,mapMutations} from 'vuex';
+	
     export default {
+		
 		data() {
 			return {
 				titleNViewBackground: '',
@@ -93,8 +95,10 @@
 			this.loadData();
 			
 		},
+		
 		methods: {
 			...mapMutations(['logout']),
+			
 			
 			checklogonstate(){
 				if (!this.hasLogin) {

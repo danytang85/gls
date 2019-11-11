@@ -12,17 +12,14 @@ const userInfo = {
 /* 首页轮播图 */
 const carouselList = [{
 		src: "/static/temp/banner3.jpg",
-		type:"image",
 		background: "rgb(203, 87, 60)",
 	},
 	{
 		src: "/static/temp/banner2.jpg",
-		type:"image",
 		background: "rgb(205, 215, 218)",
 	},
 	{
 		src: "/static/temp/banner4.jpg",
-		type:"image",
 		background: "rgb(183, 73, 69)",
 	}
 ]
@@ -36,9 +33,9 @@ const goodsList = [{
 		sales: 61,
 	},
 	{
-		image: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553187020783&di=bac9dd78b36fd984502d404d231011c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201609%2F26%2F20160926173213_s5adi.jpeg",
-		image2: "http://pic.rmb.bdstatic.com/819a044daa66718c2c40a48c1ba971e6.jpeg",
-		image3: "http://img001.hc360.cn/y5/M00/1B/45/wKhQUVYFE0uEZ7zVAAAAAMj3H1w418.jpg",
+		image: "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg",
+		image2: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554013048&di=a3dc9fd1406dd7bad7fbb97b5489ec04&imgtype=jpg&er=1&src=http%3A%2F%2Fimg009.hc360.cn%2Fhb%2FnKo44ac2656F831c684507E3Da0E3a26841.jpg",
+		image3: "http://img.zcool.cn/community/017a4e58b4eab6a801219c77084373.jpg",
 		title: "潘歌针织连衣裙",
 		price: 78,
 		sales: 16,
@@ -51,9 +48,9 @@ const goodsList = [{
 		price: 108.8,
 		sales: 5,
 	}, {
-		image: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553187020783&di=bac9dd78b36fd984502d404d231011c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201609%2F26%2F20160926173213_s5adi.jpeg",
-		image2: "http://pic.rmb.bdstatic.com/819a044daa66718c2c40a48c1ba971e6.jpeg",
-		image3: "http://img001.hc360.cn/y5/M00/1B/45/wKhQUVYFE0uEZ7zVAAAAAMj3H1w418.jpg",
+		image: "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=756705744,3505936868&fm=11&gp=0.jpg",
+		image2: "http://images.jaadee.com/images/201702/goods_img/30150_d85aed83521.jpg",
+		image3: "http://img13.360buyimg.com/popWaterMark/jfs/t865/120/206320620/138889/dcc94caa/550acedcN613e2a9d.jpg",
 		title: "私萱连衣裙",
 		price: 265,
 		sales: 88,

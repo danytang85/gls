@@ -34,17 +34,11 @@ const prePage = ()=>{
 	// #endif
 	return prePage.$vm;
 }
-Vue.prototype.$api = {msg, json, prePage};
+
+Vue.config.productionTip = false
 
 
-// import market from './pages/market/home.vue'
-// Vue.component('market',market)
 
-// import jojo from './pages/jojo/home.vue'
-// Vue.component('jojo',jojo)
-
-// import person from './pages/person/home.vue'
-// Vue.component('person',person)
 
  import footermenu from './pages/common/footermenu.vue'
  Vue.component('footermenu',footermenu)
@@ -53,11 +47,13 @@ Vue.prototype.$api = {msg, json, prePage};
 import cuCustom from './components/colorui/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
 
+
 Vue.config.productionTip = false
 
 App.mpType = 'app'
+Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store
-
+Vue.prototype.$api = {msg, json, prePage};
 
 const app = new Vue({
 	 store,

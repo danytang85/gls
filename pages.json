@@ -27,7 +27,43 @@
         },{
             "path" : "pages/person/pwd",
             "style" : {}
-        }
+        },{
+		    "path" : "pages/order/createOrder",
+		    "style" : {}
+		},{
+		    "path" : "pages/order/order",
+		    "style" : {}
+		},{
+		    "path" : "pages/money/pay",
+		    "style" : {}
+		},{
+		    "path" : "pages/money/paySuccess",
+		    "style" : {}
+		},{
+		    "path" : "pages/address/address",
+		    "style" : {}
+		},{
+		    "path" : "pages/address/addressManage",
+		    "style" : {}
+		},{
+		    "path" : "pages/set/set",
+		    "style" : {}
+		},{
+		    "path" : "pages/product/list",
+		    "style" : {}
+		},{
+		    "path" : "pages/product/product",
+		    "style" : {}
+		},{
+		    "path" : "pages/notice/notice",
+		    "style" : {}
+		},{
+		    "path" : "pages/detail/detail",
+		    "style" : {}
+		},{
+		    "path" : "pages/userinfo/userinfo",
+		    "style" : {}
+		}
         
        
     ],
