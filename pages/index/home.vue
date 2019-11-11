@@ -1,10 +1,6 @@
 <template>
     <view class="container">
-    	
-		
-		
-    	
-    	<!-- 头部轮播 -->
+   	<!-- 头部轮播 -->
     	<view class="carousel-section">
 			
 			<swiper class="screen-swiper"  :class="'square-dot'" :indicator-dots="true" :circular="true"
@@ -88,25 +84,17 @@
 				goodsList: []
 			};
 		},
-		computed: mapState(['hasLogin','uerInfo']),
 		
 		onLoad() {
-			this.checklogonstate();
+			
+			 var userinfo = this.checkLogin('../person/home');
+			 if(!userinfo){return false;}
+			
 			this.loadData();
 			
 		},
 		
 		methods: {
-			...mapMutations(['logout']),
-			
-			
-			checklogonstate(){
-				if (!this.hasLogin) {
-				    uni.navigateTo({
-				        url: '../person/logon'
-				    })
-				}
-			},
 			/**
 			 * 请求静态数据只是为了代码不那么乱
 			 * 分次请求未作整合

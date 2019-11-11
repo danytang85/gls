@@ -53,6 +53,7 @@
 	    },
 	    data() {
 	        return {
+				backpage:"../index/home",
 				loginMode: 1,
 				usernameType:"text",
 				codeBut:"获取验证码",
@@ -144,7 +145,7 @@
 			
 			_logonrequest(userdata) {
 				uni.request({
-					url: 'http://www.gls.com/api/logon',
+					url: this.apiServer+'/api/logon',
 					dataType: 'json',
 					data: userdata,
 					method:"POST",
@@ -158,10 +159,11 @@
 								duration: duration
 							});
 							this.userinfo=res.data["userinfo"];
-							this.login(this.userinfo)
+							this.login(this.userinfo);
 							uni.navigateTo({
-							    url: '../index/home'
+								url: this.backpage
 							})
+							
 							
 						}else{
 							uni.showToast({
@@ -188,7 +190,7 @@
 			_sendmsm(mobile) {
 				var _that = this
 				uni.request({
-					url: "http://www.gls.com/api/sendmsm/",
+					url: this.apiServer+"/api/sendmsm/",
 					dataType: 'json',
 					data: {mobile:mobile},
 					method:"POST",
@@ -229,9 +231,11 @@
 			},
 	       
 	    },
-	    onReady() {
-	        
-	    }
+	    onLoad(options){
+	    	if(options.backpage!=""){
+	    		this.backpage = options.backpage;
+	    	}
+	    },
 	}
 </script>
 

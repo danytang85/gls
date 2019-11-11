@@ -11,17 +11,14 @@ const userInfo = {
 }
 /* 首页轮播图 */
 const carouselList = [{
-		src: "/static/temp/banner3.jpg",
-		background: "rgb(203, 87, 60)",
+		src: "/static/temp/banner1.jpg",
+		type:"image"
 	},
 	{
 		src: "/static/temp/banner2.jpg",
-		background: "rgb(205, 215, 218)",
-	},
-	{
-		src: "/static/temp/banner4.jpg",
-		background: "rgb(183, 73, 69)",
+		type:"image"
 	}
+
 ]
 /* 商品列表 */
 const goodsList = [{
