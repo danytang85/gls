@@ -94,21 +94,28 @@
 		mapState
 	} from 'vuex';
 	import uniNumberBox from '@/components/uni-number-box.vue'
+	import http from '@/components/utils/http.js';
 	export default {
 		components: {
-			uniNumberBox
+			uniNumberBox,
 		},
+		
 		data() {
 			return {
 				title:"购物车",
+				userinfo:"",
 				total: 0, //总价格
 				allChecked: false, //全选状态  true|false
 				empty: false, //空白页现实  true|false
 				cartList: [],
 			};
 		},
-		onLoad(){
-			this.loadData();
+		onLoad(){ 
+			 this.userinfo = this.checkLogin('../incex/home');
+			 if(!this.userinfo){return false;}else{
+				 this.loadData(this.userinfo.uid);
+			 }
+			// console.log('userinfo', this.userinfo.uid);
 		},
 		watch:{
 			//显示空白页
@@ -123,9 +130,35 @@
 			...mapState(['hasLogin'])
 		},
 		methods: {
+			
+			loadData(uid){
+				    let opts={
+                        url: '/productApi/cartList/',
+                        method: 'post'
+                    };
+                    let param={
+                    };
+                    http.httpTokenRequest(opts, param).then(res => {
+                       // console.log(res.data);
+                       //打印请求返回的数据
+						if(res.data["code"]==0){
+							console.log('list', res.data["cartList"]);
+							this._getdata(res.data["cartList"]);
+						}else{
+							uni.showToast({
+								title: res.data.msg,
+								icon: 'none',
+								mask: true,
+								duration: 1000
+							});
+							
+						}	
+                        
+                    },error => {console.log(error);}) 
+				
+			},
 			//请求数据
-			async loadData(){
-				let list = await this.$api.json('cartList'); 
+			async _getdata(list){
 				let cartList = list.map(item=>{
 					item.checked = true;
 					return item;

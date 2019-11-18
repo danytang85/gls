@@ -9,6 +9,9 @@
 	    ,{
             "path" : "pages/ptype/home",
             "style" : {}
+        } ,{
+            "path" : "pages/index/index",
+            "style" : {}
         },{
             "path" : "pages/cart/home",
             "style" : {}
@@ -23,9 +26,6 @@
             "style" : {}
         },{
             "path" : "pages/person/reg",
-            "style" : {}
-        },{
-            "path" : "pages/person/pwd",
             "style" : {}
         },{
 		    "path" : "pages/order/createOrder",
