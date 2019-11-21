@@ -3,6 +3,20 @@
 	import Vue from 'vue'
 	import { mapMutations } from 'vuex';
 	
+	
+	global.islogon=function(){
+		try{
+			var token=uni.getStorageSync("token")
+		}catch(e){
+			//TODO handle the exception
+		}
+		if(token=="" || token==null || token=="undefined"){
+			return false;
+		}else{
+			return token;
+		}
+		
+	};
 	export default {
 		onLaunch: function() {
 			

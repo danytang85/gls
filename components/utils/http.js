@@ -1,3 +1,4 @@
+
 const baseUrl = 'http://api.gls.com';  
 const httpRequest = (opts, data) => {
     let httpDefaultOpts = {
@@ -22,14 +23,15 @@ const httpRequest = (opts, data) => {
 };
 //带Token请求
 const httpTokenRequest = (opts, data) => {
-	let token = "";
-	uni.getStorage({
-		key: 'token',
-		success: function(ress) {
-			// data["token"] = ress.data,
-			token=ress.data
-		}
-	});
+	// let token = "";
+	// uni.getStorageSync({
+	// 	key: 'token',
+	// 	success: function(ress) {
+	// 		// data["token"] = ress.data,
+	// 		token=ress.data
+	// 	}
+	// });
+	let token=uni.getStorageSync("token");
     //此token是登录成功后后台返回保存在storage中的
     let httpDefaultOpts = {
         url: baseUrl+opts.url,
@@ -50,6 +52,15 @@ const httpTokenRequest = (opts, data) => {
     let promise = new Promise(function(resolve, reject) {
         uni.request(httpDefaultOpts).then(
             (res) => {
+				if(res[1].data["code"]==99){
+					uni.showToast({ title: "验证已经过期，请重新登录", icon: 'none' });
+					uni.removeStorage({
+					    key: 'token'
+					})
+					// uni.navigateTo({
+					// 	url: '/pages/person/logon'
+					// });
+				}
                 resolve(res[1])
             }
         ).catch(
@@ -60,9 +71,14 @@ const httpTokenRequest = (opts, data) => {
     })
     return promise
 };
- 
+import {mapMutations } from 'vuex';
 export default {
 	    baseUrl,
 		httpRequest,
-		httpTokenRequest					
+		httpTokenRequest,
+		methods: {
+			...mapMutations(['logout']),
+		}
 }
+
+

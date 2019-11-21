@@ -4,32 +4,30 @@
 			<block slot="backText">返回</block>
 			<block slot="content">产品详情</block>
 		</cu-custom>
+		
 		<view class="carousel">
-			<swiper indicator-dots circular=true duration="400">
-				<swiper-item class="swiper-item" v-for="(item,index) in imgList" :key="index">
-					<view class="image-wrapper">
-						<image
-							:src="item.src" 
-							class="loaded" 
-							mode="aspectFill"
-						></image>
-					</view>
+			
+			<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true"
+			 :autoplay="true" interval="5000" duration="500">
+				<swiper-item v-for="(item,index) in thumblist" :key="index">
+					<image :src="apiServer+item.img_thumb" mode="aspectFill" ></image>
 				</swiper-item>
 			</swiper>
+			
 		</view>
 		
 		<view class="introduce-section">
-			<text class="title">恒源祥2019春季长袖白色t恤 新款春装</text>
+			<text class="title">{{pinfo.title}}</text>
 			<view class="price-box">
 				<text class="price-tip">¥</text>
-				<text class="price">341.6</text>
-				<text class="m-price">¥488</text>
-				<text class="coupon-tip">7折</text>
+				<text class="price">{{pinfo.price}}</text>
+				<text class="m-price">¥{{pinfo.cprice}}</text>
+				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
 			<view class="bot-row">
-				<text>销量: 108</text>
-				<text>库存: 4690</text>
-				<text>浏览量: 768</text>
+				<text>销量: {{pinfo.salenum}}</text>
+				<text>库存: {{pinfo.stock}}</text>
+				<text>浏览量: {{pinfo.innum}}</text>
 			</view>
 		</view>
 		
@@ -39,7 +37,7 @@
 				<text class="yticon icon-xingxing"></text>
 				 返
 			</view>
-			<text class="tit">该商品分享可领49减10红包</text>
+			<text class="tit">商品分享</text>
 			<text class="yticon icon-bangzhu1"></text>
 			<view class="share-btn">
 				立即分享
@@ -49,7 +47,7 @@
 		</view>
 		
 		<view class="c-list">
-			<view class="c-row b-b" @click="toggleSpec">
+			<!-- <view class="c-row b-b" @click="toggleSpec">
 				<text class="tit">购买类型</text>
 				<view class="con">
 					<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
@@ -57,13 +55,13 @@
 					</text>
 				</view>
 				<text class="yticon icon-you"></text>
-			</view>
-			<view class="c-row b-b">
+			</view> -->
+			<!-- <view class="c-row b-b">
 				<text class="tit">优惠券</text>
 				<text class="con t-r red">领取优惠券</text>
 				<text class="yticon icon-you"></text>
-			</view>
-			<view class="c-row b-b">
+			</view> -->
+			<!-- <view class="c-row b-b">
 				<text class="tit">促销活动</text>
 				<view class="con-list">
 					<text>新人首单送20元无门槛代金券</text>
@@ -78,11 +76,11 @@
 					<text>7天无理由退换货 ·</text>
 					<text>假一赔十 ·</text>
 				</view>
-			</view>
+			</view> -->
 		</view>
 		
 		<!-- 评价 -->
-		<view class="eva-section">
+		<!-- <view class="eva-section">
 			<view class="e-header">
 				<text class="tit">评价</text>
 				<text>(86)</text>
@@ -100,7 +98,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		<view class="detail-desc">
 			<view class="d-header">
@@ -109,13 +107,35 @@
 			<rich-text :nodes="desc"></rich-text>
 		</view>
 		
+		<view   class="cu-bar foot bg-white tabbar border shop page-bottom">
+			<button @click="toFavorite"  class="action text-black " v-if="favorite===false" open-type="contact">
+				<view class="cuIcon-favor" >
+				</view> 收藏
+			</button>
+			<button  @click="toFavorite" class="action text-orange" v-if="favorite===true" open-type="contact">
+				<view class="cuIcon-favor ">
+				</view> 收藏
+			</button>
+			<view  @click="toChart" class="action text-black">
+				<view class="cuIcon-cart">
+					<view class="cu-tag badge">99</view>
+				</view>
+				购物车
+			</view>
+			<view class="btn-group">
+				<button class="cu-btn bg-orange round shadow-blur">加入购物车</button>
+				<button class="cu-btn bg-red round shadow-blur">立即购买</button>
+			</view>
+		</view>
 		<!-- 底部操作菜单 -->
-		<view class="page-bottom">
-			<navigator url="/pages/index/index" open-type="switchTab" class="p-b-btn">
+		<!-- <view class="page-bottom">
+			<navigator url="/pages/index/home" open-type="navigate" class="p-b-btn">
 				<text class="yticon icon-xiatubiao--copy"></text>
 				<text>首页</text>
 			</navigator>
-			<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
+			
+			<navigator url="/pages/cart/home" open-type="navigate" class="p-b-btn">
+				
 				<text class="yticon icon-gouwuche"></text>
 				<text>购物车</text>
 			</navigator>
@@ -126,9 +146,9 @@
 			
 			<view class="action-btn-group">
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn">加入购物车</button>
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addcart" >加入购物车</button>
 			</view>
-		</view>
+		</view> -->
 		
 		
 		<!-- 规格-模态层弹窗 -->
@@ -139,37 +159,7 @@
 			@click="toggleSpec"
 		>
 			<!-- 遮罩层 -->
-			<view class="mask"></view>
-			<view class="layer attr-content" @click.stop="stopPrevent">
-				<view class="a-t">
-					<image src="https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg"></image>
-					<view class="right">
-						<text class="price">¥328.00</text>
-						<text class="stock">库存：188件</text>
-						<view class="selected">
-							已选：
-							<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
-								{{sItem.name}}
-							</text>
-						</view>
-					</view>
-				</view>
-				<view v-for="(item,index) in specList" :key="index" class="attr-list">
-					<text>{{item.name}}</text>
-					<view class="item-list">
-						<text 
-							v-for="(childItem, childIndex) in specChildList" 
-							v-if="childItem.pid === item.id"
-							:key="childIndex" class="tit"
-							:class="{selected: childItem.selected}"
-							@click="selectSpec(childIndex, childItem.pid)"
-						>
-							{{childItem.name}}
-						</text>
-					</view>
-				</view>
-				<button class="btn" @click="toggleSpec">完成</button>
-			</view>
+			
 		</view>
 		<!-- 分享 -->
 		<share 
@@ -181,6 +171,7 @@
 </template>
 
 <script>
+	import http from '@/components/utils/http.js';
 	import share from '@/components/share';
 	export default{
 		components: {
@@ -190,157 +181,110 @@
 			return {
 				specClass: 'none',
 				specSelected:[],
-				
-				favorite: true,
+				favorite: false,
 				shareList: [],
-				imgList: [
-					{
-						src: 'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'
-					},
-					{
-						src: 'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg'
-					},
-					{
-						src: 'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
-					}
-				],
-				desc: `
-					<div style="width:100%">
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i4/479184430/O1CN01nCpuLc1iaz4bcSN17_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd2.alicdn.com/imgextra/i2/479184430/O1CN01gwbN931iaz4TzqzmG_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i3/479184430/O1CN018wVjQh1iaz4aupv1A_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd4.alicdn.com/imgextra/i4/479184430/O1CN01tWg4Us1iaz4auqelt_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd1.alicdn.com/imgextra/i1/479184430/O1CN01Tnm1rU1iaz4aVKcwP_!!479184430.jpg_400x400.jpg" />
-					</div>
-				`,
-				specList: [
-					{
-						id: 1,
-						name: '尺寸',
-					},
-					{	
-						id: 2,
-						name: '颜色',
-					},
-				],
-				specChildList: [
-					{
-						id: 1,
-						pid: 1,
-						name: 'XS',
-					},
-					{
-						id: 2,
-						pid: 1,
-						name: 'S',
-					},
-					{
-						id: 3,
-						pid: 1,
-						name: 'M',
-					},
-					{
-						id: 4,
-						pid: 1,
-						name: 'L',
-					},
-					{
-						id: 5,
-						pid: 1,
-						name: 'XL',
-					},
-					{
-						id: 6,
-						pid: 1,
-						name: 'XXL',
-					},
-					{
-						id: 7,
-						pid: 2,
-						name: '白色',
-					},
-					{
-						id: 8,
-						pid: 2,
-						name: '珊瑚粉',
-					},
-					{
-						id: 9,
-						pid: 2,
-						name: '草木绿',
-					},
-				]
+				pinfo:[],
+				thumblist:[],
+				desc: "",
+				
 			};
 		},
 		async onLoad(options){
 			
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
-			let id = options.id;
-			if(id){
-				this.$api.msg(`点击了${id}`);
-			}
+			let psid = options.psid;
 			
 			
-			//规格 默认选中第一条
-			this.specList.forEach(item=>{
-				for(let cItem of this.specChildList){
-					if(cItem.pid === item.id){
-						this.$set(cItem, 'selected', true);
-						this.specSelected.push(cItem);
-						break; //forEach不能使用break
+			let opts = {
+				url: '/productApi/getproductinfo/',
+				method: 'post'
+			};
+			
+			let param = {psid:psid};
+			http.httpTokenRequest(opts, param).then(
+				res => {
+					//打印请求返回的数据
+					if (res.data['code'] == 0) {
+						this.pinfo = res.data["pinfo"];
+						this.thumblist = res.data["thumblist"];
+						this.desc=this.pinfo["content"];
+						this.favorite=res.data["isfav"];
+					} else {
+						uni.showToast({title: res.data.msg,icon: 'none'});
 					}
+				},
+				error => {
+					console.log(error);
 				}
-			})
+			);
+			
 			this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
-			//规格弹窗开关
-			toggleSpec() {
-				if(this.specClass === 'show'){
-					this.specClass = 'hide';
-					setTimeout(() => {
-						this.specClass = 'none';
-					}, 250);
-				}else if(this.specClass === 'none'){
-					this.specClass = 'show';
-				}
-			},
-			//选择规格
-			selectSpec(index, pid){
-				let list = this.specChildList;
-				list.forEach(item=>{
-					if(item.pid === pid){
-						this.$set(item, 'selected', false);
-					}
-				})
-
-				this.$set(list[index], 'selected', true);
-				//存储已选择
-				/**
-				 * 修复选择规格存储错误
-				 * 将这几行代码替换即可
-				 * 选择的规格存放在specSelected中
-				 */
-				this.specSelected = []; 
-				list.forEach(item=>{ 
-					if(item.selected === true){ 
-						this.specSelected.push(item); 
-					} 
-				})
-				
-			},
+			
 			//分享
 			share(){
 				this.$refs.share.toggleMask();	
 			},
 			//收藏
 			toFavorite(){
-				this.favorite = !this.favorite;
+				let opts = {
+					url: '/productApi/toFavorite/',
+					method: 'post'
+				};
+				let param = {psid:this.pinfo["psid"]};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							
+							this.favorite=res.data["isfav"];
+						} else {
+							uni.showToast({title: res.data.msg,icon: 'none'});
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+				
+				
+				
 			},
 			buy(){
 				uni.navigateTo({
 					url: `/pages/order/createOrder`
 				})
+			},
+			
+			toChart(){
+				uni.navigateTo({
+					url: `/pages/cart/home`
+				})
+			},
+			
+			addcart(){
+				let opts = {
+					url: '/productApi/addcart/',
+					method: 'post'
+				};
+				let param = {psid:this.pinfo["psid"]};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							
+							uni.showToast({title: "成功加入购物车",icon: 'none'});
+						} else {
+							uni.showToast({title: res.data.msg,icon: 'none'});
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+			
 			},
 			stopPrevent(){}
 		},
@@ -770,78 +714,5 @@
 		}
 	}
 	
-	/* 底部操作菜单 */
-	.page-bottom{
-		position:fixed;
-		left: 30upx;
-		bottom:30upx;
-		z-index: 95;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 690upx;
-		height: 100upx;
-		background: rgba(255,255,255,.9);
-		box-shadow: 0 0 20upx 0 rgba(0,0,0,.5);
-		border-radius: 16upx;
-		
-		.p-b-btn{
-			display:flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			font-size: $font-sm;
-			color: $font-color-base;
-			width: 96upx;
-			height: 80upx;
-			.yticon{
-				font-size: 40upx;
-				line-height: 48upx;
-				color: $font-color-light;
-			}
-			&.active, &.active .yticon{
-				color: $uni-color-primary;
-			}
-			.icon-fenxiang2{
-				font-size: 42upx;
-				transform: translateY(-2upx);
-			}
-			.icon-shoucang{
-				font-size: 46upx;
-			}
-		}
-		.action-btn-group{
-			display: flex;
-			height: 76upx;
-			border-radius: 100px;
-			overflow: hidden;
-			box-shadow: 0 20upx 40upx -16upx #fa436a;
-			box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
-			background: linear-gradient(to right, #ffac30,#fa436a,#F56C6C);
-			margin-left: 20upx;
-			position:relative;
-			&:after{
-				content: '';
-				position:absolute;
-				top: 50%;
-				right: 50%;
-				transform: translateY(-50%);
-				height: 28upx;
-				width: 0;
-				border-right: 1px solid rgba(255,255,255,.5);
-			}
-			.action-btn{
-				display:flex;
-				align-items: center;
-				justify-content: center;
-				width: 180upx;
-				height: 100%;
-				font-size: $font-base ;
-				padding: 0;
-				border-radius: 0;
-				background: transparent;
-			}
-		}
-	}
 	
 </style>

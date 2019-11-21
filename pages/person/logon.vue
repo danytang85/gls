@@ -20,6 +20,15 @@
 		</view>
 		<view class="btn-row"><button class="bg-orange" @click="loginUp">登录</button></view>
 		<view class="action-row"><navigator class="text-black" url="../person/reg">注册账号</navigator></view>
+	
+		<!-- 其他登录方式 -->
+		<view class="otherLoginTitle">————————其他登录方式————————</view>
+		<view class="otherLogin">
+			<view class="weiixnLogin" @click="weixinlogin">
+				<image src="../../static/weixin.png" mode=""></image>
+			</view>
+			
+		</view>
 	</view>
 </template>
 
@@ -111,8 +120,7 @@ export default {
 				res => {
 					//打印请求返回的数据
 					if (res.data['code'] == 0) {
-						this.userinfo = res.data['userinfo'];
-						this.login(this.userinfo);
+						this.login(res.data['token']);
 						uni.navigateTo({
 							url: this.backpage
 						});
@@ -162,11 +170,29 @@ export default {
 					this.loading = false;
 				}
 			);
-		}
-	},
-	onLoad(options) {
+		},
+		weixinlogin(){
+			uni.login({
+			  provider: 'weixin',
+			  success: function (loginRes) {
+			    console.log(loginRes.authResult);
+			    // 获取用户信息
+			    uni.getUserInfo({
+			      provider: 'weixin',
+			      success: function (infoRes) {
+					console.log(infoRes)
+			        console.log('用户昵称为：' + infoRes.userInfo.nickName);
+			      }
+			    });
+			  }
+			});
+		},
 		
-		if (this.hasLogin) {
+	},
+	
+	
+	onLoad(options) {
+		if (global.islogon()) {
 			uni.redirectTo({
 				url: '../person/home',
 			});

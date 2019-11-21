@@ -39,8 +39,12 @@ const prePage = () => {
 //封装全局登录检查函数:backpage为登录后返回的页面；backtype为打开页面的类型[1 : redirectTo 2 : switchTab]
 //3种页面跳转方式：NavigationTo(直接打开新页面),RedirectTo(覆盖原页面后打开新页面),SwitchTo(切换顶部导航的方式来切换页面)
 Vue.prototype.checkLogin = function(backpage) {
-	var uerInfo = uni.getStorageSync('uerInfo'); //本地持久化存储
-	if (uerInfo == '') {
+	try{
+		var uerInfo = uni.getStorageSync('uerInfo'); //本地持久化存储
+	}catch(e){
+		//TODO handle the exception
+	}
+	if (uerInfo == '' || userInfo==null || userInfo=="undefined") {
 		uni.redirectTo({
 			url: '../person/logon?backpage=' + backpage
 		});
@@ -66,13 +70,13 @@ Vue.config.productionTip = false
 
 App.mpType = 'app'
 Vue.prototype.$fire = new Vue();
-Vue.prototype.$store = store
+Vue.prototype.$store = store;
+Vue.prototype.apiServer = 'http://www.gls.com';
 Vue.prototype.$api = {
 	msg,
 	json,
 	prePage
 };
-Vue.prototype.apiServer = 'http://www.gls.com';
 
 const app = new Vue({
 	store,

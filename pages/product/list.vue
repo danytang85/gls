@@ -2,7 +2,7 @@
 	<view class="content">
 		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">产品详情</block>
+			<block slot="content">产品列表</block>
 		</cu-custom>
 		
 		<view class="navbar" :style="{position:headerPosition,top:headerTop}">
@@ -28,12 +28,12 @@
 				@click="navToDetailPage(item)"
 			>
 				<view class="image-wrapper">
-					<image :src="item.image" mode="aspectFill"></image>
+					<image :src="apiServer+item.images" mode="aspectFill"></image>
 				</view>
 				<text class="title clamp">{{item.title}}</text>
 				<view class="price-box">
 					<text class="price">{{item.price}}</text>
-					<text>已售 {{item.sales}}</text>
+					<text>已售 {{item.salenum}}</text>
 				</view>
 			</view>
 		</view>
@@ -55,11 +55,12 @@
 				</scroll-view>
 			</view>
 		</view>
-		
+		<footermenu PageCur="ptype"></footermenu>
 	</view>
 </template>
 
 <script>
+	import http from '@/components/utils/http.js';
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	export default {
 		components: {
@@ -106,14 +107,33 @@
 		methods: {
 			//加载分类
 			async loadCateList(fid, sid){
-				let list = await this.$api.json('cateList');
-				let cateList = list.filter(item=>item.pid == fid);
+				let opts = {
+					url: '/productApi/cateList/',
+					method: 'post'
+				};
+				let param = {};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						// console.log(res.data);
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							let list =  res.data['cateList'];
+							let cateList = list.filter(item=>item.pid == fid);
+							cateList.forEach(item=>{
+								let tempList = list.filter(val=>val.pid == item.id);
+								item.child = tempList;
+							})
+							this.cateList = cateList;
+						} else {
+							uni.showToast({ title: res.data['msg'], icon: 'none' });
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
 				
-				cateList.forEach(item=>{
-					let tempList = list.filter(val=>val.pid == item.id);
-					item.child = tempList;
-				})
-				this.cateList = cateList;
+				
 			},
 			//加载商品 ，带下拉刷新和上滑加载
 			async loadData(type='add', loading) {
@@ -127,34 +147,61 @@
 					this.loadingType = 'more'
 				}
 				
-				let goodsList = await this.$api.json('goodsList');
-				if(type === 'refresh'){
-					this.goodsList = [];
-				}
-				//筛选，测试数据直接前端筛选了
-				if(this.filterIndex === 1){
-					goodsList.sort((a,b)=>b.sales - a.sales)
-				}
-				if(this.filterIndex === 2){
-					goodsList.sort((a,b)=>{
-						if(this.priceOrder == 1){
-							return a.price - b.price;
+				//let goodsList = await this.$api.json('goodsList');
+				let opts = {
+					url: '/productApi/productlist/',
+					method: 'post'
+				};
+				
+				let param = {cateId:this.cateId};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							//let list = res.data["plist"];
+							
+							let goodsList = res.data["plist"];
+							
+							//this.goodsList = cartList;
+							
+							if(type === 'refresh'){
+								this.goodsList = [];
+							}
+							//筛选，测试数据直接前端筛选了
+							if(this.filterIndex === 1){
+								goodsList.sort((a,b)=>b.sales - a.sales)
+							}
+							if(this.filterIndex === 2){
+								goodsList.sort((a,b)=>{
+									if(this.priceOrder == 1){
+										return a.price - b.price;
+									}
+									return b.price - a.price;
+								})
+							}
+							
+							this.goodsList = this.goodsList.concat(goodsList);
+							
+							//判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
+							this.loadingType  = this.goodsList.length > 20 ? 'nomore' : 'more';
+							if(type === 'refresh'){
+								if(loading == 1){
+									uni.hideLoading()
+								}else{
+									uni.stopPullDownRefresh();
+								}
+							}
+							
+						} else {
+							uni.showToast({title: res.data.msg,icon: 'none'});
 						}
-						return b.price - a.price;
-					})
-				}
-				
-				this.goodsList = this.goodsList.concat(goodsList);
-				
-				//判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
-				this.loadingType  = this.goodsList.length > 20 ? 'nomore' : 'more';
-				if(type === 'refresh'){
-					if(loading == 1){
-						uni.hideLoading()
-					}else{
-						uni.stopPullDownRefresh();
+					},
+					error => {
+						console.log(error);
 					}
-				}
+				);
+				
+				
 			},
 			//筛选点击
 			tabClick(index){
@@ -201,9 +248,9 @@
 			//详情
 			navToDetailPage(item){
 				//测试数据没有写id，用title代替
-				let id = item.title;
+				let psid = item.psid;
 				uni.navigateTo({
-					url: `/pages/product/product?id=${id}`
+					url: `/pages/product/product?psid=${psid}`
 				})
 			},
 			stopPrevent(){}
@@ -302,7 +349,7 @@
 		bottom: 0;
 		width: 100%;
 		background: rgba(0,0,0,0);
-		z-index: 95;
+		z-index: 10000;
 		transition: .3s;
 		
 		.cate-content{

@@ -67,10 +67,11 @@ export default {
 	},
 
 	onLoad() {
-		var userinfo = this.checkLogin('../index/home');
-		if (!userinfo) {
-			return false;
-		}
+		// if (global.islogon() == false) {
+		// 	uni.navigateTo({
+		// 		url: '../person/logon'
+		// 	});
+		// }
 		this.loadData();
 	},
 

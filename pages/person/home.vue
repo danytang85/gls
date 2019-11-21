@@ -3,9 +3,9 @@
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
-				<view class="portrait-box"><image class="portrait" :src="uerInfo.headimg || '/static/missing-face.png'"></image></view>
+				<view class="portrait-box"><image class="portrait" :src="userinfo.headimg || '/static/missing-face.png'"></image></view>
 				<view class="info-box">
-					<text class="username">{{ uerInfo.nickname || '游客' }}</text>
+					<text class="username">{{ userinfo.mobile || '游客' }}</text>
 				</view>
 			</view>
 
@@ -77,7 +77,6 @@
 				<list-cell icon="icon-daifukuan" iconColor="#5fcda2" title="我的收益" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 				<list-cell icon="icon-zuoshang" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 				<list-cell icon="icon-zuoshang" iconColor="#5fcda2" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
-			
 			</view>
 		</view>
 
@@ -86,11 +85,13 @@
 </template>
 
 <script>
+import http from '@/components/utils/http.js';
 import listCell from '@/components/mix-list-cell';
-import { mapState, mapMutations } from 'vuex';
-let startY = 0, moveY = 0, pageAtTop = true;
+import { mapMutations } from 'vuex';
+let startY = 0,
+	moveY = 0,
+	pageAtTop = true;
 export default {
-	computed: mapState(['hasLogin', 'uerInfo']),
 	components: {
 		listCell
 	},
@@ -99,42 +100,23 @@ export default {
 			title: '个人中心',
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
-			moving: false
+			moving: false,
+			userinfo: ''
 		};
 	},
-	onNavigationBarButtonTap(e) {
-		const index = e.index;
-		if (index === 0) {
-			this.navTo('/pages/set/set');
-		}else if(index === 1){
-			// #ifdef APP-PLUS
-			const pages = getCurrentPages();
-			const page = pages[pages.length - 1];
-			const currentWebview = page.$getAppWebview();
-			currentWebview.hideTitleNViewButtonRedDot({
-				index
-			});
-			// #endif
-			uni.navigateTo({
-				url: '/pages/notice/notice'
-			})
-		}
-	},
+
 	methods: {
 		...mapMutations(['logout']),
 		/**
 		 * 统一跳转接口,拦截未登录路由
 		 * navigator标签现在默认没有转场动画，所以用view
 		 */
-		navTo(url){
-			if(!this.hasLogin){
-				url = '/pages/public/login';
-			}
-			uni.navigateTo({  
+		navTo(url) {
+			uni.navigateTo({
 				url
-			})  
-		}, 
-			
+			});
+		},
+
 		/**
 		 *  会员卡下拉和回弹
 		 *  1.关闭bounce避免ios端下拉冲突
@@ -142,56 +124,74 @@ export default {
 		 *    transition设置0.1秒延迟，让css来过渡这段空窗期
 		 *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
 		 */
-		coverTouchstart(e){
-			if(pageAtTop === false){
+		coverTouchstart(e) {
+			if (pageAtTop === false) {
 				return;
 			}
 			this.coverTransition = 'transform .1s linear';
 			startY = e.touches[0].clientY;
 		},
-		coverTouchmove(e){
+		coverTouchmove(e) {
 			moveY = e.touches[0].clientY;
 			let moveDistance = moveY - startY;
-			if(moveDistance < 0){
+			if (moveDistance < 0) {
 				this.moving = false;
 				return;
 			}
 			this.moving = true;
-			if(moveDistance >= 80 && moveDistance < 100){
+			if (moveDistance >= 80 && moveDistance < 100) {
 				moveDistance = 80;
 			}
-				
-			if(moveDistance > 0 && moveDistance <= 80){
+
+			if (moveDistance > 0 && moveDistance <= 80) {
 				this.coverTransform = `translateY(${moveDistance}px)`;
 			}
 		},
-		coverTouchend(){
-			if(this.moving === false){
+		coverTouchend() {
+			if (this.moving === false) {
 				return;
 			}
 			this.moving = false;
 			this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
 			this.coverTransform = 'translateY(0px)';
 		},
-		
-		toLogout(){
+
+		toLogout() {
 			uni.showModal({
-			    content: '确定要退出登录么',
-			    success: (e)=>{
-			    	if(e.confirm){
-			    		this.logout();
-			    		setTimeout(()=>{
-			    			uni.navigateBack();
-			    		}, 200)
-			    	}
-			    }
+				content: '确定要退出登录么',
+				success: e => {
+					if (e.confirm) {
+						this.logout();
+						setTimeout(() => {
+							uni.navigateBack();
+						}, 200);
+					}
+				}
 			});
-		},
+		}
 	},
 	onLoad() {
-		var userinfo = this.checkLogin('../person/home');
-		if (!userinfo) {
-			return false;
+		if (global.islogon() == false) {
+			uni.navigateTo({
+				url: '../person/logon'
+			});
+		} else {
+			let token = uni.getStorageSync('token');
+			let opts = {
+				url: '/base/getuserinfo/',
+				method: 'post'
+			};
+			let param = {};
+			http.httpTokenRequest(opts, param).then(
+				res => {
+					if (res.data['code'] == 0) {
+						this.userinfo = res.data['userinfo'];
+					}
+				},
+				error => {
+					console.log(error);
+				}
+			);
 		}
 	}
 };

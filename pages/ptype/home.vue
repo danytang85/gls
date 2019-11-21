@@ -13,7 +13,7 @@
 					<text class="s-item">{{ item.name }}</text>
 					<view class="t-list">
 						<view @click="navToList(item.id, titem.id)" v-if="titem.pid === item.id" class="t-item" v-for="titem in tlist" :key="titem.id">
-							<image :src="titem.picture"></image>
+							<image :src="apiServer+titem.picture"></image>
 							<text>{{ titem.name }}</text>
 						</view>
 					</view>
@@ -125,6 +125,10 @@ export default {
 		}
 	}
 };
+
+
+
+
 </script>
 
 <style lang="scss">

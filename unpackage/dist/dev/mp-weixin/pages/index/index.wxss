@@ -1,0 +1,16 @@
+
+.test{
+	-webkit-animation: 1s aaa infinite;
+	        animation: 1s aaa infinite;
+}
+@-webkit-keyframes aaa{
+from{-webkit-transform: rotate(0deg);transform: rotate(0deg);}
+to{-webkit-transform: rotate(360deg);transform: rotate(360deg);}
+}
+@keyframes aaa{
+from{-webkit-transform: rotate(0deg);transform: rotate(0deg);}
+to{-webkit-transform: rotate(360deg);transform: rotate(360deg);}
+}
+.content{
+}
+
