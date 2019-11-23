@@ -59,6 +59,7 @@ page {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    position: relative;
     -webkit-box-align: baseline;
     -webkit-align-items: baseline;
         -ms-flex-align: baseline;
@@ -75,6 +76,12 @@ page {
     margin: 0 12rpx;
     color: #909399;
     text-decoration: line-through;
+}
+.introduce-section .share-right {
+    position: absolute;
+    right: 0px;
+    top: 5px;
+    font-size: 16px;
 }
 .introduce-section .coupon-tip {
     -webkit-box-align: center;

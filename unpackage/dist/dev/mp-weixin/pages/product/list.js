@@ -192,6 +192,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
 
   data: function data() {
     return {
+      server: this.apiServer,
       cateMaskState: 0, //分类面板展开状态
       headerPosition: "fixed",
       headerTop: "0px",

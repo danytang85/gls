@@ -36,7 +36,6 @@
 const duration = 2000;
 import md5 from '@/js_sdk/ccdzhang-dokey/md5.js';
 import http from '@/components/utils/http.js';
-import service from '../../service.js';
 import { mapState, mapMutations } from 'vuex';
 
 export default {
@@ -82,6 +81,7 @@ export default {
 			if (_that.codeClick) {
 				if (_that.mobile[0] != 1 || _that.mobile.length != 11) {
 					this.$api.msg('请输入正确的手机号');
+					return;
 				} else {
 					_that.codeClick = false;
 					// 发送短信
@@ -95,10 +95,16 @@ export default {
 			var _that = this;
 			if (_that.mobile == '') {
 				this.$api.msg('请输入手机号码');
-			} else if (_that.password == '' && _that.loginMode == 1) {
+				return;
+			}else if(!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)){
+				this.$api.msg('手机号码格式不正确');
+				return;
+			}  else if (_that.password == '' && _that.loginMode == 1) {
 				this.$api.msg('请输入密码');
+				return;
 			} else if (_that.code == '' && _that.loginMode == 2) {
 				this.$api.msg('请输入验证码');
+				return;
 			} else {
 				const data = {
 					loginmode: _that.loginMode,

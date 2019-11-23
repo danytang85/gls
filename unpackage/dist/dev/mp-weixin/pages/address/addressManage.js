@@ -122,78 +122,115 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      addressData: {
-        name: '',
-        mobile: '',
-        addressName: '在地图选择',
-        address: '',
-        area: '',
-        default: false } };
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
-  },
-  onLoad: function onLoad(option) {
-    var title = '新增收货地址';
-    if (option.type === 'edit') {
-      title = '编辑收货地址';
 
-      this.addressData = JSON.parse(option.data);
-    }
-    this.manageType = option.type;
-    uni.setNavigationBarTitle({
-      title: title });
 
-  },
-  methods: {
-    switchChange: function switchChange(e) {
-      this.addressData.default = e.detail;
-    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 42));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { title: "", manageType: "add", addressData: { name: '', mobile: '', addressname: '在地图选择', address: '', dname: '', area: '', default: 0 } };}, onLoad: function onLoad(option) {var title = '新增收货地址';if (option.type === 'edit') {title = '编辑收货地址';this.addressData = JSON.parse(option.data);}this.manageType = option.type;this.title = title; // uni.setNavigationBarTitle({
+    // 	title
+    // })
+  }, methods: { switchChange: function switchChange(e) {if (e.detail.value) {this.addressData.default = 1;} else {this.addressData.default = 0;}},
 
     //地图选择地址
     chooseLocation: function chooseLocation() {var _this = this;
       uni.chooseLocation({
         success: function success(data) {
-          _this.addressData.addressName = data.name;
-          _this.addressData.address = data.name;
+          console.log(data);
+          _this.addressData.addressname = data.name;
+          _this.addressData.address = data.address;
         } });
+
+    },
+
+    submitdata: function submitdata(data) {var _this2 = this;
+
+      var opts = {
+        url: '/addressApi/save/',
+        method: 'post' };
+
+      var param = data;
+      _http.default.httpTokenRequest(opts, param).then(
+      function (res) {
+        //打印请求返回的数据
+        if (res.data['code'] == 0) {
+          _this2.$api.prePage().refreshList(data, _this2.manageType);
+          _this2.$api.msg("\u5730\u5740".concat(_this2.manageType == 'edit' ? '修改' : '添加', "\u6210\u529F"));
+          setTimeout(function () {
+            uni.navigateBack();
+          }, 800);
+
+        } else {
+          uni.showToast({ title: res.data.msg, icon: 'none' });
+        }
+      },
+      function (error) {
+        console.log(error);
+      });
 
     },
 
@@ -217,12 +254,10 @@ var _default =
         return;
       }
 
+      this.submitdata(data);
+
       //this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
-      this.$api.prePage().refreshList(data, this.manageType);
-      this.$api.msg("\u5730\u5740".concat(this.manageType == 'edit' ? '修改' : '添加', "\u6210\u529F"));
-      setTimeout(function () {
-        uni.navigateBack();
-      }, 800);
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

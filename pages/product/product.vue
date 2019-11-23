@@ -10,7 +10,7 @@
 			<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true"
 			 :autoplay="true" interval="5000" duration="500">
 				<swiper-item v-for="(item,index) in thumblist" :key="index">
-					<image :src="apiServer+item.img_thumb" mode="aspectFill" ></image>
+					<image :src="server+item.img_thumb" mode="aspectFill" ></image>
 				</swiper-item>
 			</swiper>
 			
@@ -22,6 +22,8 @@
 				<text class="price-tip">¥</text>
 				<text class="price">{{pinfo.price}}</text>
 				<text class="m-price">¥{{pinfo.cprice}}</text>
+				
+				<view @click="share" class="share-right text-orange cuIcon-share "></view>
 				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
 			<view class="bot-row">
@@ -32,19 +34,15 @@
 		</view>
 		
 		<!--  分享 -->
-		<view class="share-section" @click="share">
-			<view class="share-icon">
-				<text class="yticon icon-xingxing"></text>
-				 返
+		<!-- <view class="share-section" @click="share">
+			<view class="text-gray cuIcon-share">
 			</view>
-			<text class="tit">商品分享</text>
-			<text class="yticon icon-bangzhu1"></text>
 			<view class="share-btn">
 				立即分享
 				<text class="yticon icon-you"></text>
 			</view>
 			
-		</view>
+		</view> -->
 		
 		<view class="c-list">
 			<!-- <view class="c-row b-b" @click="toggleSpec">
@@ -108,23 +106,23 @@
 		</view>
 		
 		<view   class="cu-bar foot bg-white tabbar border shop page-bottom">
-			<button @click="toFavorite"  class="action text-black " v-if="favorite===false" open-type="contact">
+			<button @click="toFavorite"  class="action text-black " v-if="favorite===false" >
 				<view class="cuIcon-favor" >
 				</view> 收藏
 			</button>
-			<button  @click="toFavorite" class="action text-orange" v-if="favorite===true" open-type="contact">
+			<button  @click="toFavorite" class="action text-orange" v-if="favorite===true" >
 				<view class="cuIcon-favor ">
 				</view> 收藏
 			</button>
 			<view  @click="toChart" class="action text-black">
 				<view class="cuIcon-cart">
-					<view class="cu-tag badge">99</view>
+					<view class="cu-tag badge">{{cartcount}}</view>
 				</view>
 				购物车
 			</view>
 			<view class="btn-group">
-				<button class="cu-btn bg-orange round shadow-blur">加入购物车</button>
-				<button class="cu-btn bg-red round shadow-blur">立即购买</button>
+				<button class="cu-btn bg-orange round shadow-blur"  @click="addcart">加入购物车</button>
+				<button class="cu-btn bg-red round shadow-blur" @click="buy">立即购买</button>
 			</view>
 		</view>
 		<!-- 底部操作菜单 -->
@@ -179,6 +177,8 @@
 		},
 		data() {
 			return {
+				cartcount:0,
+				server:this.apiServer,
 				specClass: 'none',
 				specSelected:[],
 				favorite: false,
@@ -209,6 +209,7 @@
 						this.thumblist = res.data["thumblist"];
 						this.desc=this.pinfo["content"];
 						this.favorite=res.data["isfav"];
+						this.cartcount=res.data["cartcount"];
 					} else {
 						uni.showToast({title: res.data.msg,icon: 'none'});
 					}
@@ -254,7 +255,7 @@
 			},
 			buy(){
 				uni.navigateTo({
-					url: `/pages/order/createOrder`
+					url: `/pages/order/createOrder?psid=${this.pinfo.psid}`
 				})
 			},
 			
@@ -274,7 +275,7 @@
 					res => {
 						//打印请求返回的数据
 						if (res.data['code'] == 0) {
-							
+							this.cartcount=res.data["cartcount"];
 							uni.showToast({title: "成功加入购物车",icon: 'none'});
 						} else {
 							uni.showToast({title: res.data.msg,icon: 'none'});
@@ -338,6 +339,7 @@
 		}
 		.price-box{
 			display:flex;
+			position: relative;
 			align-items:baseline;
 			height: 64upx;
 			padding: 10upx 0;
@@ -351,6 +353,12 @@
 			margin:0 12upx;
 			color: $font-color-light;
 			text-decoration: line-through;
+		}
+		.share-right{
+			position: absolute;
+			right:0px;
+			top:5px;
+			font-size:16px;
 		}
 		.coupon-tip{
 			align-items: center;
@@ -372,6 +380,8 @@
 				flex: 1;
 			}
 		}
+	}
+	.share-icon{
 	}
 	/* 分享 */
 	.share-section{

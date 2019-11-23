@@ -5,23 +5,11 @@
 /* 边框颜色 */
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
-page,
-.content {
-  height: 100%;
-  background-color: #f8f8f8;
-}
-.content {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
 .scrollcontent {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 100rpx 0px;
 }
 .left-aside {
   -webkit-flex-shrink: 0;
@@ -98,9 +86,10 @@ page,
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
-  width: 100%;
+  width: 50%;
   background: #fff;
   padding-top: 12rpx;
+  text-align: center;
 }
 .t-list:after {
     content: '';
@@ -131,13 +120,14 @@ page,
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 496rpx;
+  width: 100%;
   font-size: 26rpx;
   color: #666;
-  padding-bottom: 20rpx;
+  padding: 20rpx;
 }
 .t-item image {
-    width: 400rpx;
-    height: 400rpx;
+    margin: 0 auto;
+    width: 200rpx;
+    height: 200rpx;
 }
 

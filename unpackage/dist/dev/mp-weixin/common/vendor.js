@@ -11020,7 +11020,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/home": { "navigationBarTitleText": "首页" }, "pages/ptype/home": {}, "pages/index/index": {}, "pages/cart/home": {}, "pages/person/home": {}, "pages/common/footermenu": {}, "pages/person/logon": {}, "pages/person/reg": {}, "pages/order/createOrder": {}, "pages/order/order": {}, "pages/money/pay": {}, "pages/money/paySuccess": {}, "pages/address/address": {}, "pages/address/addressManage": {}, "pages/set/set": {}, "pages/product/list": {}, "pages/product/product": {}, "pages/notice/notice": {}, "pages/detail/detail": {}, "pages/userinfo/userinfo": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8", "navigationStyle": "custom" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/home": { "navigationBarTitleText": "首页", "usingComponents": {} }, "pages/ptype/home": { "usingComponents": {} }, "pages/index/index": { "usingComponents": { "loading": "/components/xuan-loading/xuan-loading" } }, "pages/cart/home": { "usingComponents": { "uni-number-box": "/components/uni-number-box" } }, "pages/person/home": { "usingComponents": { "list-cell": "/components/mix-list-cell" } }, "pages/common/footermenu": { "usingComponents": {} }, "pages/person/logon": { "usingComponents": {} }, "pages/person/reg": { "usingComponents": {} }, "pages/order/createOrder": { "usingComponents": { "uni-number-box": "/components/uni-number-box" } }, "pages/order/order": { "usingComponents": { "uni-load-more": "/components/uni-load-more/uni-load-more", "empty": "/components/empty" } }, "pages/money/pay": { "usingComponents": {} }, "pages/money/paySuccess": { "usingComponents": {} }, "pages/address/address": { "usingComponents": {} }, "pages/address/addressManage": { "usingComponents": {} }, "pages/set/set": { "usingComponents": {} }, "pages/product/list": { "usingComponents": { "uni-load-more": "/components/uni-load-more/uni-load-more" } }, "pages/product/product": { "usingComponents": { "share": "/components/share" } }, "pages/notice/notice": { "usingComponents": {} }, "pages/detail/detail": { "usingComponents": { "share": "/components/share" } }, "pages/userinfo/userinfo": { "usingComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8", "navigationStyle": "custom" } };exports.default = _default;
 
 /***/ }),
 
@@ -12022,43 +12022,6 @@ module.exports = __webpack_amd_options__;
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "__UNI__0FFA911" };exports.default = _default;
-
-/***/ }),
-
-/***/ 80:
-/*!*****************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/service.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // 管理账号信息
-var USERS_KEY = 'USERS_KEY';
-var STATE_KEY = 'STATE_KEY';
-
-var getUsers = function getUsers() {
-  var ret = '';
-  ret = uni.getStorageSync(USERS_KEY);
-  if (!ret) {
-    ret = '[]';
-  }
-  return JSON.parse(ret);
-};
-
-var addUser = function addUser(userInfo) {
-  var users = getUsers();
-  users.push({
-    account: userInfo.account,
-    password: userInfo.password });
-
-  uni.setStorageSync(USERS_KEY, JSON.stringify(users));
-};var _default =
-
-{
-  getUsers: getUsers,
-  addUser: addUser };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
 

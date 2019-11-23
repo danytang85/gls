@@ -19,7 +19,6 @@
 	};
 	export default {
 		onLaunch: function() {
-			
 		    uni.getSystemInfo({
 		        success: function(e) {
 		            // #ifndef MP
@@ -42,12 +41,7 @@
 		            // #endif
 		        }
 		    });
-			  uni.getStorage({//获得保存在本地的用户信息
-				 key: 'uerInfo',
-				 success:(res) => {
-					 this.login(res.data);
-				 }
-			 });
+			 
 		 
 		},
 		methods: {

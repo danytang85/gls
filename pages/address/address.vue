@@ -17,43 +17,54 @@
 			</view>
 			<text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
 		</view>
-		<text style="display:block;padding: 16upx 30upx 10upx;lihe-height: 1.6;color: #fa436a;font-size: 24upx;">
+		<!-- <text style="display:block;padding: 16upx 30upx 10upx;lihe-height: 1.6;color: #fa436a;font-size: 24upx;">
 			重要：添加和修改地址回调仅增加了一条数据做演示，实际开发中将回调改为请求后端接口刷新一下列表即可
-		</text>
+		</text> -->
 		
 		<button class="add-btn" @click="addAddress('add')">新增地址</button>
 	</view>
 </template>
 
 <script>
+	import http from '@/components/utils/http.js';
 	export default {
 		data() {
 			return {
 				source: 0,
 				addressList: [
-					{
-						name: '刘晓晓',
-						mobile: '18666666666',
-						addressName: '贵族皇仕牛排(东城店)',
-						address: '北京市东城区',
-						area: 'B区',
-						default: true
-					},{
-						name: '刘大大',
-						mobile: '18667766666',
-						addressName: '龙回1区12号楼',
-						address: '山东省济南市历城区',
-						area: '西单元302',
-						default: false,
-					}
+					
 				]
 			}
 		},
 		onLoad(option){
-			console.log(option.source);
+			//console.log(option.source);
 			this.source = option.source;
+			this.selectaddress();
 		},
 		methods: {
+			
+			//获得地址列表
+			
+			selectaddress(){
+				let opts = {
+					url: '/addressApi/selectaddress/',
+					method: 'post'
+				};
+				let param = {};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+						this.addressList=res.data['list'];
+						} else {
+							uni.showToast({ title: res.data.msg, icon: 'none' });
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+			},
 			//选择地址
 			checkAddress(item){
 				if(this.source == 1){
@@ -70,8 +81,8 @@
 			//添加或修改成功之后回调
 			refreshList(data, type){
 				//添加或修改后事件，这里直接在最前面添加了一条数据，实际应用中直接刷新地址列表即可
-				this.addressList.unshift(data);
-				
+				// this.addressList.unshift(data);
+				this.selectaddress();
 				console.log(data, type);
 			}
 		}

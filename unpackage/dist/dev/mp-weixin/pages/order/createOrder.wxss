@@ -145,6 +145,7 @@ page {
       color: #909399;
 }
 .goods-section .g-item .price-box {
+      position: relative;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -164,6 +165,10 @@ page {
         font-size: 26rpx;
         color: #606266;
         margin-left: 20rpx;
+}
+.goods-section .g-item .price-box .step {
+        left: inherit;
+        right: 0px;
 }
 .goods-section .g-item .step-box {
       position: relative;
@@ -273,12 +278,12 @@ page {
 .pay-list .icon-weixinzhifu {
     width: 80rpx;
     font-size: 40rpx;
-    color: #6BCC03;
+    color: #6bcc03;
 }
 .pay-list .icon-alipay {
     width: 80rpx;
     font-size: 40rpx;
-    color: #06B4FD;
+    color: #06b4fd;
 }
 .pay-list .icon-xuanzhong2 {
     display: -webkit-box;
@@ -379,9 +384,9 @@ page {
   width: 100%;
   background: transparent;
   z-index: 9995;
-  -webkit-transition: .3s;
-  -o-transition: .3s;
-  transition: .3s;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
 }
 .mask .mask-content {
     width: 100%;
@@ -391,9 +396,9 @@ page {
     -webkit-transform: translateY(100%);
         -ms-transform: translateY(100%);
             transform: translateY(100%);
-    -webkit-transition: .3s;
-    -o-transition: .3s;
-    transition: .3s;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
     overflow-y: scroll;
 }
 .mask.none {

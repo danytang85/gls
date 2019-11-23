@@ -1,11 +1,11 @@
 <template>
-	<view class="content">
+	<view class="container">
 		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">产品列表</block>
 		</cu-custom>
 		
-		<view class="navbar" :style="{position:headerPosition,top:headerTop}">
+		<view class="navbar" >
 			<view class="nav-item" :class="{current: filterIndex === 0}" @click="tabClick(0)">
 				综合排序
 			</view>
@@ -28,7 +28,7 @@
 				@click="navToDetailPage(item)"
 			>
 				<view class="image-wrapper">
-					<image :src="apiServer+item.images" mode="aspectFill"></image>
+					<image :src="server+item.images" mode="aspectFill"></image>
 				</view>
 				<text class="title clamp">{{item.title}}</text>
 				<view class="price-box">
@@ -68,6 +68,7 @@
 		},
 		data() {
 			return {
+				server:this.apiServer,
 				cateMaskState: 0, //分类面板展开状态
 				headerPosition:"fixed",
 				headerTop:"0px",
@@ -259,17 +260,12 @@
 </script>
 
 <style lang="scss">
-	page, .content{
-		background: $page-color-base;
-	}
-	.content{
-		padding-top: 96upx;
-	}
+	
 
 	.navbar{
-		position: fixed;
+		
 		left: 0;
-		top: var(--window-top);
+		
 		display: flex;
 		width: 100%;
 		height: 80upx;
@@ -399,7 +395,7 @@
 	.goods-list{
 		display:flex;
 		flex-wrap:wrap;
-		padding: 0 30upx;
+		padding: 40upx;
 		background: #fff;
 		.goods-item{
 			display:flex;

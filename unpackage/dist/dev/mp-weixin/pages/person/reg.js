@@ -147,7 +147,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _service = _interopRequireDefault(__webpack_require__(/*! ../../service.js */ 80));
 var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 42));
 var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
 //
@@ -191,7 +190,7 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
       var _that = this;
 
       if (_that.codeClick) {
-        if (_that.mobile[0] != 1 || _that.mobile.length != 11) {
+        if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)) {
           this.$api.msg('请输入正确的手机号');
         } else {
           _that.codeClick = false;
@@ -206,12 +205,19 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
       var _that = this;
       if (_that.mobile == '') {
         this.$api.msg('请输入手机号码');
+        return;
+      } else if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)) {
+        this.$api.msg('手机号码格式不正确');
+        return;
       } else if (_that.password == '') {
         this.$api.msg('请输入密码');
+        return;
       } else if (_that.repassword != _that.password) {
         this.$api.msg('两次密码输入不一致');
+        return;
       } else if (_that.code == '') {
         this.$api.msg('请输入验证码');
+        return;
       } else {
         var data = {
           mobile: _that.mobile,

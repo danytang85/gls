@@ -185,8 +185,7 @@ global.islogon = function () {
 
 };var _default =
 {
-  onLaunch: function onLaunch() {var _this = this;
-
+  onLaunch: function onLaunch() {
     uni.getSystemInfo({
       success: function success(e) {
 
@@ -209,11 +208,6 @@ global.islogon = function () {
 
       } });
 
-    uni.getStorage({ //获得保存在本地的用户信息
-      key: 'uerInfo',
-      success: function success(res) {
-        _this.login(res.data);
-      } });
 
 
   },

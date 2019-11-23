@@ -1,9 +1,10 @@
 <template>
-	<view class="content">
+	<view class="container">
 		<cu-custom bgColor="bg-gradual-orange" :isBack="false">
 			<block slot="backText">返回</block>
 			<block slot="content">{{ title }}</block>
 		</cu-custom>
+		
 		<view class="scrollcontent">
 			<scroll-view scroll-y class="left-aside">
 				<view v-for="item in flist" :key="item.id" class="f-item b-b" :class="{ active: item.id === currentId }" @click="tabtap(item)">{{ item.name }}</view>
@@ -13,13 +14,14 @@
 					<text class="s-item">{{ item.name }}</text>
 					<view class="t-list">
 						<view @click="navToList(item.id, titem.id)" v-if="titem.pid === item.id" class="t-item" v-for="titem in tlist" :key="titem.id">
-							<image :src="apiServer+titem.picture"></image>
+							<image  :src="server+titem.picture"></image>
 							<text>{{ titem.name }}</text>
 						</view>
 					</view>
 				</view>
 			</scroll-view>
 		</view>
+		
 		<footermenu PageCur="ptype"></footermenu>
 	</view>
 </template>
@@ -29,6 +31,7 @@ import http from '@/components/utils/http.js';
 export default {
 	data() {
 		return {
+			server:this.apiServer,
 			title: '产品分类',
 			sizeCalcState: false,
 			tabScrollTop: 0,
@@ -43,6 +46,7 @@ export default {
 	},
 	methods: {
 		loadData() {
+			
 			let opts = {
 				url: '/productApi/cateList/',
 				method: 'post'
@@ -132,17 +136,10 @@ export default {
 </script>
 
 <style lang="scss">
-page,
-.content {
-	height: 100%;
-	background-color: #f8f8f8;
-}
-.content {
-	display: flex;
-}
+
 .scrollcontent {
 	display: flex;
-	padding: 100upx 0px;
+	
 }
 .left-aside {
 	flex-shrink: 0;
@@ -193,9 +190,10 @@ page,
 .t-list {
 	display: flex;
 	flex-wrap: wrap;
-	width: 100%;
+	width: 50%;
 	background: #fff;
 	padding-top: 12upx;
+	text-align: center;
 	&:after {
 		content: '';
 		flex: 99;
@@ -208,14 +206,14 @@ page,
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	width: 496upx;
+	width: 100%;
 	font-size: 26upx;
 	color: #666;
-	padding-bottom: 20upx;
-
+	padding: 20upx;
 	image {
-		width: 400upx;
-		height: 400upx;
+		margin: 0 auto;
+		width: 200upx;
+		height: 200upx;
 	}
 }
 </style>

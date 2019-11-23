@@ -249,149 +249,149 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 42));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniNumberBox = function uniNumberBox() {return __webpack_require__.e(/*! import() | components/uni-number-box */ "components/uni-number-box").then(__webpack_require__.bind(null, /*! @/components/uni-number-box.vue */ 199));};var _default =
+{
+  components: {
+    uniNumberBox: uniNumberBox },
 
-
-
-
-
-var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 42));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { data: function data() {return { maskState: 0, //优惠券面板显示状态
+  data: function data() {
+    return {
+      server: this.apiServer,
+      psid: 0,
+      maskState: 0, //优惠券面板显示状态
       desc: '', //备注
       payType: 1, //1微信 2支付宝
-      cartList: [], goodprice: 0, couponList: [{ title: '新用户专享优惠券', price: 5 }, { title: '庆五一发一波优惠券', price: 10 }, { title: '优惠券优惠券优惠券优惠券', price: 15 }], addressData: { name: '许小星', mobile: '13853989563', addressName: '金九大道', address: '山东省济南市历城区', area: '149号', default: false } };}, onLoad: function onLoad(option) {var _this = this; //商品数据
-    if (option.data == undefined) {this.$api.msg("传输数据有误");uni.navigateTo({ url: "/pages/cart/home" });}var listdata = JSON.parse(option.data);var opts = { url: '/productApi/getcartlist/', method: 'post' };var param = listdata;_http.default.httpTokenRequest(opts, param).then(function (res) {//打印请求返回的数据
-      if (res.data['code'] == 0) {var list = res.data["cartList"];var cartList = list.map(function (item) {item.images = _this.apiServer + item.images;_this.goodprice = _this.goodprice + item.price * item.number;return item;});_this.cartList = cartList;} else {uni.showToast({ title: res.data.msg, icon: 'none' });}}, function (error) {console.log(error);});}, methods: { //显示优惠券面板
-    toggleMask: function toggleMask(type) {var _this2 = this;var timer = type === 'show' ? 10 : 300;var state = type === 'show' ? 1 : 0;this.maskState = 2;setTimeout(function () {_this2.maskState = state;}, timer);}, numberChange: function numberChange(data) {this.number = data.number;}, changePayType: function changePayType(type) {this.payType = type;}, submit: function submit() {uni.redirectTo({ url: '/pages/money/pay' });}, stopPrevent: function stopPrevent() {} } };exports.default = _default;
+      cartList: [],
+      shipnum: 0.00,
+      total: 0, //总价格
+      addressData: {} };
+
+
+
+  },
+  onLoad: function onLoad(option) {var _this = this;
+
+    //加载默认地址
+    var opts = {
+      url: '/addressApi/getdefaultaddress/',
+      method: 'post' };
+
+    var param = {};
+    _http.default.httpTokenRequest(opts, param).then(
+    function (res) {
+      //打印请求返回的数据
+      if (res.data['code'] == 0) {
+        _this.addressData = res.data['defaultaddress'];
+      } else {
+        uni.showToast({ title: res.data.msg, icon: 'none' });
+      }
+    },
+    function (error) {
+      console.log(error);
+    });
+
+
+
+    //商品数据
+    if (option.psid != undefined) {
+      this.psid = option.psid;
+      var _opts = {
+        url: '/productApi/createorderbypsid/',
+        method: 'post' };
+
+
+      var _param = { psid: option.psid };
+      _http.default.httpTokenRequest(_opts, _param).then(
+      function (res) {
+        //打印请求返回的数据
+        if (res.data['code'] == 0) {
+          var list = res.data['cartList'];
+
+          var cartList = list.map(function (item) {
+            return item;
+          });
+          _this.cartList = cartList;
+          _this.calcTotal();
+        } else {
+          uni.showToast({ title: res.data.msg, icon: 'none' });
+        }
+      },
+      function (error) {
+        console.log(error);
+      });
+
+
+    }
+
+    if (option.data != undefined) {
+      var listdata = JSON.parse(option.data);
+      var _opts2 = {
+        url: '/productApi/getcartlist/',
+        method: 'post' };
+
+
+      var _param2 = listdata;
+      _http.default.httpTokenRequest(_opts2, _param2).then(
+      function (res) {
+        //打印请求返回的数据
+        if (res.data['code'] == 0) {
+          var list = res.data['cartList'];
+
+          var cartList = list.map(function (item) {
+            return item;
+          });
+          _this.cartList = cartList;
+          _this.calcTotal();
+        } else {
+          uni.showToast({ title: res.data.msg, icon: 'none' });
+        }
+      },
+      function (error) {
+        console.log(error);
+      });
+
+    }
+  },
+  methods: {
+    //显示优惠券面板
+    toggleMask: function toggleMask(type) {var _this2 = this;
+      var timer = type === 'show' ? 10 : 300;
+      var state = type === 'show' ? 1 : 0;
+      this.maskState = 2;
+      setTimeout(function () {
+        _this2.maskState = state;
+      }, timer);
+    },
+    numberChange: function numberChange(data) {
+      // this.number = data.number;
+      this.cartList[data.index].number = data.number;
+      this.calcTotal();
+    },
+    changePayType: function changePayType(type) {
+      this.payType = type;
+    },
+    submit: function submit() {
+      uni.redirectTo({
+        url: '/pages/money/pay' });
+
+    },
+    //计算总价
+    calcTotal: function calcTotal() {
+      var list = this.cartList;
+
+      if (list.length === 0) {
+        this.empty = true;
+        return;
+      }
+      var total = 0;
+      list.forEach(function (item) {
+        total += item.price * item.number;
+      });
+
+      this.total = Number(total.toFixed(2));
+
+    },
+    stopPrevent: function stopPrevent() {} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

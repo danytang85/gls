@@ -6,7 +6,6 @@
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
 .container {
-  padding-bottom: 134rpx;
   /* 空白页 */
 }
 .container .empty {
@@ -129,7 +128,7 @@
 .action-section {
   position: fixed;
   left: 30rpx;
-  bottom: 30rpx;
+  bottom: 120rpx;
   z-index: 95;
   display: -webkit-box;
   display: -webkit-flex;
@@ -198,7 +197,6 @@
 }
 .action-section .total-box .price {
       font-size: 32rpx;
-      color: #303133;
 }
 .action-section .total-box .coupon {
       font-size: 24rpx;

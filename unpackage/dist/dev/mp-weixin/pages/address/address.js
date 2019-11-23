@@ -122,62 +122,73 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      source: 0,
-      addressList: [
-      {
-        name: '刘晓晓',
-        mobile: '18666666666',
-        addressName: '贵族皇仕牛排(东城店)',
-        address: '北京市东城区',
-        area: 'B区',
-        default: true },
-      {
-        name: '刘大大',
-        mobile: '18667766666',
-        addressName: '龙回1区12号楼',
-        address: '山东省济南市历城区',
-        area: '西单元302',
-        default: false }] };
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
-  },
-  onLoad: function onLoad(option) {
-    console.log(option.source);
-    this.source = option.source;
-  },
-  methods: {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 42));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { source: 0, addressList: [] };}, onLoad: function onLoad(option) {//console.log(option.source);
+    this.source = option.source;this.selectaddress();}, methods: { //获得地址列表
+    selectaddress: function selectaddress() {var _this = this;var opts = { url: '/addressApi/selectaddress/', method: 'post' };var param = {};_http.default.httpTokenRequest(opts, param).then(function (res) {//打印请求返回的数据
+        if (res.data['code'] == 0) {_this.addressList = res.data['list'];} else {
+          uni.showToast({ title: res.data.msg, icon: 'none' });
+        }
+      },
+      function (error) {
+        console.log(error);
+      });
+
+    },
     //选择地址
     checkAddress: function checkAddress(item) {
       if (this.source == 1) {
@@ -194,8 +205,8 @@ var _default =
     //添加或修改成功之后回调
     refreshList: function refreshList(data, type) {
       //添加或修改后事件，这里直接在最前面添加了一条数据，实际应用中直接刷新地址列表即可
-      this.addressList.unshift(data);
-
+      // this.addressList.unshift(data);
+      this.selectaddress();
       console.log(data, type);
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

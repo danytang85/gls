@@ -54,16 +54,16 @@
 			<!-- 底部菜单栏 -->
 			<view class="action-section">
 				<view class="checkbox">
+					
+					
 					<image :src="allChecked ? '/static/selected.png' : '/static/select.png'" mode="aspectFit" @click="check('all')"></image>
 					<view class="clear-btn" :class="{ show: allChecked }" @click="clearCart">清空</view>
 				</view>
 				<view class="total-box">
-					<text class="price">¥{{ total }}</text>
-					<text class="coupon">
-						已优惠
-						<text>74.35</text>
-						元
-					</text>
+					<text class="price text-orange">共¥{{ total }}元</text>
+					<!-- <text class="coupon">
+					
+					</text> -->
 				</view>
 				<button type="primary" class="no-border confirm-btn" @click="createOrder">去结算</button>
 			</view>
@@ -302,7 +302,7 @@ export default {
 
 <style lang="scss">
 .container {
-	padding-bottom: 134upx;
+	
 	/* 空白页 */
 	.empty {
 		position: fixed;
@@ -393,11 +393,11 @@ export default {
 /* 底部栏 */
 .action-section {
 	/* #ifdef H5 */
-	margin-bottom: 100upx;
+	margin-bottom: 20upx;
 	/* #endif */
 	position: fixed;
 	left: 30upx;
-	bottom: 30upx;
+	bottom: 120upx;
 	z-index: 95;
 	display: flex;
 	align-items: center;
@@ -445,7 +445,6 @@ export default {
 		padding-right: 40upx;
 		.price {
 			font-size: $font-lg;
-			color: $font-color-dark;
 		}
 		.coupon {
 			font-size: $font-sm;

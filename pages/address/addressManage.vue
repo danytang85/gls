@@ -2,7 +2,7 @@
 	<view class="content">
 		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">新增地址</block>
+			<block slot="content">{{title}}</block>
 		</cu-custom>
 		<view class="row b-b">
 			<text class="tit">联系人</text>
@@ -15,7 +15,7 @@
 		<view class="row b-b">
 			<text class="tit">地址</text>
 			<text @click="chooseLocation" class="input">
-				{{addressData.addressName}}
+				{{addressData.addressname}}
 			</text>
 			<text class="yticon icon-shouhuodizhi"></text>
 		</view>
@@ -26,23 +26,27 @@
 		
 		<view class="row default-row">
 			<text class="tit">设为默认</text>
-			<switch :checked="addressData.defaule" color="#fa436a" @change="switchChange" />
+			<switch :checked="addressData.default==1?true:false" color="#fa436a" @change="switchChange" />
 		</view>
 		<button class="add-btn" @click="confirm">提交</button>
 	</view>
 </template>
 
 <script>
+	import http from '@/components/utils/http.js';
 	export default {
 		data() {
 			return {
+				title:"",
+				manageType:"add",
 				addressData: {
 					name: '',
 					mobile: '',
-					addressName: '在地图选择',
+					addressname: '在地图选择',
 					address: '',
+					dname: '',
 					area: '',
-					default: false
+					default: 0
 				}
 			}
 		},
@@ -54,23 +58,56 @@
 				this.addressData = JSON.parse(option.data)
 			}
 			this.manageType = option.type;
-			uni.setNavigationBarTitle({
-				title
-			})
+			this.title=title;
+			// uni.setNavigationBarTitle({
+			// 	title
+			// })
 		},
 		methods: {
 			switchChange(e){
-				this.addressData.default = e.detail;
+				if(e.detail.value){
+					this.addressData.default=1;
+				}else{
+					this.addressData.default=0;
+				}
 			},
 			
 			//地图选择地址
 			chooseLocation(){
 				uni.chooseLocation({
 					success: (data)=> {
-						this.addressData.addressName = data.name;
-						this.addressData.address = data.name;
+						console.log(data);
+						this.addressData.addressname = data.name;
+						this.addressData.address = data.address;
 					}
 				})
+			},
+			
+			submitdata(data){
+				
+				let opts = {
+					url: '/addressApi/save/',
+					method: 'post'
+				};
+				let param =data;
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							this.$api.prePage().refreshList(data, this.manageType);
+							this.$api.msg(`地址${this.manageType=='edit' ? '修改': '添加'}成功`);
+							setTimeout(()=>{
+								uni.navigateBack()
+							}, 800)
+							
+						} else {
+							uni.showToast({ title: res.data.msg, icon: 'none' });
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
 			},
 			
 			//提交
@@ -93,12 +130,10 @@
 					return;
 				}
 				
+				this.submitdata(data);
+				
 				//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
-				this.$api.prePage().refreshList(data, this.manageType);
-				this.$api.msg(`地址${this.manageType=='edit' ? '修改': '添加'}成功`);
-				setTimeout(()=>{
-					uni.navigateBack()
-				}, 800)
+				
 			},
 		}
 	}
