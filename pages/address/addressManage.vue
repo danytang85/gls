@@ -113,6 +113,7 @@
 			//提交
 			confirm(){
 				let data = this.addressData;
+				console.log(data);
 				if(!data.name){
 					this.$api.msg('请填写收货人姓名');
 					return;

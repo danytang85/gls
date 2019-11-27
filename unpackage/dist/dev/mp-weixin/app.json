@@ -1,12 +1,12 @@
 {
   "pages": [
+    "pages/index/index",
+    "pages/person/logon",
     "pages/index/home",
     "pages/ptype/home",
-    "pages/index/index",
     "pages/cart/home",
     "pages/person/home",
     "pages/common/footermenu",
-    "pages/person/logon",
     "pages/person/reg",
     "pages/order/createOrder",
     "pages/order/order",
@@ -19,7 +19,8 @@
     "pages/product/product",
     "pages/notice/notice",
     "pages/detail/detail",
-    "pages/userinfo/userinfo"
+    "pages/userinfo/userinfo",
+    "pages/order/dispOrder"
   ],
   "subPackages": [],
   "window": {
@@ -29,6 +30,7 @@
     "backgroundColor": "#F8F8F8",
     "navigationStyle": "custom"
   },
+  "permission": {},
   "usingComponents": {
     "footermenu": "/pages/common/footermenu",
     "cu-custom": "/components/colorui/cu-custom"

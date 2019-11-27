@@ -214,11 +214,6 @@ const shareList = [{
 		type: 3,
 		icon: '/static/temp/share_qq.png',
 		text: 'QQ好友'
-	},
-	{
-		type: 4,
-		icon: '/static/temp/share_qqzone.png',
-		text: 'QQ空间'
 	}
 ]
 const lazyLoadList = [{

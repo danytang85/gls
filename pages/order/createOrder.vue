@@ -11,10 +11,10 @@
 				<view class="cen">
 					<view class="top">
 						<text  v-if="addressData==''" class=" name text-orange">收件地址管理</text>
-						<text class="name">{{ addressData.name }}</text>
-						<text class="mobile">{{ addressData.mobile }}</text>
+						<text v-if="addressData!=''"  class="name">{{ addressData.name }}</text>
+						<text  v-if="addressData!=''" class="mobile">{{ addressData.mobile }}</text>
 					</view>
-					<text class="address">{{ addressData.address }} {{ addressData.area }}</text>
+					<text v-if="addressData!=''" class="address">{{ addressData.address }} {{ addressData.area }}</text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -37,10 +37,9 @@
 						<text class="title clamp">{{ item.title }}</text>
 						<text class="spec">{{ item.attr_val }}</text>
 						<view class="price-box">
-							<text class="price">￥{{ item.price }}</text>
-							<text class="number" v-if="psid == 0">x{{ item.number }}</text>
-							<text class="number" v-if="psid > 0">
-								<uni-number-box
+							<view class="price">￥{{ item.price }}</view>
+							<view class="number" v-if="psid == 0">x{{ item.number }}</view>
+								<uni-number-box v-if="psid >0 "
 									class="step"
 									:min="1"
 									:max="item.stock"
@@ -50,7 +49,6 @@
 									:index="index"
 									@eventChange="numberChange"
 								></uni-number-box>
-							</text>
 						</view>
 					</view>
 				</view>
@@ -101,7 +99,7 @@
 			</view> -->
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">运费</text>
-				<text class="cell-tip">{{shipnum}}</text>
+				<text class="cell-tip">￥{{freight}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell">
 				<text class="cell-tit clamp">备注</text>
@@ -114,7 +112,7 @@
 			<view class="price-content">
 				<text>实付款</text>
 				<text class="price-tip">￥</text>
-				<text class="price">{{ total+shipnum }}</text>
+				<text class="price">{{ total+freight }}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -138,7 +136,7 @@ export default {
 			desc: '', //备注
 			payType: 1, //1微信 2支付宝
 			cartList: [],
-			shipnum:0.00,
+			freight:0.00,
 			total: 0, //总价格
 			addressData: {
 				
@@ -247,9 +245,47 @@ export default {
 			this.payType = type;
 		},
 		submit() {
-			uni.redirectTo({
-				url: '/pages/money/pay'
+			if(this.cartList.length==0){
+				this.$api.msg("产品为空，无法提交");return;
+			}
+			if(this.addressData==""){
+				this.$api.msg("请提交收货地址");return;
+			}
+			
+			uni.showLoading({
+			    title: '创建订单中'
 			});
+			
+			
+			let cartliststr = JSON.stringify(this.cartList);
+			let opts = {
+				url: '/orderApi/createorder/',
+				method: 'post'
+			};
+			
+			let param = {remark:this.desc,cartliststr:cartliststr,addressData:JSON.stringify(this.addressData),total_fee:this.total,freight_fee:this.freight};
+			http.httpTokenRequest(opts, param).then(
+				res => {
+					//打印请求返回的数据
+					if (res.data['code'] == 0) {
+						uni.redirectTo({
+							url: '/pages/money/pay?oid='+res.data["oid"]
+						});
+					} else {
+						setTimeout(function () {
+						    uni.hideLoading();
+						}, 2000);
+						uni.showToast({ title: res.data.msg, icon: 'none' });
+					}
+				},
+				error => {
+					console.log(error);
+				}
+			);
+			
+			
+			
+			
 		},
 		//计算总价
 		calcTotal() {
@@ -388,7 +424,6 @@ page {
 		}
 
 		.price-box {
-			position: relative;
 			display: flex;
 			align-items: center;
 			font-size: 32upx;
@@ -403,15 +438,15 @@ page {
 				color: $font-color-base;
 				margin-left: 20upx;
 			}
+			.uni-numbox{
+				position:relative;	
+			}
 			.step {
-				left: inherit;
-				right: 0px;
+				
 			}
 		}
 
-		.step-box {
-			position: relative;
-		}
+		
 	}
 }
 .yt-list {

@@ -1,13 +1,11 @@
 <template>
 	<view class="content">
-		<button @click="open()">开始</button>
 		<loading 
 			ref="loading"
 			:custom="false"
 			:shadeClick="true"
 			:type="1"
 			@callback="callback()">
-			<!-- <view class="test">自定义</view> -->
 		</loading>
 	</view>
 </template>
@@ -22,11 +20,19 @@
 			return {
 			}
 		},
-		mounted() {
-			this.open();
-			setTimeout(()=>{
-				this.close();
-			},2000)
+		
+		
+		onLoad(){
+			if (global.islogon() == false) {
+				uni.redirectTo({
+					url: '../person/logon'
+				});
+			}else{
+				uni.redirectTo({
+					url: '../index/home'
+				});
+			}
+			
 		},
 		methods: {
 			close:function(){

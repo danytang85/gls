@@ -20,15 +20,28 @@
 		</view>
 		<view class="btn-row"><button class="bg-orange" @click="loginUp">登录</button></view>
 		<view class="action-row"><navigator class="text-black" url="../person/reg">注册账号</navigator></view>
-	
+
+		<view class="cu-modal bottom-modal show" v-if="bindmobile">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-orange">绑定当前手机号登录</view>
+					<view class="action text-blue" @tap="hideModal">取消</view>
+				</view>
+				<view class="padding-xl"><button class="cu-btn bg-orange lg" open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">绑定当前手号码登录</button></view>
+			</view>
+		</view>
+		<!-- #ifdef MP-WEIXIN -->
 		<!-- 其他登录方式 -->
 		<view class="otherLoginTitle">————————其他登录方式————————</view>
 		<view class="otherLogin">
-			<view class="weiixnLogin" @click="weixinlogin">
+			<button class="bottom" type="primary" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="weixinlogin">微信授权登录</button>
+
+			<!-- <view class="weiixnLogin" @click="weixinlogin">
 				<image src="../../static/weixin.png" mode=""></image>
-			</view>
-			
+			</view> -->
 		</view>
+
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -49,13 +62,27 @@ export default {
 			codeClick: true,
 			mobile: '',
 			password: '',
-			code: ''
+			code: '',
+
+			SessionKey: '',
+			OpenId: '',
+			nickName: null,
+			avatarUrl: null,
+			isCanUse: uni.getStorageSync('isCanUse') || true, //默认为true
+			bindmobile: false,
+			Code:"",
+			userinfo:[]
 		};
 	},
-	computed: mapState(['uerInfo','hasLogin']),
+	computed: mapState(['uerInfo', 'hasLogin']),
 	methods: {
 		...mapMutations(['login']),
-
+		showModal() {
+			this.bindmobile = true;
+		},
+		hideModal(e) {
+			this.bindmobile = false;
+		},
 		loginCode() {
 			this.loginMode = 2;
 		},
@@ -96,10 +123,10 @@ export default {
 			if (_that.mobile == '') {
 				this.$api.msg('请输入手机号码');
 				return;
-			}else if(!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)){
+			} else if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)) {
 				this.$api.msg('手机号码格式不正确');
 				return;
-			}  else if (_that.password == '' && _that.loginMode == 1) {
+			} else if (_that.password == '' && _that.loginMode == 1) {
 				this.$api.msg('请输入密码');
 				return;
 			} else if (_that.code == '' && _that.loginMode == 2) {
@@ -177,36 +204,184 @@ export default {
 				}
 			);
 		},
-		weixinlogin(){
-			uni.login({
-			  provider: 'weixin',
-			  success: function (loginRes) {
-			    console.log(loginRes.authResult);
-			    // 获取用户信息
-			    uni.getUserInfo({
-			      provider: 'weixin',
-			      success: function (infoRes) {
-					console.log(infoRes)
-			        console.log('用户昵称为：' + infoRes.userInfo.nickName);
-			      }
-			    });
-			  }
-			});
+
+		//  wxGetUserInfo() {
+		// 	let _this = this;
+		// 	uni.getUserInfo({
+		// 		provider: 'weixin',
+		// 		success: function(infoRes) {
+		// 			console.log("infoRes",infoRes);
+		// 			let nickName = infoRes.userInfo.nickName; //昵称
+		// 			let avatarUrl = infoRes.userInfo.avatarUrl; //头像
+		// 			try {
+		// 				uni.setStorageSync('isCanUse', false);//记录是否第一次授权  false:表示不是第一次授权
+		// 			} catch (e) {}
+		// 		},
+		// 		fail(res) {}
+		// 	});
+		// },
+		getPhoneNumberHander: function(e) {
+			
+			console.log("e",e);
+			
+			var that = this; // 拒绝授权
+
+			if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+				wx.showModal({
+					title: '提示',
+					showCancel: false,
+					content: '未授权您将无法登陆',
+					success: function(res) {}
+				});
+			} else {
+				// 接受授权
+				let opts = {
+					url: '/CommonApi/getphone/',
+					method: 'post'
+				};
+				let param = {
+					encryptedData: e.detail.encryptedData,
+					iv: e.detail.iv,
+					//openid: this.OpenId,
+					session_key: this.SessionKey,
+				};
+				http.httpRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							//获得手机号码注册
+							
+							that.weixinreg(res.data['phone']);
+							console.log(res.data);
+						} else {
+							this.$api.msg(res.data.msg);
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+			}
 		},
-		
+		weixinreg(mobile){
+			var _that = this;
+			let opts = {
+				url: '/UserApi/wxreg/',
+				method: 'post'
+			};
+			let param = {
+				mobile:mobile ,
+				wxopenid:this.OpenId,
+				nickname: this.userinfo["nickName"],
+				province: this.userinfo["province"],
+				headimg: this.userinfo["avatarUrl"],
+				city: this.userinfo["city"],
+				country: this.userinfo["country"],
+				gender: this.userinfo["gender"],
+				
+			};
+			http.httpRequest(opts, param).then(
+				res => {
+					//打印请求返回的数据
+					if (res.data['code'] == 0) {
+						//获得手机号码注册
+						if(res.data['token']!=""){
+							//已经存在用户 ，登录
+							_that.login(res.data['token']);
+							uni.navigateTo({
+								url: _that.backpage
+							});
+						}
+					} else {
+						this.$api.msg(res.data.msg);
+					}
+				},
+				error => {
+					console.log(error);
+				}
+			);
+			
+			
+		},
+		weixinlogin() {
+			let _this = this;
+			uni.showLoading({ title: '登录中...' });
+			uni.getProvider({
+				service: 'oauth',
+				success: function(res) {
+					if (~res.provider.indexOf('weixin')) {
+						uni.login({
+							provider: 'weixin',
+							success: function(loginRes) {
+								let code = loginRes.code;
+								//this.code=code;
+								 console.log(loginRes);
+								// 获取用户信息
+								uni.getUserInfo({
+									provider: 'weixin',
+									success: function(infoRes) {
+										//获取用户信息后向调用信息更新方法
+										console.log(infoRes.userInfo);
+										let userinfo = infoRes.userInfo;
+										_this.userinfo=userinfo;
+									}
+								});
+								//2.将用户登录code传递到后台置换用户SessionKey、OpenId等信息
+								let opts = {
+									url: '/CommonApi/getwxopenid/',
+									method: 'post'
+								};
+								let param = { code: code };
+								_this.Code=code;
+								http.httpRequest(opts, param).then(
+									res => {
+										//打印请求返回的数据
+										if (res.data['code'] == 0) {
+											if(res.data['token']!=""){
+												//已经存在用户 ，登录
+												_this.login(res.data['token']);
+												uni.navigateTo({
+													url: _this.backpage
+												});
+											}else{
+												let sessionkey = res.data['data'].session_key;
+												let openid = res.data['data'].openid;
+												uni.setStorage({//将用户信息保存在本地
+												    key: 'openid',
+												    data: openid
+												});
+												_this.OpenId=openid;
+												_this.SessionKey=sessionkey;
+												_this.showModal();
+											}
+											
+											uni.hideLoading();
+										} else {
+											this.$api.msg(res.data.msg);
+										}
+									},
+									error => {
+										console.log(error);
+									}
+								);
+							}
+						});
+					}
+				}
+			});
+		}
 	},
-	
-	
+
 	onLoad(options) {
 		if (global.islogon()) {
 			uni.redirectTo({
-				url: '../person/home',
+				url: '../person/home'
 			});
 		}
 		if (options.backpage) {
 			this.backpage = options.backpage;
 		}
-		
 	}
 };
 </script>

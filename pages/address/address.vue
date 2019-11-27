@@ -8,7 +8,7 @@
 			<view class="wrapper">
 				<view class="address-box">
 					<text v-if="item.default" class="tag">默认</text>
-					<text class="address">{{item.addressName}} {{item.area}}</text>
+					<text class="address">{{item.addressname}} {{item.area}}</text>
 				</view>
 				<view class="u-box">
 					<text class="name">{{item.name}}</text>

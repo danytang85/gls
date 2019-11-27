@@ -65,13 +65,9 @@ export default {
 			goodsList: []
 		};
 	},
-
+	
 	onLoad() {
-		// if (global.islogon() == false) {
-		// 	uni.navigateTo({
-		// 		url: '../person/logon'
-		// 	});
-		// }
+		
 		this.loadData();
 	},
 

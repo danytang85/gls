@@ -42,6 +42,12 @@ export default {
 		};
 	},
 	onLoad() {
+		
+		if (global.islogon() == false) {
+			uni.navigateTo({
+				url: '../person/logon'
+			});
+		}
 		this.loadData();
 	},
 	methods: {

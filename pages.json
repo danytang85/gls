@@ -1,16 +1,31 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		
 		{
+		    "path" : "pages/index/index",
+		    "style": {
+				
+		    	"navigationBarTitleText": "引导页",
+				"app-plus": {  
+				                    "titleNView": false //打包app 要加上这个 禁用原生导航栏  
+				                }  
+		    }
+		},{
+		    "path" : "pages/person/logon",
+		    "style": {
+		    	"navigationBarTitleText": "登录页"
+		    }
+		},{
 			"path": "pages/index/home",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"app-plus": {  
+				                    "titleNView": false //打包app 要加上这个 禁用原生导航栏  
+				                }  
 			}
-		}
-	    ,{
+		},
+	    {
             "path" : "pages/ptype/home",
-            "style" : {}
-        } ,{
-            "path" : "pages/index/index",
             "style" : {}
         },{
             "path" : "pages/cart/home",
@@ -20,9 +35,6 @@
             "style" : {}
         },{
             "path" : "pages/common/footermenu",
-            "style" : {}
-        },{
-            "path" : "pages/person/logon",
             "style" : {}
         },{
             "path" : "pages/person/reg",
@@ -62,6 +74,9 @@
 		    "style" : {}
 		},{
 		    "path" : "pages/userinfo/userinfo",
+		    "style" : {}
+		},{
+		    "path" : "pages/order/dispOrder",
 		    "style" : {}
 		}
         

@@ -82,6 +82,8 @@
 		},
 		
 		onLoad(options){
+			
+			 
 			// #ifdef H5
 			this.headerTop ='50px';
 			// #endif

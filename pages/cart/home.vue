@@ -9,7 +9,7 @@
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>
 			<view v-if="token !== null" class="empty-tips">
 				空空如也
-				<navigator class="navigator" v-if="token!== null" url="../index/index" open-type="switchTab">随便逛逛></navigator>
+				<navigator class="navigator" v-if="token!== null" url="../ptype/home" open-type="redirect">随便逛逛></navigator>
 			</view>
 			<view v-else class="empty-tips">
 				空空如也
@@ -92,6 +92,12 @@ export default {
 		};
 	},
 	onLoad() {
+		
+		if (global.islogon() == false) {
+			uni.navigateTo({
+				url: '../person/logon'
+			});
+		}
 		this.loadData();
 		
 	},

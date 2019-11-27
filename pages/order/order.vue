@@ -28,7 +28,7 @@
 					<!-- 订单列表 -->
 					<view 
 						v-for="(item,index) in tabItem.orderList" :key="index"
-						class="order-item"
+						class="order-item" 
 					>
 						<view class="i-top b-b">
 							<text class="time">{{item.time}}</text>
@@ -36,24 +36,24 @@
 							<text 
 								v-if="item.state===9" 
 								class="del-btn yticon icon-iconfontshanchu1"
-								@click="deleteOrder(index)"
+								@click="deleteOrder(item.id,index)"
 							></text>
 						</view>
 						
 						<scroll-view v-if="item.goodsList.length > 1" class="goods-box" scroll-x>
 							<view
 								v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
-								class="goods-item"
+								class="goods-item" @click="disporder(item)"
 							>
-								<image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
+								<image class="goods-img" :src="serverapi+goodsItem.image" mode="aspectFill"></image>
 							</view>
 						</scroll-view>
 						<view 
 							v-if="item.goodsList.length === 1" 
-							class="goods-box-single"
+							class="goods-box-single"  @click="disporder(item)" 
 							v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
 						>
-							<image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
+							<image class="goods-img" :src="serverapi+goodsItem.image" mode="aspectFill"></image>
 							<view class="right">
 								<text class="title clamp">{{goodsItem.title}}</text>
 								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.number}}</text>
@@ -63,13 +63,15 @@
 						
 						<view class="price-box">
 							共
-							<text class="num">7</text>
+							<text class="num">{{item.allnum}}</text>
 							件商品 实付款
-							<text class="price">143.7</text>
+							<text class="price">{{item.total_fee}}</text>
 						</view>
-						<view class="action-box b-t" v-if="item.state != 9">
-							<button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-							<button class="action-btn recom">立即支付</button>
+						<view class="action-box b-t">
+							<button class="action-btn" v-if="item.state == 1" @click="cancelOrder(item)">取消订单</button>
+							<button class="action-btn recom" @click="payOrder(item)" v-if="item.state == 1" >立即支付</button>
+							<button class="action-btn recom" v-if="item.state == 2" >查看物流</button>
+							<button class="action-btn recom" v-if="item.state == 3" >再次购买</button>
 						</view>
 					</view>
 					 
@@ -86,6 +88,7 @@
 
 <script>
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+	import http from '@/components/utils/http.js';
 	import empty from "@/components/empty";
 	import Json from '@/Json';
 	export default {
@@ -96,6 +99,10 @@
 		data() {
 			return {
 				tabCurrentIndex: 0,
+				navItem:[],
+				serverapi:this.apiServer,
+				statepage:[0,0,0,0],
+				page:1,
 				navList: [{
 						state: 0,
 						text: '全部',
@@ -116,16 +123,11 @@
 					},
 					{
 						state: 3,
-						text: '待评价',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 4,
-						text: '售后',
+						text: '完成',
 						loadingType: 'more',
 						orderList: []
 					}
+					
 				],
 			};
 		},
@@ -159,34 +161,74 @@
 					//tab切换只有第一次需要加载数据
 					return;
 				}
+				if(navItem.loadingType === 'noMore'){
+					//已经加载完成，无需要重新加载
+					return;
+				}
 				if(navItem.loadingType === 'loading'){
 					//防止重复加载
 					return;
 				}
 				
 				navItem.loadingType = 'loading';
+				//this.navItem=navItem;
+				let page=this.statepage[index]+1;
+				this.statepage[index]=page;
 				
-				setTimeout(()=>{
-					let orderList = Json.orderList.filter(item=>{
-						//添加不同状态下订单的表现形式
-						item = Object.assign(item, this.orderStateExp(item.state));
-						//演示数据所以自己进行状态筛选
-						if(state === 0){
-							//0为全部订单
-							return item;
-						}
-						return item.state === state
-					});
-					orderList.forEach(item=>{
-						navItem.orderList.push(item);
-					})
-					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-					this.$set(navItem, 'loaded', true);
+				this.getorderdata(index,navItem,page);
 					
-					//判断是否还有数据， 有改为 more， 没有改为noMore 
-					navItem.loadingType = 'more';
-				}, 600);	
 			}, 
+			getorderdata(state,navItem,page){
+				
+				let opts = {
+					url: '/orderapi/getorderlist/',
+					method: 'post'
+				};
+				
+				let param = {state:state,page:page};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							let serverdata=res.data['list'] ;
+							console.log(serverdata);
+							setTimeout(()=>{
+								let orderList = serverdata.filter(item=>{
+									//添加不同状态下订单的表现形式
+									item = Object.assign(item, this.orderStateExp(item.state));
+									//演示数据所以自己进行状态筛选
+									if(state === 0){
+										//0为全部订单
+										return item;
+									}
+									return item.state === state
+								});
+								orderList.forEach(item=>{
+									navItem.orderList.push(item);
+								})
+								console.log("serverdata.length=",serverdata.length);
+								this.$set(navItem, 'loaded', true);
+								//判断是否还有数据， 有改为 more， 没有改为noMore 
+								if(serverdata.length==0){
+									navItem.loadingType = 'noMore';
+									
+								}else{
+									//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+									navItem.loadingType = 'more';
+								}
+							}, 600);
+							
+						} else {
+							uni.showToast({ title: res.data.msg, icon: 'none' });
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+				
+			},
 
 			//swiper 切换
 			changeTab(e){
@@ -198,35 +240,83 @@
 				this.tabCurrentIndex = index;
 			},
 			//删除订单
-			deleteOrder(index){
+			deleteOrder(id,index){
+				let _that=this;
 				uni.showLoading({
 					title: '请稍后'
 				})
-				setTimeout(()=>{
-					this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
-					uni.hideLoading();
-				}, 600)
+				
+				
+				let opts = {
+					url: '/orderApi/deleteOrder/',
+					method: 'post'
+				};
+				let param = {id:id};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							setTimeout(()=>{
+								_that.navList[_that.tabCurrentIndex].orderList.splice(index, 1);
+								uni.hideLoading();
+							}, 600)
+							
+						} else {
+							uni.showToast({ title: res.data.msg, icon: 'none' });
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+				
+				
 			},
 			//取消订单
 			cancelOrder(item){
+				
+				let _that=this;
 				uni.showLoading({
 					title: '请稍后'
 				})
-				setTimeout(()=>{
-					let {stateTip, stateTipColor} = this.orderStateExp(9);
-					item = Object.assign(item, {
-						state: 9,
-						stateTip, 
-						stateTipColor
-					})
-					
-					//取消订单后删除待付款中该项
-					let list = this.navList[1].orderList;
-					let index = list.findIndex(val=>val.id === item.id);
-					index !== -1 && list.splice(index, 1);
-					
-					uni.hideLoading();
-				}, 600)
+				let opts = {
+					url: '/orderApi/cancelorder/',
+					method: 'post'
+				};
+				
+				
+				let param = {id:item.id};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							setTimeout(()=>{
+								let {stateTip, stateTipColor} = _that.orderStateExp(9);
+								item = Object.assign(item, {
+									state: 9,
+									stateTip, 
+									stateTipColor
+								})
+								
+								//取消订单后删除待付款中该项
+								let list = _that.navList[1].orderList;
+								let index = list.findIndex(val=>val.id === item.id);
+								index !== -1 && list.splice(index, 1);
+								uni.hideLoading();
+							}, 600)
+							
+						} else {
+							uni.showToast({ title: res.data.msg, icon: 'none' });
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+				
+				
 			},
 
 			//订单状态文字和颜色
@@ -246,15 +336,30 @@
 					//更多自定义
 				}
 				return {stateTip, stateTipColor};
+			},
+			
+			payOrder(item){
+				uni.navigateTo({
+					url: '../money/pay?oid='+item.id
+				});
+			},
+			
+			disporder(item){
+				uni.navigateTo({
+					url: 'dispOrder?id='+item.id
+				});
 			}
+			
+			
 		},
 	}
 </script>
 
 <style lang="scss">
 	page, .content{
-		background: $page-color-base;
 		height: 100%;
+		
+		padding-bottom:50px
 	}
 	
 	.swiper-box{

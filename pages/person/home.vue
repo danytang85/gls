@@ -5,7 +5,7 @@
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait" :src="userinfo.headimg || '/static/missing-face.png'"></image></view>
 				<view class="info-box">
-					<text class="username">{{ userinfo.mobile || '游客' }}</text>
+					<text class="username">{{ userinfo.nickname || userinfo.mobile }}</text>
 				</view>
 			</view>
 
@@ -163,7 +163,9 @@ export default {
 					if (e.confirm) {
 						this.logout();
 						setTimeout(() => {
-							uni.navigateBack();
+							uni.redirectTo({
+								url:"./logon"
+							})
 						}, 200);
 					}
 				}
@@ -172,9 +174,9 @@ export default {
 	},
 	onLoad() {
 		if (global.islogon() == false) {
-			uni.navigateTo({
-				url: '../person/logon'
-			});
+			uni.redirectTo({
+				url:"./logon"
+			})
 		} else {
 			let token = uni.getStorageSync('token');
 			let opts = {
