@@ -22,7 +22,7 @@
 				<text class="price-tip">¥</text>
 				<text class="price">{{pinfo.price}}</text>
 				<text class="m-price">¥{{pinfo.cprice}}</text>
-				<text class="coupon-tip" v-if="pinfo.discount!=1">{{pinfo.discount}}折</text> 
+				<text class="coupon-tip" v-if="pinfo.upgrade!=1">{{pinfo.discount}}折</text> 
 				<!-- #ifdef H5 -->
 				<view @click="share" class="share-right text-orange cuIcon-share "></view>
 				<!-- #endif -->

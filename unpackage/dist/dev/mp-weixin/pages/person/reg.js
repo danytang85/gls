@@ -223,12 +223,13 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
 //
 //
 //
-var duration = 2000;var _default = { components: {}, data: function data() {return { loginMode: 1, usernameType: 'text', codeBut: '获取验证码', codeClick: true, mobile: '', password: '', repassword: '', code: '', backpage: '../index/home', Code: '', SessionKey: '', OpenId: '', bindmobile: false };}, computed: (0, _vuex.mapState)(['forcedLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, // 手机号输入
+var duration = 2000;var _default = { components: {}, data: function data() {return { loginMode: 1, usernameType: 'text', codeBut: '获取验证码', codeClick: true, mobile: '', password: '', repassword: '', code: '', backpage: '../index/home', Code: '', SessionKey: '', OpenId: '', bindmobile: false, vcode: uni.getStorage("vcode") };}, computed: (0, _vuex.mapState)(['forcedLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, // 手机号输入
     mobileInput: function mobileInput(e) {this.mobile = e.detail.value;}, // 密码输入
     passwordInpur: function passwordInpur(e) {this.password = e.detail.value;}, // 重复密码输入
     repasswordInpur: function repasswordInpur(e) {this.repassword = e.detail.value;}, // 验证码输入
     codeInput: function codeInput(e) {this.code = e.detail.value;}, // 获取验证码
-    getCode: function getCode() {var _that = this;if (_that.codeClick) {if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)) {this.$api.msg('请输入正确的手机号');} else {_that.codeClick = false;
+    getCode: function getCode() {var _that = this;if (_that.codeClick) {if (!/(^1[3|4|5|7|8][0-9]{9}$)/.test(_that.mobile)) {this.$api.msg('请输入正确的手机号');} else {
+          _that.codeClick = false;
           // 发送短信
           _that._sendmsm(_that.mobile);
           // 倒计时开始
@@ -258,7 +259,8 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
           mobile: _that.mobile,
           password: _that.password,
           repassword: _that.repassword,
-          code: _that.code };
+          code: _that.code,
+          vcode: _that.vcode };
 
         this._regrequest(data);
       }
@@ -383,7 +385,8 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
         headimg: this.userinfo["avatarUrl"],
         city: this.userinfo["city"],
         country: this.userinfo["country"],
-        gender: this.userinfo["gender"] };
+        gender: this.userinfo["gender"],
+        vcode: _that.vcode };
 
 
       _http.default.httpRequest(opts, param).then(

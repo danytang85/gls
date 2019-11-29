@@ -5,7 +5,7 @@
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait" :src="userinfo.headimg || '/static/missing-face.png'"></image></view>
 				<view class="info-box">
-					<text class="username">{{ userinfo.nickname}}{{ userinfo.gradetype}} 您好！</text>
+					<text class="username">{{ userinfo.gradetype}} 您好！</text>
 				</view>
 			</view>
 
@@ -297,12 +297,13 @@ export default {
 	},
 	
 	onLoad() {
+		
 		if (global.islogon() == false) {
 			uni.redirectTo({
 				url:"./logon"
 			})
 		} else {
-			let token = uni.getStorageSync('token');
+			// let token = uni.getStorageSync('token');
 			let opts = {
 				url: '/base/getuserinfo/',
 				method: 'post'

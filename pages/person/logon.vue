@@ -72,7 +72,8 @@ export default {
 			isCanUse: uni.getStorageSync('isCanUse') || true, //默认为true
 			bindmobile: false,
 			Code:"",
-			userinfo:[]
+			userinfo:[],
+			vcode:""
 		};
 	},
 	computed: mapState(['uerInfo', 'hasLogin']),
@@ -138,7 +139,8 @@ export default {
 					loginmode: _that.loginMode,
 					mobile: _that.mobile,
 					password: md5(md5(_that.password)),
-					code: _that.code
+					code: _that.code,
+					vcode:_that.vcode,
 				};
 				this._logonrequest(data);
 			}
@@ -280,7 +282,7 @@ export default {
 				city: this.userinfo["city"],
 				country: this.userinfo["country"],
 				gender: this.userinfo["gender"],
-				
+				vcode:_that.vcode,
 			};
 			http.httpRequest(opts, param).then(
 				res => {

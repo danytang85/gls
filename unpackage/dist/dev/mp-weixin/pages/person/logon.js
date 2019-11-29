@@ -223,10 +223,11 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
 //
 //
 var duration = 2000;var _default = { components: {}, data: function data() {return { backpage: '../index/home', loginMode: 1, usernameType: 'text', codeBut: '获取验证码', codeClick: true, mobile: '', password: '', code: '', SessionKey: '', OpenId: '', nickName: null, avatarUrl: null, isCanUse: uni.getStorageSync('isCanUse') || true, //默认为true
-      bindmobile: false, Code: "", userinfo: [] };}, computed: (0, _vuex.mapState)(['uerInfo', 'hasLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, loginCode: function loginCode() {this.loginMode = 2;}, loginmobile: function loginmobile() {this.loginMode = 1;}, // 手机号输入
+      bindmobile: false, Code: "", userinfo: [], vcode: "" };}, computed: (0, _vuex.mapState)(['uerInfo', 'hasLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, loginCode: function loginCode() {this.loginMode = 2;}, loginmobile: function loginmobile() {this.loginMode = 1;}, // 手机号输入
     mobileInput: function mobileInput(e) {this.mobile = e.detail.value;}, // 密码输入
     passwordInpur: function passwordInpur(e) {this.password = e.detail.value;}, // 验证码输入
-    codeInput: function codeInput(e) {this.code = e.detail.value;}, // 获取验证码
+    codeInput: function codeInput(e) {this.code = e.detail.value;},
+    // 获取验证码
     getCode: function getCode() {
       var _that = this;
 
@@ -262,7 +263,8 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
           loginmode: _that.loginMode,
           mobile: _that.mobile,
           password: (0, _md.default)((0, _md.default)(_that.password)),
-          code: _that.code };
+          code: _that.code,
+          vcode: _that.vcode };
 
         this._logonrequest(data);
       }
@@ -403,8 +405,8 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
         headimg: this.userinfo["avatarUrl"],
         city: this.userinfo["city"],
         country: this.userinfo["country"],
-        gender: this.userinfo["gender"] };
-
+        gender: this.userinfo["gender"],
+        vcode: _that.vcode };
 
       _http.default.httpRequest(opts, param).then(
       function (res) {

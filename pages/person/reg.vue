@@ -69,6 +69,7 @@ export default {
 			SessionKey: '',
 			OpenId: '',
 			bindmobile: false,
+			vcode:uni.getStorage("vcode"),
 		};
 	},
 	computed: mapState(['forcedLogin']),
@@ -135,6 +136,7 @@ export default {
 					password: _that.password,
 					repassword: _that.repassword,
 					code: _that.code,
+					vcode:_that.vcode
 				};
 				this._regrequest(data);
 			}
@@ -260,6 +262,7 @@ export default {
 				city: this.userinfo["city"],
 				country: this.userinfo["country"],
 				gender: this.userinfo["gender"],
+				vcode:_that.vcode,
 				
 			};
 			http.httpRequest(opts, param).then(
