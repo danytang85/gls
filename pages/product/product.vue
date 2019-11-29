@@ -27,8 +27,11 @@
 				<view @click="share" class="share-right text-orange cuIcon-share "></view>
 				<!-- #endif -->
 				<!-- #ifdef MP-WEIXIN -->
-				<button  class="cu-btn round bg-red sm  share-right" open-type="share">分享</button>
+				<button class="cu-btn share-right"  style="background-color: inherit;" @click="getinvitation">
+					<text class="iconfont icon-weixin" style="font-size: 20px; color: #39B54A;"></text>
+				</button>
 				<!-- #endif -->
+				
 				
 			</view>
 			<view class="bot-row">
@@ -38,70 +41,11 @@
 			</view>
 		</view>
 		
-		<!--  分享 -->
-		<!-- <view class="share-section" @click="share">
-			<view class="text-gray cuIcon-share">
-			</view>
-			<view class="share-btn">
-				立即分享
-				<text class="yticon icon-you"></text>
-			</view>
-			
-		</view> -->
 		
 		<view class="c-list">
-			<!-- <view class="c-row b-b" @click="toggleSpec">
-				<text class="tit">购买类型</text>
-				<view class="con">
-					<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
-						{{sItem.name}}
-					</text>
-				</view>
-				<text class="yticon icon-you"></text>
-			</view> -->
-			<!-- <view class="c-row b-b">
-				<text class="tit">优惠券</text>
-				<text class="con t-r red">领取优惠券</text>
-				<text class="yticon icon-you"></text>
-			</view> -->
-			<!-- <view class="c-row b-b">
-				<text class="tit">促销活动</text>
-				<view class="con-list">
-					<text>新人首单送20元无门槛代金券</text>
-					<text>订单满50减10</text>
-					<text>订单满100减30</text>
-					<text>单笔购买满两件免邮费</text>
-				</view>
-			</view>
-			<view class="c-row b-b">
-				<text class="tit">服务</text>
-				<view class="bz-list con">
-					<text>7天无理由退换货 ·</text>
-					<text>假一赔十 ·</text>
-				</view>
-			</view> -->
+			
 		</view>
 		
-		<!-- 评价 -->
-		<!-- <view class="eva-section">
-			<view class="e-header">
-				<text class="tit">评价</text>
-				<text>(86)</text>
-				<text class="tip">好评率 100%</text>
-				<text class="yticon icon-you"></text>
-			</view> 
-			<view class="eva-box">
-				<image class="portrait" src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg" mode="aspectFill"></image>
-				<view class="right">
-					<text class="name">Leo yo</text>
-					<text class="con">商品收到了，79元两件，质量不错，试了一下有点瘦，但是加个外罩很漂亮，我很喜欢</text>
-					<view class="bot">
-						<text class="attr">购买类型：XL 红色</text>
-						<text class="time">2019-04-01 19:21</text>
-					</view>
-				</view>
-			</view>
-		</view> -->
 		
 		<view class="detail-desc">
 			<view class="d-header">
@@ -111,12 +55,7 @@
 		</view>
 		
 		<view   class="cu-bar foot  bg-white tabbar border shop ">
-			<!-- <button class="action" open-type="contact">
-				<view class="cuIcon-service text-green">
-					<view class="cu-tag badge"></view>
-				</view>
-				客服
-			</button> -->
+			
 			<button @click="toFavorite"  class="action text-black " v-if="favorite===false" >
 				<view class="cuIcon-favor" >
 				</view> 收藏
@@ -133,29 +72,46 @@
 			</view>
 			<view class="bg-orange submit" v-if="isnotupgrade" @click="addcart">加入购物车</view>
 			<view class="bg-red submit" @click="buy">立即订购</view>
-			<!-- <view class="btn-group">
-				<button class="cu-btn bg-orange round shadow-blur">加入购物车</button>
-				<button class="cu-btn bg-red round shadow-blur">立即订购</button>
-			</view> -->
-			<!-- <view class="btn-group ">
-				<button class="cu-btn bg-red round shadow-blur">立即订购</button>
-				
-				<button class="cu-btn bg-orange round shadow-blur" v-if="isnotupgrade"  @click="addcart">加入购物车</button>
-				<button class="cu-btn bg-red round shadow-blur " @click="buy">立即购买</button>
-			</view> -->
+			
 		</view>
 		
 		
-		
-		<!-- 规格-模态层弹窗 -->
-		<view 
-			class="popup spec" 
-			:class="specClass"
-			@touchmove.stop.prevent="stopPrevent"
-			@click="toggleSpec"
-		>
-			<!-- 遮罩层 -->
-			
+		<view class="cu-modal bottom-modal" :class="shareInvitation?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-black">分享邀请更多好友</view>
+					<view class="action text-blue" @tap="hideModal">取消</view>
+				</view>
+				<view class="padding-xl">
+					
+					<scroll-view class="view-content" scroll-y>
+						<view class="share-list">
+							<!-- #ifdef MP-WEIXIN -->
+								<view class="share-item mpshare-item" >
+								<button class="cu-btn block bg-white margin-tb-sm"  style="background-color: inherit;"  open-type="share">
+									<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+									 
+								</button>
+								</view>
+								<view class="share-item mpshare-item" @tap="createCanvasImageEvn">
+									<text class="iconfont icon-haibao" style="font-size: 40px;color: #fb7e06;"></text>
+								</view>
+							<!-- #endif -->
+							<!--#ifdef H5-->
+							<view v-for="(item, index) in shareList" :key="index" class="share-item" @click="shareToFriend(item.type)">
+								<image :src="item.icon" mode=""></image>
+								<text>{{ item.text }}</text>
+							</view>
+							 <!-- #endif -->
+								  
+							
+						</view>
+					</scroll-view>
+					
+					
+					
+				</view>
+			</view>
 		</view>
 		<!-- 分享 -->
 		<share 
@@ -186,6 +142,11 @@
 				desc: "",
 				sharedata:[],
 				isnotupgrade:false,
+				
+				shareInvitation:false,
+				invitation:"",
+				sharetitle:"良吉康-最火的社交新零售商城！",
+				shareimg:'/img/banner2.jpg',
 				
 			};
 		},
@@ -224,36 +185,70 @@
 			this.shareList = await this.$api.json('shareList');
 		},
 		
+		
+		
+		
+		
 		onShareAppMessage: function( options ){
 		　　var that = this;
 		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
-		　　var shareObj = {
-		　　　　title: this.pinfo.title,        // 默认是小程序的名称(可以写slogan等)
-		　　　　path: '/pages/product/product?psid='+this.pinfo.psid,        // 默认是当前页面，必须是以‘/’开头的完整路径
-		　　　　imageUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
-		　　　　success: function(res){
-		　　　　　　// 转发成功之后的回调
-		　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
-			
-		　　　　　　}
-		　　　　},
-		　　　　fail: function(){
-		　　　　　　// 转发失败之后的回调
-		　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
-		　　　　　　　　// 用户取消转发
-		　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
-		　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
-		　　　　　　}
-		　　　　},
-		　　　　complete: function(){
-		　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
-		　　　　}
-		　　};
-		　　// 返回shareObj
-		　　return shareObj;
+			var shareObj = {
+			　　　　title: that.pinfo.title,        // 默认是小程序的名称(可以写slogan等)
+			　　　　path: '/pages/person/share?v='+that.invitation+'&backurl=/pages/product/product?psid='+that.pinfo.psid,        // 默认是当前页面，必须是以‘/’开头的完整路径
+			　　　　imageUrl: that.apiServer+that.pinfo.images,     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+			　　　　success: function(res){
+			　　　　　　// 转发成功之后的回调
+			　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+						console.log("分享成功");
+			　　　　　　}
+			　　　　},
+			　　　　fail: function(){
+			　　　　　　// 转发失败之后的回调
+			　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+			　　　　　　　　// 用户取消转发
+			　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+			　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
+			　　　　　　}
+			　　　　},
+			　　　　complete: function(){
+			　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
+			　　　　}
+			　　};
+			　　// 来自页面内的按钮的转发
+			　　
+			return shareObj;
+		　　
 		},
+		
 		methods:{
-			
+			hideModal(e) {
+				this.shareInvitation = false;
+			},
+			getinvitation(){
+				let opts = {
+					url: '/base/getinvitation/',
+					method: 'post'
+				};
+				let param = {};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						if (res.data['code'] == 0) {
+							this.shareInvitation=true;
+							this.invitation=res.data['invitation'];
+							this.shareimg=res.data['shareimg'];
+							this.sharetitle=res.data['sharetitle'];
+							
+						}else{
+							this.$api.msg(res.data.msg);
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+				
+			},
 			//分享
 			share(){
 				this.$refs.share.toggleMask();	
@@ -374,6 +369,30 @@
 		}
 		
 	}
+	.share-list {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.share-item {
+		min-width: 33.33%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 180upx;
+		image {
+			width: 80upx;
+			height: 80upx;
+			margin-bottom: 16upx;
+		}
+		text {
+			font-size: $font-base;
+			color: $font-color-base;
+		}
+	}
+	.mpshare-item {
+		min-width: 50%;
+		}
 	
 	/* 标题简介 */
 	.introduce-section{

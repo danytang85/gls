@@ -48,6 +48,13 @@
       "unicode_decimal": 58901
     },
     {
+      "icon_id": "2111599",
+      "name": "加",
+      "font_class": "jia",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
       "icon_id": "2179910",
       "name": "售后",
       "font_class": "shouhou",
@@ -144,6 +151,13 @@
       "font_class": "fangxiang",
       "unicode": "e624",
       "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "6079990",
+      "name": "减",
+      "font_class": "jian",
+      "unicode": "e618",
+      "unicode_decimal": 58904
     },
     {
       "icon_id": "7481349",

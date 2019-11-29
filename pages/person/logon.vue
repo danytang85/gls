@@ -28,7 +28,9 @@
 					<view class="action text-blue" @tap="hideModal">取消</view>
 				</view>
 				<view class="padding-xl">
-					<button class="cu-btn bg-orange lg" open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">绑定当前手号码登录</button>
+					<button class="cu-btn   margin-tb-sm" style="background-color: inherit;"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">
+						<text class="iconfont icon-task__bangdingshoujihaoma" style="font-size: 60px; color: #39B54A;"></text>
+					</button>
 				</view>
 			</view>
 		</view>
@@ -69,7 +71,6 @@ export default {
 			OpenId: '',
 			nickName: null,
 			avatarUrl: null,
-			isCanUse: uni.getStorageSync('isCanUse') || true, //默认为true
 			bindmobile: false,
 			Code:"",
 			userinfo:[],
@@ -415,7 +416,7 @@ export default {
 
 .vcodelogon {
 	text-align: right;
-	padding: 0 30upx;
+	padding: 10px 30upx;
 }
 
 .username {

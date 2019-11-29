@@ -15,24 +15,29 @@
 		onLoad(options){
 			let vcode=options.v;
 			let backurl=options.backurl;
-			if(vcode!="undefined"){
+			console.log(backurl);
+			console.log(vcode);
+			if(vcode!=undefined){
 				uni.setStorage({//将用户信息保存在本地
 				    key: 'vcode',
 				    data: vcode
 				});
 			};
 			if (global.islogon()) {
-				uni.redirectTo({
-					url: '../index/home'
-				});
+				if(backurl!=undefined){
+					uni.redirectTo({
+						url: backurl,
+					});
+				}else{
+					uni.redirectTo({
+						url: "../index/home",
+					});
+				}
 			}else{
 				uni.redirectTo({
 					url: '../person/reg?backpage='+backurl,
 				});
 			}
-			
-			
-			
 			
 		},
 		methods: {

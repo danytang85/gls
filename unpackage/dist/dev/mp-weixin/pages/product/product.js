@@ -247,51 +247,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var share = function share() {return __webpack_require__.e(/*! import() | components/share */ "components/share").then(__webpack_require__.bind(null, /*! @/components/share */ 231));};var _default =
+var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var share = function share() {return __webpack_require__.e(/*! import() | components/share */ "components/share").then(__webpack_require__.bind(null, /*! @/components/share */ 225));};var _default =
 
 {
   components: {
@@ -309,7 +265,12 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
       thumblist: [],
       desc: "",
       sharedata: [],
-      isnotupgrade: false };
+      isnotupgrade: false,
+
+      shareInvitation: false,
+      invitation: "",
+      sharetitle: "良吉康-最火的社交新零售商城！",
+      shareimg: '/img/banner2.jpg' };
 
 
   },
@@ -348,17 +309,21 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
                 this.$api.json('shareList'));case 6:this.shareList = _context.sent;case 7:case "end":return _context.stop();}}}, _callee, this);}));function onLoad(_x) {return _onLoad.apply(this, arguments);}return onLoad;}(),
 
 
+
+
+
+
   onShareAppMessage: function onShareAppMessage(options) {
     var that = this;
     // 设置菜单中的转发按钮触发转发事件时的转发内容
     var shareObj = {
-      title: this.pinfo.title, // 默认是小程序的名称(可以写slogan等)
-      path: '/pages/product/product?psid=' + this.pinfo.psid, // 默认是当前页面，必须是以‘/’开头的完整路径
-      imageUrl: '', //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+      title: that.pinfo.title, // 默认是小程序的名称(可以写slogan等)
+      path: '/pages/person/share?v=' + that.invitation + '&backurl=/pages/product/product?psid=' + that.pinfo.psid, // 默认是当前页面，必须是以‘/’开头的完整路径
+      imageUrl: that.apiServer + that.pinfo.images, //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
       success: function success(res) {
         // 转发成功之后的回调
         if (res.errMsg == 'shareAppMessage:ok') {
-
+          console.log("分享成功");
         }
       },
       fail: function fail() {
@@ -373,17 +338,47 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
         // 转发结束之后的回调（转发成不成功都会执行）
       } };
 
-    // 返回shareObj
-    return shareObj;
-  },
-  methods: {
+    // 来自页面内的按钮的转发
 
+    return shareObj;
+
+  },
+
+  methods: {
+    hideModal: function hideModal(e) {
+      this.shareInvitation = false;
+    },
+    getinvitation: function getinvitation() {var _this2 = this;
+      var opts = {
+        url: '/base/getinvitation/',
+        method: 'post' };
+
+      var param = {};
+      _http.default.httpTokenRequest(opts, param).then(
+      function (res) {
+        if (res.data['code'] == 0) {
+          _this2.shareInvitation = true;
+          _this2.invitation = res.data['invitation'];
+          _this2.shareimg = res.data['shareimg'];
+          _this2.sharetitle = res.data['sharetitle'];
+
+        } else {
+          _this2.$api.msg(res.data.msg);
+        }
+      },
+      function (error) {
+        console.log(error);
+      });
+
+
+
+    },
     //分享
     share: function share() {
       this.$refs.share.toggleMask();
     },
     //收藏
-    toFavorite: function toFavorite() {var _this2 = this;
+    toFavorite: function toFavorite() {var _this3 = this;
       var opts = {
         url: '/productApi/toFavorite/',
         method: 'post' };
@@ -394,7 +389,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
         //打印请求返回的数据
         if (res.data['code'] == 0) {
 
-          _this2.favorite = res.data["isfav"];
+          _this3.favorite = res.data["isfav"];
         } else {
           uni.showToast({ title: res.data.msg, icon: 'none' });
         }
@@ -408,7 +403,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
 
 
     },
-    buy: function buy() {var _this3 = this;
+    buy: function buy() {var _this4 = this;
       var opts = {
         url: '/productapi/issaleproduct/',
         method: 'post' };
@@ -419,7 +414,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
         //打印请求返回的数据
         if (res.data['code'] == 0) {
           uni.navigateTo({
-            url: "/pages/order/createOrder?psid=".concat(_this3.pinfo.psid) });
+            url: "/pages/order/createOrder?psid=".concat(_this4.pinfo.psid) });
 
         } else {
           uni.showToast({ title: res.data.msg, icon: 'none' });
@@ -438,7 +433,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
 
     },
 
-    addcart: function addcart() {var _this4 = this;
+    addcart: function addcart() {var _this5 = this;
       var opts = {
         url: '/productApi/addcart/',
         method: 'post' };
@@ -448,7 +443,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
       function (res) {
         //打印请求返回的数据
         if (res.data['code'] == 0) {
-          _this4.cartcount = res.data["cartcount"];
+          _this5.cartcount = res.data["cartcount"];
           uni.showToast({ title: "成功加入购物车", icon: 'none' });
         } else {
           uni.showToast({ title: res.data.msg, icon: 'none' });

@@ -27,8 +27,8 @@
 					<view class="action text-blue" @tap="hideModal">取消</view>
 				</view>
 				<view class="padding-xl">
-					<button class="cu-btn block margin-tb-sm"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">
-						<text class="iconfont icon-task__bangdingshoujihaoma" style="font-size: 50px; color: #39B54A;"></text>
+					<button class="cu-btn   margin-tb-sm" style="background-color: inherit;"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">
+						<text class="iconfont icon-task__bangdingshoujihaoma" style="font-size: 60px; color: #39B54A;"></text>
 					</button>
 				</view>
 			</view>
@@ -393,7 +393,7 @@ export default {
 
 .vcodelogon {
 	text-align: right;
-	padding: 0 30upx;
+	padding: 10px 30upx;
 }
 
 .username {
