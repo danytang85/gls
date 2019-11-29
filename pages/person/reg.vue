@@ -18,6 +18,32 @@
 
 		<view class="btn-row"><button class="bg-orange" @click="regUp">注册</button></view>
 		<view class="action-row"><navigator class="text-black" url="../person/logon">登录</navigator></view>
+	
+	
+		<view class="cu-modal bottom-modal show" v-if="bindmobile">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-black">绑定当前手机号登录</view>
+					<view class="action text-blue" @tap="hideModal">取消</view>
+				</view>
+				<view class="padding-xl">
+					<button class="cu-btn block margin-tb-sm"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">
+						<text class="iconfont icon-task__bangdingshoujihaoma" style="font-size: 50px; color: #39B54A;"></text>
+					</button>
+				</view>
+			</view>
+		</view>
+		<!-- #ifdef MP-WEIXIN -->
+		<!-- 其他登录方式 -->
+		<view class="otherLogin">
+			
+			<button class="cu-btn block margin-tb-sm"  open-type="getUserInfo"  @getuserinfo="weixinlogin">
+				<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+			</button>
+			
+		</view>
+		
+		<!-- #endif -->
 	</view>
 </template>
 
@@ -38,13 +64,22 @@ export default {
 			password: '',
 			repassword: '',
 			code: '',
-			backpage: '../index/home'
+			backpage: '../index/home',
+			Code:'',
+			SessionKey: '',
+			OpenId: '',
+			bindmobile: false,
 		};
 	},
 	computed: mapState(['forcedLogin']),
 	methods: {
 		...mapMutations(['login']),
-
+		showModal() {
+			this.bindmobile = true;
+		},
+		hideModal(e) {
+			this.bindmobile = false;
+		},
 		// 手机号输入
 		mobileInput(e) {
 			this.mobile = e.detail.value;
@@ -99,7 +134,7 @@ export default {
 					mobile: _that.mobile,
 					password: _that.password,
 					repassword: _that.repassword,
-					code: _that.code
+					code: _that.code,
 				};
 				this._regrequest(data);
 			}
@@ -165,7 +200,160 @@ export default {
 					this.loading = false;
 				}
 			);
+		},
+		getPhoneNumberHander: function(e) {
+			
+			console.log("e",e);
+			
+			var that = this; // 拒绝授权
+		
+			if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+				wx.showModal({
+					title: '提示',
+					showCancel: false,
+					content: '未授权您将无法登陆',
+					success: function(res) {}
+				});
+			} else {
+				// 接受授权
+				let opts = {
+					url: '/CommonApi/getphone/',
+					method: 'post'
+				};
+				let param = {
+					encryptedData: e.detail.encryptedData,
+					iv: e.detail.iv,
+					//openid: this.OpenId,
+					session_key: this.SessionKey,
+				};
+				http.httpRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							//获得手机号码注册
+							
+							that.weixinreg(res.data['phone']);
+							console.log(res.data);
+						} else {
+							this.$api.msg(res.data.msg);
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
+			}
+		},
+		weixinreg(mobile){
+			var _that = this;
+			let opts = {
+				url: '/UserApi/wxreg/',
+				method: 'post'
+			};
+			let param = {
+				mobile:mobile ,
+				wxopenid:this.OpenId,
+				nickname: this.userinfo["nickName"],
+				province: this.userinfo["province"],
+				headimg: this.userinfo["avatarUrl"],
+				city: this.userinfo["city"],
+				country: this.userinfo["country"],
+				gender: this.userinfo["gender"],
+				
+			};
+			http.httpRequest(opts, param).then(
+				res => {
+					//打印请求返回的数据
+					if (res.data['code'] == 0) {
+						//获得手机号码注册
+						if(res.data['token']!=""){
+							//已经存在用户 ，登录
+							_that.login(res.data['token']);
+							uni.navigateTo({
+								url: _that.backpage
+							});
+						}
+					} else {
+						this.$api.msg(res.data.msg);
+					}
+				},
+				error => {
+					console.log(error);
+				}
+			);
+			
+			
+		},
+		weixinlogin() {
+			let _this = this;
+			uni.showLoading({ title: '登录中...' });
+			uni.getProvider({
+				service: 'oauth',
+				success: function(res) {
+					if (~res.provider.indexOf('weixin')) {
+						uni.login({
+							provider: 'weixin',
+							success: function(loginRes) {
+								let code = loginRes.code;
+								//this.code=code;
+								 console.log(loginRes);
+								// 获取用户信息
+								uni.getUserInfo({
+									provider: 'weixin',
+									success: function(infoRes) {
+										//获取用户信息后向调用信息更新方法
+										console.log(infoRes.userInfo);
+										let userinfo = infoRes.userInfo;
+										_this.userinfo=userinfo;
+									}
+								});
+								//2.将用户登录code传递到后台置换用户SessionKey、OpenId等信息
+								let opts = {
+									url: '/CommonApi/getwxopenid/',
+									method: 'post'
+								};
+								let param = { code: code };
+								_this.Code=code;
+								http.httpRequest(opts, param).then(
+									res => {
+										//打印请求返回的数据
+										if (res.data['code'] == 0) {
+											if(res.data['token']!=""){
+												//已经存在用户 ，登录
+												_this.login(res.data['token']);
+												uni.navigateTo({
+													url: _this.backpage
+												});
+											}else{
+												let sessionkey = res.data['data'].session_key;
+												let openid = res.data['data'].openid;
+												uni.setStorage({//将用户信息保存在本地
+												    key: 'openid',
+												    data: openid
+												});
+												_this.OpenId=openid;
+												_this.SessionKey=sessionkey;
+												_this.showModal();
+											}
+											
+											uni.hideLoading();
+										} else {
+											this.$api.msg(res.data.msg);
+										}
+									},
+									error => {
+										console.log(error);
+									}
+								);
+							}
+						});
+					}
+				}
+			});
 		}
+		
+		
 	},
 	onReady() {},
 	onLoad(options) {

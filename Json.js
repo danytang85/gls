@@ -22,9 +22,7 @@ const carouselList = [{
 ]
 /* 商品列表 */
 const goodsList = [{
-		image: "/static/temp/ppic.jpg",
-		image2: "http://pic.rmb.bdstatic.com/819a044daa66718c2c40a48c1ba971e6.jpeg",
-		image3: "http://img001.hc360.cn/y5/M00/1B/45/wKhQUVYFE0uEZ7zVAAAAAMj3H1w418.jpg",
+		image: "/img/gls.png",
 		title: "良吉康，膏力士 定通膏药贴",
 		price: 98,
 		sales: 61,

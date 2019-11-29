@@ -117,7 +117,11 @@
             "es6" : false
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "收货地址管理"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true
@@ -127,5 +131,14 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : ""
+                }
+            }
+        }
     }
 }

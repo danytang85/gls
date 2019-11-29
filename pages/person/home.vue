@@ -5,11 +5,11 @@
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait" :src="userinfo.headimg || '/static/missing-face.png'"></image></view>
 				<view class="info-box">
-					<text class="username">{{ userinfo.nickname || userinfo.mobile }}</text>
+					<text class="username">{{ userinfo.nickname}}{{ userinfo.gradetype}} 您好！</text>
 				</view>
 			</view>
 
-			<view class="vip-card-box">
+			<!-- <view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
 				<view class="b-btn">直通车</view>
 				<view class="tit">
@@ -18,7 +18,7 @@
 				</view>
 				<text class="e-m">DCloud Union</text>
 				<text class="e-b">开通会员开发无bug 一测就上线</text>
-			</view>
+			</view> -->
 		</view>
 
 		<view
@@ -37,7 +37,7 @@
 
 			<view class="tj-sction">
 				<view class="tj-item">
-					<text class="num">128.8</text>
+					<text class="num">{{userinfo.itaccount}}</text>
 					<text>余额</text>
 				</view>
 				<view class="tj-item">
@@ -45,42 +45,81 @@
 					<text>优惠券</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">20</text>
+					<text class="num">{{userinfo.growth}}</text>
 					<text>成长值</text>
 				</view>
 			</view>
 			<view class="order-section">
 				<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover" :hover-stay-time="50">
-					<image class="order-img" src="/static/allorder.png"></image>
+					<text class="iconfont icon-quanbujiabandan menuicon basecolor" ></text>
 					<text>全部订单</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover" :hover-stay-time="50">
-					<image class="order-img" src="/static/paying.png"></image>
+					<text class="iconfont icon-fukuan menuicon basecolor" ></text>
 					<text>待付款</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover" :hover-stay-time="50">
-					<image class="order-img" src="/static/shiping.png"></image>
+					<text class="iconfont icon-fahuo menuicon basecolor" ></text>
 					<text>待收货</text>
 				</view>
 				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover" :hover-stay-time="50">
-					<image class="order-img" src="/static/saleed.png"></image>
+					<text class="iconfont icon-shouhou menuicon basecolor" ></text>
 					<text>退款/售后</text>
 				</view>
 			</view>
 
 			<view class="history-section icon">
-				<list-cell icon="icon-fenxiang2" iconColor="#fb7e06" title="邀请好友" tips="邀请好友快速升级"></list-cell>
-				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-share" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
-				<list-cell icon="icon-xuanzhong2" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
+				<list-cell icon="icon-yaoqing" iconColor="#fb7e06" @eventClick="getinvitation()" title="邀请好友" tips="邀请好友快速升级"></list-cell>
+				<list-cell icon="icon-shezhi" iconColor="#5fcda2" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
+				<list-cell icon="icon-dizhiguanli" iconColor="#fb7e06" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
+				<list-cell icon="icon-tousujianyi-copy" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
+				<list-cell icon="icon-btn-shiyongzhongxin" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
 				<list-cell icon="icon-bangzhu" iconColor="#fb7e06" title="帮助与客服"></list-cell>
-				<list-cell icon="icon-daifukuan" iconColor="#5fcda2" title="我的收益" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
-				<list-cell icon="icon-zuoshang" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
-				<list-cell icon="icon-zuoshang" iconColor="#5fcda2" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
+				<list-cell icon="icon-shouyi" iconColor="#5fcda2" title="我的收益" border=""></list-cell>
+				<list-cell icon="icon-tuandui" iconColor="#fb7e06" title="我的团队" border="" ></list-cell>
+				<list-cell icon="icon-tuichu2" iconColor="#5fcda2" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
 			</view>
 		</view>
 
 		<footermenu PageCur="person"></footermenu>
+		
+		<view class="cu-modal bottom-modal" :class="shareInvitation?'show':''">
+			<view class="cu-dialog">
+				<view class="cu-bar bg-white">
+					<view class="action text-black">分享邀请更多好友</view>
+					<view class="action text-blue" @tap="hideModal">取消</view>
+				</view>
+				<view class="padding-xl">
+					
+					<scroll-view class="view-content" scroll-y>
+						<view class="share-list">
+							<!-- #ifdef MP-WEIXIN -->
+								<view class="share-item mpshare-item" >
+								<button class="cu-btn block bg-white margin-tb-sm"  open-type="share">
+									<text class="iconfont icon-weixin" style="font-size: 30px; color: #39B54A;"></text>
+									 
+								</button>
+								</view>
+								<view class="share-item mpshare-item" @tap="createCanvasImageEvn">
+									<text class="iconfont icon-haibao" style="font-size: 30px;color: #fb7e06;"></text>
+								</view>
+							<!-- #endif -->
+							
+								  
+							<!--#ifdef H5-->
+							<view v-for="(item, index) in shareList" :key="index" class="share-item" @click="shareToFriend(item.type)">
+								<image :src="item.icon" mode=""></image>
+								<text>{{ item.text }}</text>
+							</view>
+							 <!-- #endif -->
+						</view>
+					</scroll-view>
+					
+					
+					
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -101,7 +140,26 @@ export default {
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			moving: false,
-			userinfo: ''
+			userinfo: '',
+			shareInvitation:false,
+			invitation:"",
+			sharetitle:"良吉康-最火的社交新零售商城！",
+			shareimg:'/img/banner2.jpg',
+			shareList :[{
+							type: 1,
+							icon: '/static/temp/share_wechat.png',
+							text: '微信好友'
+						},
+						{
+							type: 2,
+							icon: '/static/temp/share_moment.png',
+							text: '朋友圈'
+						},
+						{
+							type: 3,
+							icon: '/static/temp/share_qq.png',
+							text: 'QQ好友'
+						}]
 		};
 	},
 
@@ -155,7 +213,42 @@ export default {
 			this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
 			this.coverTransform = 'translateY(0px)';
 		},
-
+		
+		getinvitation(){
+			let opts = {
+				url: '/base/getinvitation/',
+				method: 'post'
+			};
+			let param = {};
+			http.httpTokenRequest(opts, param).then(
+				res => {
+					if (res.data['code'] == 0) {
+						this.shareInvitation=true;
+						this.invitation=res.data['invitation'];
+						this.shareimg=res.data['shareimg'];
+						this.sharetitle=res.data['sharetitle'];
+						
+					}else{
+						this.$api.msg(res.data.msg);
+					}
+				},
+				error => {
+					console.log(error);
+				}
+			);
+			
+			
+		},
+		hideModal(e) {
+			this.shareInvitation = false;
+		},
+		
+		shareToFriend(type){
+			
+			
+			
+			
+		},
 		toLogout() {
 			uni.showModal({
 				content: '确定要退出登录么',
@@ -172,6 +265,37 @@ export default {
 			});
 		}
 	},
+	
+	onShareAppMessage: function( options ){
+	　　var that = this;
+	　　// 设置菜单中的转发按钮触发转发事件时的转发内容
+	　　var shareObj = {
+	　　　　title: this.sharetitle,        // 默认是小程序的名称(可以写slogan等)
+	　　　　path: '/pages/person/share?v='+this.invitation,        // 默认是当前页面，必须是以‘/’开头的完整路径
+	　　　　imageUrl: this.apiServer+this.shareimg,     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+	　　　　success: function(res){
+	　　　　　　// 转发成功之后的回调
+	　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
+		
+	　　　　　　}
+	　　　　},
+	　　　　fail: function(){
+	　　　　　　// 转发失败之后的回调
+	　　　　　　if(res.errMsg == 'shareAppMessage:fail cancel'){
+	　　　　　　　　// 用户取消转发
+	　　　　　　}else if(res.errMsg == 'shareAppMessage:fail'){
+	　　　　　　　　// 转发失败，其中 detail message 为详细失败信息
+	　　　　　　}
+	　　　　},
+	　　　　complete: function(){
+	　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
+	　　　　}
+	　　};
+	　　// 来自页面内的按钮的转发
+	　　
+	　　return shareObj;
+	},
+	
 	onLoad() {
 		if (global.islogon() == false) {
 			uni.redirectTo({
@@ -213,10 +337,15 @@ export default {
 	background: #fff;
 	border-radius: 10upx;
 }
+.shareicon{font-size:40px;}
 
 .container {
 	width: 100%;
 }
+.cu-dialog{
+	background-color: #ffffff;
+}
+.menuicon{font-size:25px}
 .user-section {
 	width: 100%;
 	height: 380upx;
@@ -348,6 +477,53 @@ export default {
 		margin-bottom: 8upx;
 	}
 }
+
+.share-header {
+	height: 110upx;
+	font-size: $font-base + 2upx;
+	color: font-color-dark;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-top: 10upx;
+	&:before,
+	&:after {
+		content: '';
+		width: 240upx;
+		heighg: 0;
+		border-top: 1px solid $border-color-base;
+		transform: scaleY(0.5);
+		margin-right: 30upx;
+	}
+	&:after {
+		margin-left: 30upx;
+		margin-right: 0;
+	}
+}
+.share-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+.share-item {
+	min-width: 33.33%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 180upx;
+	image {
+		width: 80upx;
+		height: 80upx;
+		margin-bottom: 16upx;
+	}
+	text {
+		font-size: $font-base;
+		color: $font-color-base;
+	}
+}
+.mpshare-item {
+	min-width: 50%;
+	}
 
 .history-section {
 	padding: 30upx 0 0;

@@ -52,7 +52,6 @@
 </template>
 
 <script>
-	import wxpay from '@/common/pPay.js';
 	import http from '@/components/utils/http.js';
 	export default {
 		data() {
@@ -166,51 +165,51 @@
 			},
 			
 			
-			h5weixinpayorder(){
-				let _that=this;
-				uni.showLoading({
-					 title: '支付中...'
-				})
+			// h5weixinpayorder(){
+			// 	let _that=this;
+			// 	uni.showLoading({
+			// 		 title: '支付中...'
+			// 	})
 				
-						let data={oid:_that.oid};
-						let opts = {
-							url: '/orderApi/h5weixinpayorder/',
-							method: 'post'
-						};
+			// 			let data={oid:_that.oid};
+			// 			let opts = {
+			// 				url: '/orderApi/h5weixinpayorder/',
+			// 				method: 'post'
+			// 			};
 						
-						let param = data;
-						_that.$http.httpTokenRequest(opts, param).then(
-							re => {
-								//打印请求返回的数据
-								console.log(re.data['prepay_order']);
-								if(res.data['code']==0){
-									wPay(re.data['prepay_order'],res=>{
-									    console.log('调用成功!');
-									},fail=>{
-									    console.log('调用失败!');
-									});
+			// 			let param = data;
+			// 			_that.$http.httpTokenRequest(opts, param).then(
+			// 				re => {
+			// 					//打印请求返回的数据
+			// 					console.log(re.data['prepay_order']);
+			// 					if(res.data['code']==0){
+			// 						wPay(re.data['prepay_order'],res=>{
+			// 						    console.log('调用成功!');
+			// 						},fail=>{
+			// 						    console.log('调用失败!');
+			// 						});
 									
-								}else{
-									uni.showToast({ title:res.data['msg'] , icon: 'none' });
+			// 					}else{
+			// 						uni.showToast({ title:res.data['msg'] , icon: 'none' });
 									
-								}
+			// 					}
 								
 								
-								setTimeout(function () {
-								    uni.hideLoading();
-								}, 1000);
+			// 					setTimeout(function () {
+			// 					    uni.hideLoading();
+			// 					}, 1000);
 								
-							},
-							error => {
-								console.log(error);
-							}
-						);
+			// 				},
+			// 				error => {
+			// 					console.log(error);
+			// 				}
+			// 			);
 				
 				
 				
 				
 				
-			},
+			// },
 			//选择支付方式
 			changePayType(type) {
 				this.payType = type;
@@ -219,9 +218,6 @@
 			confirm: async function() {
 				if(this.payType=="wx")
 				{
-					// #ifdef H5
-					// this.h5weixinpayorder();
-					// #endif	
 					
 					// #ifdef MP-WEIXIN
 					this.payorder();

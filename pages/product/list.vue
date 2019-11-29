@@ -29,6 +29,7 @@
 			>
 				<view class="image-wrapper">
 					<image :src="server+item.images" mode="aspectFill"></image>
+					<text class="coupon-tip">{{item.discount}}折</text>
 				</view>
 				<text class="title clamp">{{item.title}}</text>
 				<view class="price-box">
@@ -413,12 +414,27 @@
 			height: 330upx;
 			border-radius: 3px;
 			overflow: hidden;
+			position: relative;
 			image{
 				width: 100%;
 				height: 100%;
 				opacity: 1;
 			}
+			.coupon-tip{
+			position: absolute;
+			align-items: center;
+			padding: 4upx 10upx;
+			background: $uni-color-primary;
+			font-size: $font-sm;
+			color: #fff;
+			border-radius: 6upx;
+			line-height: 1;
+			transform: translateY(-4upx); 
+			right:10px;
+			top:10px;
 		}
+		}
+		
 		.title{
 			font-size: $font-lg;
 			color: $font-color-dark;

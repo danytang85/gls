@@ -54,7 +54,7 @@ App.mpType = 'app'
 Vue.prototype.$fire = new Vue();
 Vue.prototype.$store = store;
 Vue.prototype.$http = http;
-Vue.prototype.apiServer = 'http://api.liangjikang.com';
+Vue.prototype.apiServer = 'https://api.liangjikang.com';
 Vue.prototype.$api = {
 	msg,
 	json,

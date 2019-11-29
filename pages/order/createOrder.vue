@@ -39,7 +39,7 @@
 						<view class="price-box">
 							<view class="price">￥{{ item.price }}</view>
 							<view class="number" v-if="psid == 0">x{{ item.number }}</view>
-								<uni-number-box v-if="psid >0 "
+								<uni-number-box v-if="psid >0 && item.upgrade!=1"
 									class="step"
 									:min="1"
 									:max="item.stock"
@@ -116,8 +116,6 @@
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
-
-		
 	</view>
 </template>
 
@@ -255,8 +253,7 @@ export default {
 			uni.showLoading({
 			    title: '创建订单中'
 			});
-			
-			
+
 			let cartliststr = JSON.stringify(this.cartList);
 			let opts = {
 				url: '/orderApi/createorder/',

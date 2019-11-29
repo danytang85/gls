@@ -1,4 +1,7 @@
 
 .menu_text_color_on{color:#fb7e06}
 .menu_text_color_off{color:#a4a4a4}
+.cuIcon-cu-image{padding-bottom: 5px;}
+.footicon{font-size:20px;}
+.footfontsize{font-size:14px}
 

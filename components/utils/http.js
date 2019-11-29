@@ -1,6 +1,6 @@
 
-//const baseUrl = 'http://api.gls.com';  
- const baseUrl = 'http://api.liangjikang.com'; 
+// const baseUrl = 'http://api.gls.com';  
+ const baseUrl = 'https://api.liangjikang.com'; 
 const httpRequest = (opts, data) => {
     let httpDefaultOpts = {
         url: baseUrl+opts.url,
@@ -58,10 +58,10 @@ const httpTokenRequest = (opts, data) => {
 					uni.removeStorage({
 					    key: 'token'
 					})
+					uni.redirectTo({
+						url: '/pages/person/logon'
+					});
 					return;
-					// uni.navigateTo({
-					// 	url: '/pages/person/logon'
-					// });
 				}
                 resolve(res[1])
             }

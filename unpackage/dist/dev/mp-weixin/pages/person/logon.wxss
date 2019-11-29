@@ -77,9 +77,10 @@
 	padding: 0 20rpx;
 }
 .otherLogin {
+	
 	width: 500rpx;
 	height: 95rpx;
-	margin: 0 auto;
+	margin: 10px auto;
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;

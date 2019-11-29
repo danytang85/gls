@@ -128,7 +128,7 @@
 .action-section {
   position: fixed;
   left: 30rpx;
-  bottom: 120rpx;
+  bottom: 160rpx;
   z-index: 95;
   display: -webkit-box;
   display: -webkit-flex;

@@ -20,7 +20,8 @@
     "pages/notice/notice",
     "pages/detail/detail",
     "pages/userinfo/userinfo",
-    "pages/order/dispOrder"
+    "pages/order/dispOrder",
+    "pages/person/share"
   ],
   "subPackages": [],
   "window": {
@@ -30,9 +31,14 @@
     "backgroundColor": "#F8F8F8",
     "navigationStyle": "custom"
   },
-  "permission": {},
+  "permission": {
+    "scope.userLocation": {
+      "desc": "收货地址管理"
+    }
+  },
   "usingComponents": {
     "footermenu": "/pages/common/footermenu",
     "cu-custom": "/components/colorui/cu-custom"
-  }
+  },
+  "sitemapLocation": "sitemap96.json"
 }

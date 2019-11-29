@@ -27,18 +27,19 @@
 					<view class="action text-orange">绑定当前手机号登录</view>
 					<view class="action text-blue" @tap="hideModal">取消</view>
 				</view>
-				<view class="padding-xl"><button class="cu-btn bg-orange lg" open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">绑定当前手号码登录</button></view>
+				<view class="padding-xl">
+					<button class="cu-btn bg-orange lg" open-type="getPhoneNumber" @getphonenumber="getPhoneNumberHander">绑定当前手号码登录</button>
+				</view>
 			</view>
 		</view>
 		<!-- #ifdef MP-WEIXIN -->
 		<!-- 其他登录方式 -->
-		<view class="otherLoginTitle">————————其他登录方式————————</view>
 		<view class="otherLogin">
-			<button class="bottom" type="primary" open-type="getUserInfo" withCredentials="true" lang="zh_CN" @getuserinfo="weixinlogin">微信授权登录</button>
-
-			<!-- <view class="weiixnLogin" @click="weixinlogin">
-				<image src="../../static/weixin.png" mode=""></image>
-			</view> -->
+			
+			<button class="cu-btn block margin-tb-sm"  open-type="getUserInfo"  @getuserinfo="weixinlogin">
+				<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+			</button>
+	
 		</view>
 
 		<!-- #endif -->
@@ -464,9 +465,10 @@ export default {
 }
 
 .otherLogin {
+	
 	width: 500upx;
 	height: 95upx;
-	margin: 0 auto;
+	margin: 10px auto;
 	display: flex;
 	justify-content: space-between;
 }

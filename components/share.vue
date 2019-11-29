@@ -121,19 +121,7 @@ export default {
 						img: sharedata.img
 					});
 				}
-			this.$api.msg(`分享给${type}`);
 				// #endif
-				
-				// #ifdef MP-WEIXIN
-				
-				
-				// #endif
-			}else if(type === 2){
-				
-				this.$api.msg(`分享给${type}`);
-				
-			}else if(type === 3){
-				
 				this.$api.msg(`分享给${type}`);
 				
 			}

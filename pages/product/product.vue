@@ -22,6 +22,7 @@
 				<text class="price-tip">¥</text>
 				<text class="price">{{pinfo.price}}</text>
 				<text class="m-price">¥{{pinfo.cprice}}</text>
+				<text class="coupon-tip" v-if="pinfo.discount!=1">{{pinfo.discount}}折</text> 
 				<!-- #ifdef H5 -->
 				<view @click="share" class="share-right text-orange cuIcon-share "></view>
 				<!-- #endif -->
@@ -29,8 +30,6 @@
 				<button  class="cu-btn round bg-red sm  share-right" open-type="share">分享</button>
 				<!-- #endif -->
 				
-				
-				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
 			<view class="bot-row">
 				<text>销量: {{pinfo.salenum}}</text>
@@ -111,7 +110,13 @@
 			<rich-text :nodes="desc"></rich-text>
 		</view>
 		
-		<view   class="cu-bar foot bg-white tabbar border shop page-bottom">
+		<view   class="cu-bar foot  bg-white tabbar border shop ">
+			<!-- <button class="action" open-type="contact">
+				<view class="cuIcon-service text-green">
+					<view class="cu-tag badge"></view>
+				</view>
+				客服
+			</button> -->
 			<button @click="toFavorite"  class="action text-black " v-if="favorite===false" >
 				<view class="cuIcon-favor" >
 				</view> 收藏
@@ -120,39 +125,26 @@
 				<view class="cuIcon-favor ">
 				</view> 收藏
 			</button>
-			<view  @click="toChart" class="action text-black">
+			<view  @click="toChart"  class="action text-black"  >
 				<view class="cuIcon-cart">
 					<view class="cu-tag badge">{{cartcount}}</view>
 				</view>
 				购物车
 			</view>
-			<view class="btn-group">
-				<button class="cu-btn bg-orange round shadow-blur"  @click="addcart">加入购物车</button>
-				<button class="cu-btn bg-red round shadow-blur" @click="buy">立即购买</button>
-			</view>
-		</view>
-		<!-- 底部操作菜单 -->
-		<!-- <view class="page-bottom">
-			<navigator url="/pages/index/home" open-type="navigate" class="p-b-btn">
-				<text class="yticon icon-xiatubiao--copy"></text>
-				<text>首页</text>
-			</navigator>
-			
-			<navigator url="/pages/cart/home" open-type="navigate" class="p-b-btn">
+			<view class="bg-orange submit" v-if="isnotupgrade" @click="addcart">加入购物车</view>
+			<view class="bg-red submit" @click="buy">立即订购</view>
+			<!-- <view class="btn-group">
+				<button class="cu-btn bg-orange round shadow-blur">加入购物车</button>
+				<button class="cu-btn bg-red round shadow-blur">立即订购</button>
+			</view> -->
+			<!-- <view class="btn-group ">
+				<button class="cu-btn bg-red round shadow-blur">立即订购</button>
 				
-				<text class="yticon icon-gouwuche"></text>
-				<text>购物车</text>
-			</navigator>
-			<view class="p-b-btn" :class="{active: favorite}" @click="toFavorite">
-				<text class="yticon icon-shoucang"></text>
-				<text>收藏</text>
-			</view>
-			
-			<view class="action-btn-group">
-				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn" @click="addcart" >加入购物车</button>
-			</view>
-		</view> -->
+				<button class="cu-btn bg-orange round shadow-blur" v-if="isnotupgrade"  @click="addcart">加入购物车</button>
+				<button class="cu-btn bg-red round shadow-blur " @click="buy">立即购买</button>
+			</view> -->
+		</view>
+		
 		
 		
 		<!-- 规格-模态层弹窗 -->
@@ -193,6 +185,7 @@
 				thumblist:[],
 				desc: "",
 				sharedata:[],
+				isnotupgrade:false,
 				
 			};
 		},
@@ -212,6 +205,7 @@
 				res => {
 					//打印请求返回的数据
 					if (res.data['code'] == 0) {
+						this.isnotupgrade=res.data["pinfo"].upgrade==1?false:true
 						this.pinfo = res.data["pinfo"];
 						this.thumblist = res.data["thumblist"];
 						this.desc=this.pinfo["content"];
@@ -235,7 +229,7 @@
 		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
 		　　var shareObj = {
 		　　　　title: this.pinfo.title,        // 默认是小程序的名称(可以写slogan等)
-		　　　　path: '/pages/product/product?psid='+this.pinfo.psdi,        // 默认是当前页面，必须是以‘/’开头的完整路径
+		　　　　path: '/pages/product/product?psid='+this.pinfo.psid,        // 默认是当前页面，必须是以‘/’开头的完整路径
 		　　　　imageUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
 		　　　　success: function(res){
 		　　　　　　// 转发成功之后的回调
@@ -255,13 +249,6 @@
 		　　　　　　// 转发结束之后的回调（转发成不成功都会执行）
 		　　　　}
 		　　};
-		　　// 来自页面内的按钮的转发
-		　　if( options.from == 'button' ){
-		　　　　var eData = options.target.dataset;
-		　　　　console.log( eData.name );     // shareBtn
-		　　　　// 此处可以修改 shareObj 中的内容
-		　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
-		　　}
 		　　// 返回shareObj
 		　　return shareObj;
 		},
@@ -298,9 +285,27 @@
 				
 			},
 			buy(){
-				uni.navigateTo({
-					url: `/pages/order/createOrder?psid=${this.pinfo.psid}`
-				})
+				let opts = {
+					url: '/productapi/issaleproduct/',
+					method: 'post'
+				};
+				let param = {psid:this.pinfo["psid"]};
+				http.httpTokenRequest(opts, param).then(
+					res => {
+						//打印请求返回的数据
+						if (res.data['code'] == 0) {
+							uni.navigateTo({
+								url: `/pages/order/createOrder?psid=${this.pinfo.psid}`
+							})
+						} else {
+							uni.showToast({title: res.data.msg,icon: 'none'});
+						}
+					},
+					error => {
+						console.log(error);
+					}
+				);
+				
 			},
 			
 			toChart(){

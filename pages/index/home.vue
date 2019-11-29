@@ -4,7 +4,7 @@
 		<view class="carousel-section">
 			<swiper class="screen-swiper" :class="'square-dot'" :indicator-dots="true" :circular="true" :autoplay="true" interval="5000" duration="500">
 				<swiper-item v-for="(item, index) in carouselList" :key="index">
-					<image :src="item.src" mode="aspectFill" v-if="item.type == 'image'"></image>
+					<image :src="serverapi+item.images" mode="aspectFill" v-if="item.type == 'image'"></image>
 					<video :src="item.src" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type == 'video'"></video>
 				</swiper-item>
 			</swiper>
@@ -12,15 +12,17 @@
 		<!-- 分类 -->
 		<view class="cate-section">
 			<view class="cate-item">
-				<image src="/static/temp/c3.png"></image>
+				<text class="iconfont icon-cuxiaohuodong indexicon basecolor"></text>
 				<text>促销活动</text>
 			</view>
 			<view class="cate-item">
-				<image src="/static/temp/c5.png"></image>
+				<text class="iconfont icon-zhucehuiyuan indexicon unbasecolor"></text>
+
 				<text>会员中心</text>
 			</view>
 			<view class="cate-item">
-				<image src="/static/temp/c6.png"></image>
+				<text class="iconfont icon-chanpinzixun indexicon basecolor"></text>
+
 				<text>产品资讯</text>
 			</view>
 		</view>
@@ -31,19 +33,37 @@
     	
     	 -->
 
-		<!-- 猜你喜欢 -->
 		<view class="f-header m-t">
-			<image src="/static/temp/h1.png"></image>
+			<text class="iconfont icon-iconcj indexicon unbasecolor"></text>
+
 			<view class="tit-box">
-				<text class="tit">精品</text>
-				<text class="tit2">Guess You Like It</text>
+				<text class="tit">初级经销商直升产品</text>
+				<!-- <text class="tit2">Hot</text> -->
 			</view>
 			<text class="yticon icon-you"></text>
 		</view>
 
 		<view class="guess-section">
 			<view v-for="(item, index) in goodsList" :key="index" class="guess-item" @click="navToDetailPage(item)">
-				<view class="image-wrapper"><image :src="item.image" mode="aspectFill"></image></view>
+				<view class="image-wrapper"><image :src="serverapi + item.images" mode="aspectFill"></image></view>
+				<text class="title clamp">{{ item.title }}</text>
+				<text class="price">￥{{ item.price }}</text>
+			</view>
+		</view>
+
+		<view class="f-header m-t">
+			<text class="iconfont icon-zhongji indexicon basecolor"></text>
+
+			<view class="tit-box">
+				<text class="tit">中级经销商直升产品</text>
+				<!-- <text class="tit2">Hot</text> -->
+			</view>
+			<text class="yticon icon-you"></text>
+		</view>
+
+		<view class="guess-section">
+			<view v-for="(item, index) in goodsList2" :key="index" class="guess-item" @click="navToDetailPage(item)">
+				<view class="image-wrapper"><image :src="serverapi + item.images" mode="aspectFill"></image></view>
 				<text class="title clamp">{{ item.title }}</text>
 				<text class="price">￥{{ item.price }}</text>
 			</view>
@@ -53,21 +73,24 @@
 	</view>
 </template>
 <script>
+import http from '@/components/utils/http.js';
 import { mapState, mapMutations } from 'vuex';
 
 export default {
 	data() {
 		return {
+			serverapi: this.apiServer,
 			titleNViewBackground: '',
 			swiperCurrent: 0,
 			swiperLength: 0,
 			carouselList: [],
-			goodsList: []
+			goodsList: [],
+			goodsList2: []
+			
 		};
 	},
-	
+
 	onLoad() {
-		
 		this.loadData();
 	},
 
@@ -77,14 +100,64 @@ export default {
 		 * 分次请求未作整合
 		 */
 		async loadData() {
-			let carouselList = await this.$api.json('carouselList');
-			this.titleNViewBackground = carouselList[0].background;
-			this.swiperLength = carouselList.length;
-			this.carouselList = carouselList;
-
-			let goodsList = await this.$api.json('goodsList');
-			this.goodsList = goodsList || [];
+			
+			this.getbanner();
+			this.getproductlist();
 		},
+		
+		
+		getproductlist(){
+		let opts = {
+			url: '/productApi/getgradeproduct/',
+			method: 'post'
+		};
+		
+		let param = { };
+		http.httpTokenRequest(opts, param).then(
+			res => {
+				//打印请求返回的数据
+				if (res.data['code'] == 0) {
+					let goodsList1 = res.data['goodsList1'];
+					let goodsList2 = res.data['goodsList2'];
+					this.goodsList = goodsList1 || [];
+					this.goodsList2 = goodsList2 || [];
+				} else {
+					uni.showToast({ title: res.data.msg, icon: 'none' });
+				}
+			},
+			error => {
+				console.log(error);
+			}
+		);	
+		},
+		
+		getbanner(){
+		let	_that=this;
+		let opts = {
+			url: '/base/getbannerlist/',
+			method: 'post'
+		};
+		
+		let param = { };
+		http.httpTokenRequest(opts, param).then(
+			res => {
+				//打印请求返回的数据
+				if (res.data['code'] == 0) {
+					let carouselList = res.data['bannerlist'];
+					_that.titleNViewBackground = carouselList[0].background;
+					_that.swiperLength = carouselList.length;
+					_that.carouselList = carouselList;
+			
+				} else {
+					uni.showToast({ title: res.data.msg, icon: 'none' });
+				}
+			},
+			error => {
+				console.log(error);
+			}
+		);	
+		},
+
 		//轮播图切换修改背景色
 		swiperChange(e) {
 			const index = e.detail.current;
@@ -94,37 +167,12 @@ export default {
 		//详情页
 		navToDetailPage(item) {
 			//测试数据没有写id，用title代替
-			let id = item.title;
+			let id = item.psid;
 			uni.navigateTo({
-				url: `/pages/product/product?id=${id}`
-			});
-		}
-	},
-	// #ifndef MP
-	// 标题栏input搜索框点击
-	onNavigationBarSearchInputClicked: async function(e) {
-		this.$api.msg('点击了搜索框');
-	},
-	//点击导航栏 buttons 时触发
-	onNavigationBarButtonTap(e) {
-		const index = e.index;
-		if (index === 0) {
-			this.$api.msg('点击了扫描');
-		} else if (index === 1) {
-			// #ifdef APP-PLUS
-			const pages = getCurrentPages();
-			const page = pages[pages.length - 1];
-			const currentWebview = page.$getAppWebview();
-			currentWebview.hideTitleNViewButtonRedDot({
-				index
-			});
-			// #endif
-			uni.navigateTo({
-				url: '/pages/notice/notice'
+				url: `/pages/product/product?psid=${id}`
 			});
 		}
 	}
-	// #endif
 };
 </script>
 
@@ -156,7 +204,9 @@ page {
 	}
 }
 /* #endif */
-
+.indexicon {
+	font-size: 40px;
+}
 page {
 	background: #f5f5f5;
 }

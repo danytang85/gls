@@ -74,11 +74,44 @@
 			
 			//地图选择地址
 			chooseLocation(){
+				
+				// uni.getLocation({
+				//     type: 'wgs84',
+				//     success: function (res) {
+				//        this.addressData.addressname = data.name;
+				//        this.addressData.address = data.address; 
+				//     }
+				// });
+				// uni.getSetting({  
+				//                     success(res) {  
+				//                         if (!res.authSetting['scope.userLocation']) {  
+				//                             uni.authorize({  
+				//                                 scope: 'scope.userLocation',  
+				//                                 success() {  
+				//                                     uni.chooseLocation({  
+				//                                         success: function(res) {   
+				//                                            this.addressData.addressname = data.name;
+				//                                            this.addressData.address = data.address; 
+				//                                         }  
+				//                                     });  
+				//                                 }  
+				//                             })  
+				//                         }else{  
+				//                             uni.chooseLocation({  
+				//                                 success: function(res) {   
+				//                                    this.addressData.addressname = data.name;
+				//                                    this.addressData.address = data.address;
+				//                                 }  
+				//                             });  
+				//                         }  
+				//                     }  
+				//                 })
+								
 				uni.chooseLocation({
 					success: (data)=> {
 						console.log(data);
 						this.addressData.addressname = data.name;
-						this.addressData.address = data.address;
+						this.addressData.address = data.address; 
 					}
 				})
 			},

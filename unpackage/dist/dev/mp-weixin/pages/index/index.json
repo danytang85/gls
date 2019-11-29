@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "引导页",
-  "usingComponents": {
-    "loading": "/components/xuan-loading/xuan-loading"
-  }
+  "usingComponents": {}
 }

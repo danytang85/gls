@@ -403,7 +403,7 @@ export default {
 	/* #endif */
 	position: fixed;
 	left: 30upx;
-	bottom: 120upx;
+	bottom: 160upx;
 	z-index: 95;
 	display: flex;
 	align-items: center;

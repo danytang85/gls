@@ -4,7 +4,7 @@
 		<view class="mix-list-cell" :class="border" @click="eventClick" hover-class="cell-hover"  :hover-stay-time="50">
 			<text
 				v-if="icon"
-				class="cell-icon yticon"
+				class="cell-icon iconfont"
 				:style="[{
 					color: iconColor,
 				}]"
@@ -12,7 +12,7 @@
 			></text>
 			<text class="cell-tit clamp">{{title}}</text>
 			<text v-if="tips" class="cell-tip">{{tips}}</text>
-			<text class="cell-more yticon"
+			<text class="cell-more iconfont"
 				:class="typeList[navigateType]"
 			></text>
 		</view>
@@ -29,10 +29,10 @@
 		data() {
 			return {
 				typeList: {
-					left: 'icon-zuo',
-					right: 'icon-you',
-					up: 'icon-shang',
-					down: 'icon-xia'
+					left: 'icon-fangxiang',
+					right: 'icon-arrow-copy',
+					up: 'icon-top',
+					down: 'icon-arrow-up'
 				},
 			}
 		},

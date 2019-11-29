@@ -25,6 +25,9 @@ page .carousel-section .swiper-dots {
     left: 45rpx;
     bottom: 40rpx;
 }
+.indexicon {
+  font-size: 40px;
+}
 page {
   background: #f5f5f5;
 }
