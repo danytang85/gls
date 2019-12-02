@@ -76,6 +76,13 @@
       "unicode_decimal": 58880
     },
     {
+      "icon_id": "2847168",
+      "name": "CheckBox Selected",
+      "font_class": "CheckBoxSelected",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
       "icon_id": "3176985",
       "name": "促销活动",
       "font_class": "cuxiaohuodong",
@@ -90,6 +97,13 @@
       "unicode_decimal": 59028
     },
     {
+      "icon_id": "3235318",
+      "name": "alter_delete",
+      "font_class": "delete",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
       "icon_id": "3282569",
       "name": "task1_3_绑定手机号码",
       "font_class": "task__bangdingshoujihaoma",
@@ -102,6 +116,13 @@
       "font_class": "fukuan",
       "unicode": "e614",
       "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "3450095",
+      "name": "会员中心",
+      "font_class": "huiyuanzhongxin2",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
     },
     {
       "icon_id": "3693181",
@@ -160,6 +181,13 @@
       "unicode_decimal": 58904
     },
     {
+      "icon_id": "6084760",
+      "name": "修 改",
+      "font_class": "xiugai",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
       "icon_id": "7481349",
       "name": "方向",
       "font_class": "arrow-up",
@@ -186,6 +214,13 @@
       "font_class": "quanbudingdan",
       "unicode": "e682",
       "unicode_decimal": 59010
+    },
+    {
+      "icon_id": "8105277",
+      "name": "会员中心",
+      "font_class": "huiyuanzhongxin1",
+      "unicode": "e65e",
+      "unicode_decimal": 58974
     },
     {
       "icon_id": "8335045",
@@ -237,6 +272,13 @@
       "unicode_decimal": 58893
     },
     {
+      "icon_id": "9336343",
+      "name": "定位",
+      "font_class": "location",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
       "icon_id": "9344762",
       "name": "收益",
       "font_class": "shouyi",
@@ -279,6 +321,13 @@
       "unicode_decimal": 59003
     },
     {
+      "icon_id": "10442975",
+      "name": "微信支付",
+      "font_class": "weixinzhifu",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
       "icon_id": "10545503",
       "name": "分 享",
       "font_class": "fenxiang",
@@ -291,6 +340,13 @@
       "font_class": "fahuo",
       "unicode": "e64c",
       "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "10614089",
+      "name": "支付成功",
+      "font_class": "chenggong",
+      "unicode": "e654",
+      "unicode_decimal": 58964
     },
     {
       "icon_id": "10813787",

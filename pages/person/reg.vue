@@ -69,7 +69,7 @@ export default {
 			SessionKey: '',
 			OpenId: '',
 			bindmobile: false,
-			vcode:uni.getStorage("vcode"),
+			vcode:"",
 		};
 	},
 	computed: mapState(['forcedLogin']),
@@ -143,6 +143,7 @@ export default {
 		},
 
 		_regrequest(userdata) {
+			let _this=this;
 			let opts = {
 				url: '/userApi/reg/',
 				method: 'post'
@@ -152,8 +153,7 @@ export default {
 				res => {
 					//打印请求返回的数据
 					if (res.data['code'] == 0) {
-						this.userinfo = res.data['userinfo'];
-						this.login(this.userinfo);
+						_this.login(res.data['token']);
 						uni.navigateTo({
 							url: this.backpage
 						});
@@ -258,7 +258,7 @@ export default {
 				wxopenid:this.OpenId,
 				nickname: this.userinfo["nickName"],
 				province: this.userinfo["province"],
-				headimg: this.userinfo["avatarUrl"],
+				// headimg: this.userinfo["avatarUrl"],
 				city: this.userinfo["city"],
 				country: this.userinfo["country"],
 				gender: this.userinfo["gender"],
@@ -331,10 +331,10 @@ export default {
 											}else{
 												let sessionkey = res.data['data'].session_key;
 												let openid = res.data['data'].openid;
-												uni.setStorage({//将用户信息保存在本地
-												    key: 'openid',
-												    data: openid
-												});
+												// uni.setStorage({//将用户信息保存在本地
+												//     key: 'openid',
+												//     data: openid
+												// });
 												_this.OpenId=openid;
 												_this.SessionKey=sessionkey;
 												_this.showModal();
@@ -360,9 +360,19 @@ export default {
 	},
 	onReady() {},
 	onLoad(options) {
-		if (options.backpage) {
-			this.backpage = options.backpage;
+		if (options.backpage!="undefined") {
+			this.backpage = decodeURIComponent(options.backpage);
 		}
+		
+		try {
+		    const value = uni.getStorageSync('vcode');
+		    if (value) {
+		       this.vcode=value;
+		    }
+		} catch (e) {
+		    // error
+		}
+		
 	}
 };
 </script>

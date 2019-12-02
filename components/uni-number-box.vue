@@ -165,8 +165,8 @@
 		text-align: center;
 		position: relative;
 	}
-	.uni-numbox-minus .yticon,
-	.uni-numbox-plus .yticon{
+	.uni-numbox-minus .iconfont,
+	.uni-numbox-plus .iconfont{
 		font-size: 36upx;
 		color: #555;
 	}
@@ -193,7 +193,7 @@
 		font-size: 30upx;
 	}
 
-	.uni-numbox-disabled.yticon {
+	.uni-numbox-disabled.fonticon {
 		color: #d6d6d6;
 	}
 </style>

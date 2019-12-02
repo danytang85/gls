@@ -1,90 +1,87 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		
+
 		{
-		    "path" : "pages/index/index",
-		    "style": {
-				
-		    	"navigationBarTitleText": "引导页",
-				"app-plus": {  
-				                    "titleNView": false //打包app 要加上这个 禁用原生导航栏  
-				                }  
-		    }
-		},{
-		    "path" : "pages/person/logon",
-		    "style": {
-		    	"navigationBarTitleText": "登录页"
-		    }
-		},{
+			"path": "pages/index/index",
+			"style": {
+
+				"navigationBarTitleText": "引导页",
+				"app-plus": {
+					"titleNView": false //打包app 要加上这个 禁用原生导航栏  
+				}
+			}
+		}, {
+			"path": "pages/person/logon",
+			"style": {
+				"navigationBarTitleText": "登录页"
+			}
+		}, {
 			"path": "pages/index/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"app-plus": {  
-				                    "titleNView": false //打包app 要加上这个 禁用原生导航栏  
-				                }  
+				"app-plus": {
+					"titleNView": false //打包app 要加上这个 禁用原生导航栏  
+				}
 			}
 		},
-	    {
-            "path" : "pages/ptype/home",
-            "style" : {}
-        },{
-            "path" : "pages/cart/home",
-            "style" : {}
-        },{
-            "path" : "pages/person/home",
-            "style" : {}
-        },{
-            "path" : "pages/common/footermenu",
-            "style" : {}
-        },{
-            "path" : "pages/person/reg",
-            "style" : {}
-        },{
-		    "path" : "pages/order/createOrder",
-		    "style" : {}
-		},{
-		    "path" : "pages/order/order",
-		    "style" : {}
-		},{
-		    "path" : "pages/money/pay",
-		    "style" : {}
-		},{
-		    "path" : "pages/money/paySuccess",
-		    "style" : {}
-		},{
-		    "path" : "pages/address/address",
-		    "style" : {}
-		},{
-		    "path" : "pages/address/addressManage",
-		    "style" : {}
-		},{
-		    "path" : "pages/set/set",
-		    "style" : {}
-		},{
-		    "path" : "pages/product/list",
-		    "style" : {}
-		},{
-		    "path" : "pages/product/product",
-		    "style" : {}
-		},{
-		    "path" : "pages/notice/notice",
-		    "style" : {}
-		},{
-		    "path" : "pages/detail/detail",
-		    "style" : {}
-		},{
-		    "path" : "pages/userinfo/userinfo",
-		    "style" : {}
-		},{
-		    "path" : "pages/order/dispOrder",
-		    "style" : {}
-		},{
-		    "path" : "pages/person/share",
-		    "style" : {}
+		{
+			"path": "pages/ptype/home",
+			"style": {}
+		}, {
+			"path": "pages/cart/home",
+			"style": {}
+		}, {
+			"path": "pages/person/home",
+			"style": {}
+		}, {
+			"path": "pages/common/footermenu",
+			"style": {}
+		}, {
+			"path": "pages/person/reg",
+			"style": {}
+		}, {
+			"path": "pages/order/createOrder",
+			"style": {}
+		}, {
+			"path": "pages/order/order",
+			"style": {}
+		}, {
+			"path": "pages/money/pay",
+			"style": {}
+		}, {
+			"path": "pages/money/paySuccess",
+			"style": {}
+		}, {
+			"path": "pages/address/address",
+			"style": {}
+		}, {
+			"path": "pages/address/addressManage",
+			"style": {}
+		}, {
+			"path": "pages/set/set",
+			"style": {}
+		}, {
+			"path": "pages/product/list",
+			"style": {}
+		}, {
+			"path": "pages/product/product",
+			"style": {}
+		}, {
+			"path": "pages/notice/notice",
+			"style": {}
+		}, {
+			"path": "pages/order/dispOrder",
+			"style": {}
+		}, {
+			"path": "pages/person/share",
+			"style": {}
+		}, {
+			"path": "pages/person/upload",
+			"style": {}
 		}
-        
-       
-    ],
+
+
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
@@ -92,17 +89,15 @@
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"
 	},
-	
-	
-	"condition" : { //模式配置，仅开发期间生效
+
+
+	"condition": { //模式配置，仅开发期间生效
 		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
+		"list": [{
+			"name": "", //模式名称
+			"path": "", //启动页面，必选
+			"query": "" //启动参数，在页面的onLoad函数里面得到
+		}]
 	}
 	// "tabBar": {
 	// 	"color": "#C0C4CC",
@@ -135,8 +130,8 @@
 	// 		}
 	// 	]
 	// }
-	
-	
-	
-	
+
+
+
+
 }

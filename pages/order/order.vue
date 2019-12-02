@@ -35,7 +35,7 @@
 							<text class="state" :style="{color: item.stateTipColor}">{{item.stateTip}}</text>
 							<text 
 								v-if="item.state===9" 
-								class="del-btn yticon icon-iconfontshanchu1"
+								class="del-btn iconfont icon-delete"
 								@click="deleteOrder(item.id,index)"
 							></text>
 						</view>

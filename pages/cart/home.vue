@@ -22,6 +22,7 @@
 				<block v-for="(item, index) in cartList" :key="item.id">
 					<view class="cart-item" :class="{ 'b-b': index !== cartList.length - 1 }">
 						<view class="image-wrapper">
+							
 							<image
 								:src="item.images"
 								:class="[item.loaded]"
@@ -29,8 +30,9 @@
 								lazy-load
 								@load="onImageLoad('cartList', index)"
 								@error="onImageError('cartList', index)"
+								@click="navtoproduct(item.psid)"
 							></image>
-							<view class="yticon icon-xuanzhong2 checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
+							<view class="iconfont icon-CheckBoxSelected checkbox" :class="{ checked: item.checked }" @click="check('item', index)"></view>
 						</view>
 						<view class="item-right">
 							<text class="clamp title">{{ item.title }}</text>
@@ -47,7 +49,7 @@
 								@eventChange="numberChange"
 							></uni-number-box>
 						</view>
-						<text class="del-btn yticon icon-fork" @click="deleteCartItem(index)"></text>
+						<text class="del-btn iconfont icon-delete" @click="deleteCartItem(index)"></text>
 					</view>
 				</block>
 			</view>
@@ -118,6 +120,9 @@ export default {
 	},
 	methods: {
 		...mapMutations(['logout']),
+		
+		
+		
 		loadData() {
 			let opts = {
 				url: '/productApi/cartList/',
@@ -165,9 +170,15 @@ export default {
 		},
 		navToLogin() {
 			uni.navigateTo({
-				url: '/pages/public/login'
+				url: '/pages/person/login'
 			});
 		},
+		navtoproduct(psid){
+			uni.navigateTo({
+				url: '/pages/product/product?psid='+psid
+			});
+		},
+		
 		//选中状态处理
 		check(type, index) {
 			if (type === 'item') {
@@ -391,7 +402,7 @@ export default {
 	}
 	.del-btn {
 		padding: 4upx 10upx;
-		font-size: 34upx;
+		font-size: 50upx;
 		height: 50upx;
 		color: $font-color-light;
 	}
@@ -403,7 +414,7 @@ export default {
 	/* #endif */
 	position: fixed;
 	left: 30upx;
-	bottom: 160upx;
+	bottom: 140upx;
 	z-index: 95;
 	display: flex;
 	align-items: center;

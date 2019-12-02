@@ -16,7 +16,7 @@
 				<text>促销活动</text>
 			</view>
 			<view class="cate-item">
-				<text class="iconfont icon-zhucehuiyuan indexicon unbasecolor"></text>
+				<text class="iconfont icon-huiyuanzhongxin2 indexicon unbasecolor"></text>
 
 				<text>会员中心</text>
 			</view>
@@ -40,7 +40,7 @@
 				<text class="tit">初级经销商直升产品</text>
 				<!-- <text class="tit2">Hot</text> -->
 			</view>
-			<text class="yticon icon-you"></text>
+			<text class="iconfont icon-arrow-copy"></text>
 		</view>
 
 		<view class="guess-section">
@@ -58,7 +58,7 @@
 				<text class="tit">中级经销商直升产品</text>
 				<!-- <text class="tit2">Hot</text> -->
 			</view>
-			<text class="yticon icon-you"></text>
+			<text class="iconfont icon-arrow-copy"></text>
 		</view>
 
 		<view class="guess-section">

@@ -209,21 +209,6 @@ export default {
 			);
 		},
 
-		//  wxGetUserInfo() {
-		// 	let _this = this;
-		// 	uni.getUserInfo({
-		// 		provider: 'weixin',
-		// 		success: function(infoRes) {
-		// 			console.log("infoRes",infoRes);
-		// 			let nickName = infoRes.userInfo.nickName; //昵称
-		// 			let avatarUrl = infoRes.userInfo.avatarUrl; //头像
-		// 			try {
-		// 				uni.setStorageSync('isCanUse', false);//记录是否第一次授权  false:表示不是第一次授权
-		// 			} catch (e) {}
-		// 		},
-		// 		fail(res) {}
-		// 	});
-		// },
 		getPhoneNumberHander: function(e) {
 			
 			console.log("e",e);
@@ -279,7 +264,7 @@ export default {
 				wxopenid:this.OpenId,
 				nickname: this.userinfo["nickName"],
 				province: this.userinfo["province"],
-				headimg: this.userinfo["avatarUrl"],
+				// headimg: this.userinfo["avatarUrl"],
 				city: this.userinfo["city"],
 				country: this.userinfo["country"],
 				gender: this.userinfo["gender"],
@@ -351,10 +336,6 @@ export default {
 											}else{
 												let sessionkey = res.data['data'].session_key;
 												let openid = res.data['data'].openid;
-												uni.setStorage({//将用户信息保存在本地
-												    key: 'openid',
-												    data: openid
-												});
 												_this.OpenId=openid;
 												_this.SessionKey=sessionkey;
 												_this.showModal();
@@ -386,6 +367,16 @@ export default {
 		if (options.backpage) {
 			this.backpage = options.backpage;
 		}
+		
+		try {
+		    const value = uni.getStorageSync('vcode');
+		    if (value) {
+		       this.vcode=value;
+		    }
+		} catch (e) {
+		    // error
+		}
+	
 	}
 };
 </script>

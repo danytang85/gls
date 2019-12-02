@@ -17,7 +17,7 @@
 			<text @click="chooseLocation" class="input">
 				{{addressData.addressname}}
 			</text>
-			<text class="yticon icon-shouhuodizhi"></text>
+			<text class="iconfont icon-location"></text>
 		</view>
 		<view class="row b-b"> 
 			<text class="tit">门牌号</text>
@@ -129,11 +129,15 @@
 						if (res.data['code'] == 0) {
 							this.$api.prePage().refreshList(data, this.manageType);
 							this.$api.msg(`地址${this.manageType=='edit' ? '修改': '添加'}成功`);
+							uni.hideLoading();
 							setTimeout(()=>{
 								uni.navigateBack()
 							}, 800)
 							
 						} else {
+							setTimeout(function () {
+							    uni.hideLoading();
+							}, 2000);
 							uni.showToast({ title: res.data.msg, icon: 'none' });
 						}
 					},
@@ -145,6 +149,9 @@
 			
 			//提交
 			confirm(){
+				uni.showLoading({
+				    title: '正在提交'
+				});
 				let data = this.addressData;
 				console.log(data);
 				if(!data.name){

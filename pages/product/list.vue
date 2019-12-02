@@ -15,11 +15,11 @@
 			<view class="nav-item" :class="{current: filterIndex === 2}" @click="tabClick(2)">
 				<text>价格</text>
 				<view class="p-box">
-					<text :class="{active: priceOrder === 1 && filterIndex === 2}" class="yticon icon-shang"></text>
-					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="yticon icon-shang xia"></text>
+					<text :class="{active: priceOrder === 1 && filterIndex === 2}" class="iconfont icon-arrow-up"></text>
+					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="iconfont icon-arrow-up xia"></text>
 				</view>
 			</view>
-			<text class="cate-item yticon icon-fenlei1" @click="toggleCateMask('show')"></text>
+			<text class="cate-item iconfont icon-leimupinleifenleileibie" @click="toggleCateMask('show')"></text>
 		</view>
 		<view class="goods-list">
 			<view 
@@ -301,7 +301,7 @@
 		.p-box{
 			display: flex;
 			flex-direction: column;
-			.yticon{
+			.iconfont{
 				display: flex;
 				align-items: center;
 				justify-content: center;

@@ -136,7 +136,7 @@
     color: #f7d680;
     margin-bottom: 28rpx;
 }
-.vip-card-box .tit .yticon {
+.vip-card-box .tit .iconfont {
       color: #f6e5a3;
       margin-right: 16rpx;
 }

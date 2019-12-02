@@ -1,6 +1,6 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],[
-/* 0 */,
-/* 1 */
+(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+
+/***/ 1:
 /*!************************************************************!*\
   !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
   \************************************************************/
@@ -1496,7 +1496,2579 @@ var uni$1 = uni;var _default =
 uni$1;exports.default = _default;
 
 /***/ }),
-/* 2 */
+
+/***/ 12:
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v3.0.1
+ * (c) 2017 Evan You
+ * @license MIT
+ */
+var applyMixin = function (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+};
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+/**
+ * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
+
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  this._children = Object.create(null);
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors$1 = { namespaced: { configurable: true } };
+
+prototypeAccessors$1.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors$1 );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (true) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (true) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (true) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (true) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "Store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  if (typeof state === 'function') {
+    state = state() || {};
+  }
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  if (Vue.config.devtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors = { state: { configurable: true } };
+
+prototypeAccessors.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors.state.set = function (v) {
+  if (true) {
+    assert(false, "Use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+     true &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  this._actionSubscribers.forEach(function (sub) { return sub(action, this$1.state); });
+
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  return genericSubscribe(fn, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (true) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); };
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (true) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (true) {
+      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (true) {
+    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (true) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if ( true && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if ( true && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.0.1',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+
+/***/ }),
+
+/***/ 13:
+/*!*******************************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/components/utils/http.js ***!
+  \*******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} // const baseUrl = 'http://api.gls.com';
+var baseUrl = 'https://api.liangjikang.com';var httpRequest = function httpRequest(opts, data) {var httpDefaultOpts = { url: baseUrl + opts.url, data: data, method: opts.method, header: opts.method == 'get' ? {} : {}, dataType: 'json' };var promise = new Promise(function (resolve, reject) {uni.request(httpDefaultOpts).then(function (res) {resolve(res[1]);}).catch(function (response) {reject(response);});});return promise;}; //带Token请求
+var httpTokenRequest = function httpTokenRequest(opts, data) {var token = uni.getStorageSync("token"); //此token是登录成功后后台返回保存在storage中的
+  var httpDefaultOpts = { url: baseUrl + opts.url, data: data, method: opts.method, header: opts.method == 'get' ? { 'X-Requested-With': 'XMLHttpRequest', "Accept": "application/json", "Content-Type": "application/json; charset=UTF-8", 'Authorization': token } : { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;', 'Authorization': token }, dataType: 'json' };var promise = new Promise(function (resolve, reject) {uni.request(httpDefaultOpts).then(function (res) {if (res[1].data["code"] == 99) {uni.showToast({ title: "验证已经过期，请重新登录", icon: 'none' });uni.removeStorage({ key: 'token' });uni.redirectTo({ url: '/pages/person/logon' });return;}resolve(res[1]);}).catch(function (response) {reject(response);});});return promise;};var httpTokenUpload = function httpTokenUpload(opts, filePath, formData) {var token = uni.getStorageSync("token"); //此token是登录成功后后台返回保存在storage中的
+  var httpDefaultOpts = { url: baseUrl + opts.url, filePath: filePath, name: 'file', formData: formData, method: opts.method, header: opts.method == 'get' ? { 'Authorization': token } : { 'Authorization': token }, dataType: 'json' };var promise = new Promise(function (resolve, reject) {console.log(httpDefaultOpts);uni.uploadFile(httpDefaultOpts).then(function (res) {if (res[1].data["code"] == 99) {uni.showToast({ title: "验证已经过期，请重新登录", icon: 'none' });uni.removeStorage({ key: 'token' });uni.redirectTo({ url: '/pages/person/logon' });return;}resolve(res[1]);}).catch(function (response) {reject(response);});});return promise;};var _default = { baseUrl: baseUrl,
+  httpRequest: httpRequest,
+  httpTokenRequest: httpTokenRequest,
+  httpTokenUpload: httpTokenUpload,
+  methods: _objectSpread({},
+  (0, _vuex.mapMutations)(['logout'])) };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 16:
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 17:
+/*!*********************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/store/index.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+    token: "" },
+
+  mutations: {
+    login: function login(state, provider) {//改变登录状态
+      state.token = provider,
+
+      uni.setStorage({ //将用户信息保存在本地
+        key: 'token',
+        data: provider });
+
+    },
+    logout: function logout(state) {//退出登录
+      state.token = "",
+
+      uni.removeStorage({
+        key: 'token' });
+
+
+    } } });var _default =
+
+
+
+store;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 18:
+/*!**************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/Json.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* 用户 */
+var userInfo = {
+  status: 1,
+  data: {
+    id: 1,
+    mobile: 18888888888,
+    nickname: 'Leo yo',
+    portrait: 'http://img.61ef.cn/news/201409/28/2014092805595807.jpg' },
+
+  msg: '提示'
+
+  /* 首页轮播图 */ };
+var carouselList = [{
+  src: "/static/temp/banner1.jpg",
+  type: "image" },
+
+{
+  src: "/static/temp/banner2.jpg",
+  type: "image" }];
+
+
+
+/* 商品列表 */
+var goodsList = [{
+  image: "/img/gls.png",
+  title: "良吉康，膏力士 定通膏药贴",
+  price: 98,
+  sales: 61 }];
+
+
+
+
+/* 购物车 */
+var cartList = [{
+  id: 1,
+  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553005139&di=3368549edf9eee769a9bcb3fbbed2504&imgtype=jpg&er=1&src=http%3A%2F%2Fimg002.hc360.cn%2Fy3%2FM01%2F5F%2FDB%2FwKhQh1T7iceEGRdWAAAAADQvqk8733.jpg',
+  attr_val: '春装款 L',
+  stock: 15,
+  title: 'OVBE 长袖风衣',
+  price: 278.00,
+  number: 1 },
+
+{
+  id: 3,
+  image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2319343996,1107396922&fm=26&gp=0.jpg',
+  attr_val: '激光导航 扫拖一体',
+  stock: 3,
+  title: '科沃斯 Ecovacs 扫地机器人',
+  price: 1348.00,
+  number: 5 },
+
+{
+  id: 4,
+  image: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2668268226,1765897385&fm=26&gp=0.jpg',
+  attr_val: 'XL',
+  stock: 55,
+  title: '朵绒菲小西装',
+  price: 175.88,
+  number: 1 },
+
+{
+  id: 5,
+  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552410549432&di=06dd3758053fb6d6362516f30a42d055&imgtype=0&src=http%3A%2F%2Fimgcache.mysodao.com%2Fimg3%2FM0A%2F67%2F42%2FCgAPD1vNSsHNm-TnAAEy61txQb4543_400x400x2.JPG',
+  attr_val: '520 #粉红色',
+  stock: 15,
+  title: '迪奥（Dior）烈艳唇膏',
+  price: 1089.00,
+  number: 1 },
+
+{
+  id: 6,
+  image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1031875829,2994442603&fm=26&gp=0.jpg',
+  attr_val: '樱花味润手霜 30ml',
+  stock: 15,
+  title: "欧舒丹（L'OCCITANE）乳木果",
+  price: 128,
+  number: 1 },
+
+{
+  id: 7,
+  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553007107&di=390915aa8a022cf0b03c03340881b0e7&imgtype=jpg&er=1&src=http%3A%2F%2Fimg13.360buyimg.com%2Fn0%2Fjfs%2Ft646%2F285%2F736444951%2F480473%2Faa701c97%2F548176feN10c9ed7b.jpg',
+  attr_val: '特级 12个',
+  stock: 7,
+  title: '新疆阿克苏苹果 特级',
+  price: 58.8,
+  number: 10 },
+
+{
+  id: 8,
+  image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2319343996,1107396922&fm=26&gp=0.jpg',
+  attr_val: '激光导航 扫拖一体',
+  stock: 15,
+  title: '科沃斯 Ecovacs 扫地机器人',
+  price: 1348.00,
+  number: 1 },
+
+{
+  id: 9,
+  image: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2668268226,1765897385&fm=26&gp=0.jpg',
+  attr_val: 'XL',
+  stock: 55,
+  title: '朵绒菲小西装',
+  price: 175.88,
+  number: 1 },
+
+{
+  id: 10,
+  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552410549432&di=06dd3758053fb6d6362516f30a42d055&imgtype=0&src=http%3A%2F%2Fimgcache.mysodao.com%2Fimg3%2FM0A%2F67%2F42%2FCgAPD1vNSsHNm-TnAAEy61txQb4543_400x400x2.JPG',
+  attr_val: '520 #粉红色',
+  stock: 15,
+  title: '迪奥（Dior）烈艳唇膏',
+  price: 1089.00,
+  number: 1 },
+
+{
+  id: 11,
+  image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1031875829,2994442603&fm=26&gp=0.jpg',
+  attr_val: '樱花味润手霜 30ml',
+  stock: 15,
+  title: "欧舒丹（L'OCCITANE）乳木果",
+  price: 128,
+  number: 1 },
+
+{
+  id: 12,
+  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553007107&di=390915aa8a022cf0b03c03340881b0e7&imgtype=jpg&er=1&src=http%3A%2F%2Fimg13.360buyimg.com%2Fn0%2Fjfs%2Ft646%2F285%2F736444951%2F480473%2Faa701c97%2F548176feN10c9ed7b.jpg',
+  attr_val: '特级 12个',
+  stock: 7,
+  title: '新疆阿克苏苹果 特级',
+  price: 58.8,
+  number: 10 },
+
+{
+  id: 13,
+  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552405266625&di=a703f2b2cdb0fe7f3f05f62dd91307ab&imgtype=0&src=http%3A%2F%2Fwww.78.cn%2Fzixun%2Fnews%2Fupload%2F20190214%2F1550114706486250.jpg',
+  attr_val: '春装款/m',
+  stock: 15,
+  title: '女装2019春秋新款',
+  price: 420.00,
+  number: 1 }];
+
+
+//详情展示页面
+var detailData = {
+  title: '纯种金毛幼犬活体有血统证书',
+  title2: '拆家小能手 你值得拥有',
+  favorite: true,
+  imgList: [{
+    src: 'http://img0.imgtn.bdimg.com/it/u=2396068252,4277062836&fm=26&gp=0.jpg' },
+
+  {
+    src: 'http://img.pconline.com.cn/images/upload/upc/tx/itbbs/1309/06/c4/25310541_1378426131583.jpg' },
+
+  {
+    src: 'http://img.pconline.com.cn/images/upload/upc/tx/photoblog/1610/26/c4/28926240_1477451226577_mthumb.jpg' },
+
+  {
+    src: 'http://picture.ik123.com/uploads/allimg/190219/12-1Z219105139.jpg' }],
+
+
+  episodeList: [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+
+  guessList: [{
+    src: 'http://img.52z.com/upload/news/image/20180530/20180530081619_31029.jpg',
+    title: '猫眼指甲油',
+    title2: '独树一帜的免照灯猫眼指甲' },
+
+  {
+    src: 'http://m.china-7.net/uploads/14778449362891.jpg',
+    title: '创意屋',
+    title2: '创意屋形上下双层高低床' },
+
+  {
+    src: 'http://www.k73.com/up/allimg/130415/22-130415093527.jpg',
+    title: 'MissCandy 指甲油',
+    title2: '十分适合喜欢素净的妹纸，尽显淡雅的气质' },
+
+  {
+    src: 'http://img0.imgtn.bdimg.com/it/u=2108933440,2194129200&fm=214&gp=0.jpg	',
+    title: 'RMK 2017星空海蓝唇釉',
+    title2: '唇釉质地，上唇后很滋润。少女也会心动的蓝色，透明液体形状。' }],
+
+
+  evaList: [{
+    src: 'http://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/77c6a7efce1b9d1663174705fbdeb48f8d546486.jpg',
+    nickname: 'Ranth Allngal',
+    time: '09-20 12:54',
+    zan: '54',
+    content: '评论不要太苛刻，不管什么产品都会有瑕疵，客服也说了可以退货并且商家承担运费，我觉得至少态度就可以给五星。' },
+
+  {
+    src: 'http://img0.imgtn.bdimg.com/it/u=2396068252,4277062836&fm=26&gp=0.jpg',
+    nickname: 'Ranth Allngal',
+    time: '09-20 12:54',
+    zan: '54',
+    content: '楼上说的好有道理。' }] };
+
+
+
+var shareList = [{
+  type: 1,
+  icon: '/static/temp/share_wechat.png',
+  text: '微信好友' },
+
+{
+  type: 2,
+  icon: '/static/temp/share_moment.png',
+  text: '朋友圈' },
+
+{
+  type: 3,
+  icon: '/static/temp/share_qq.png',
+  text: 'QQ好友' }];
+
+
+var lazyLoadList = [{
+  src: 'http://img0.imgtn.bdimg.com/it/u=2396068252,4277062836&fm=26&gp=0.jpg' },
+
+{
+  src: 'http://img.pconline.com.cn/images/upload/upc/tx/itbbs/1309/06/c4/25310541_1378426131583.jpg' },
+
+{
+  src: 'http://img.pconline.com.cn/images/upload/upc/tx/photoblog/1610/26/c4/28926240_1477451226577_mthumb.jpg' },
+
+{
+  src: 'http://picture.ik123.com/uploads/allimg/190219/12-1Z219105139.jpg' },
+
+{
+  src: 'http://img5.imgtn.bdimg.com/it/u=2904900134,438461613&fm=26&gp=0.jpg' },
+
+{
+  src: 'http://img1.imgtn.bdimg.com/it/u=1690475408,2565370337&fm=26&gp=0.jpg' },
+
+{
+  src: 'http://img.99114.com/group1/M00/7F/99/wKgGS1kVrPGAe5LmAAU2KrJmb3Q923_600_600.jpg' },
+
+{
+  src: 'http://img4.imgtn.bdimg.com/it/u=261047209,372231813&fm=26&gp=0.jpg' },
+
+{
+  src: 'http://i2.17173cdn.com/i7mz64/YWxqaGBf/tu17173com/20150107/eMyVMObjlbcvDEv.jpg' },
+
+{
+  src: 'http://img008.hc360.cn/m4/M02/E7/87/wKhQ6FSrfU6EfUoyAAAAAITAfyc280.jpg' },
+
+{
+  src: 'http://pic1.win4000.com/wallpaper/d/5991569950166.jpg' },
+
+{
+  src: 'http://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/6f061d950a7b0208f9fe945e60d9f2d3572cc85e.jpg' },
+
+{
+  src: 'http://pic41.nipic.com/20140429/18169759_125841756000_2.jpg' },
+
+{
+  src: 'http://www.k73.com/up/allimg/130415/22-130415093527.jpg' },
+
+{
+  src: 'http://img.52z.com/upload/news/image/20180530/20180530081619_31029.jpg' },
+
+{
+  src: 'http://b-ssl.duitang.com/uploads/item/201410/02/20141002111638_tXAzU.jpeg' },
+
+{
+  src: 'http://img2.ph.126.net/C4JW6f57QWSB21-8jh2UGQ==/1762596304262286698.jpg' },
+
+{
+  src: 'http://att.bbs.duowan.com/forum/201405/17/190257nzcvkkdg6w2e8226.jpg' },
+
+{
+  src: 'http://attach.bbs.miui.com/forum/201504/10/223644v3intigyvva0vgym.jpg' },
+
+{
+  src: 'http://pic1.win4000.com/mobile/3/57888a298d61d.jpg' }];
+
+
+
+var orderList = [{
+  time: '2019-04-06 11:37',
+  state: 1,
+  goodsList: [{
+    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553187020783&di=bac9dd78b36fd984502d404d231011c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201609%2F26%2F20160926173213_s5adi.jpeg' },
+
+  {
+    image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg' },
+
+  {
+    image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg' },
+
+  {
+    image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg' },
+
+  {
+    image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg' },
+
+  {
+    image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg' },
+
+  {
+    image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg' }] },
+
+
+
+{
+  time: '2019-04-06 11:37',
+  state: 9,
+  goodsList: [{
+    title: '古黛妃 短袖t恤女 春夏装2019新款韩版宽松',
+    price: 179.5,
+    image: 'https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg',
+    number: 1,
+    attr: '珊瑚粉 M' }] },
+
+
+{
+  time: '2019-04-06 11:37',
+  state: 1,
+  goodsList: [{
+    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i2/2120460599/O1CN01LBPS4C1GINkwsOTXS_!!2120460599.jpg_430x430q90.jpg' },
+
+  {
+    image: 'https://img.alicdn.com/imgextra/i2/1069876356/TB2ocTQG4WYBuNjy1zkXXXGGpXa_!!1069876356.jpg_430x430q90.jpg' },
+
+  {
+    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/2120460599/O1CN01YsmgwZ1GINkv38rkn_!!2120460599.jpg_430x430q90.jpg' }] },
+
+
+
+{
+  time: '2019-04-06 11:37',
+  state: 1,
+  goodsList: [{
+    title: '回力女鞋高帮帆布鞋女学生韩版鞋子女2019潮鞋女鞋新款春季板鞋女',
+    price: 69,
+    image: 'https://img.alicdn.com/imgextra/i3/2128794607/TB2gzzoc41YBuNjy1zcXXbNcXXa_!!2128794607.jpg_430x430q90.jpg',
+    number: 1,
+    attr: '白色-高帮 39' }] },
+
+
+{
+  time: '2019-04-06 11:37',
+  state: 1,
+  goodsList: [{
+    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/3358098495/O1CN01dhYyid2Ccl5MWLDok_!!3358098495.jpg_430x430q90.jpg' },
+
+  {
+    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i3/3358098495/O1CN01AWsnFA2Ccl5OzvqsL_!!3358098495.jpg_430x430q90.jpg' }] },
+
+
+
+{
+  time: '2019-04-06 11:37',
+  state: 1,
+  goodsList: [{
+    image: 'https://img.alicdn.com/imgextra/i4/3470687433/O1CN0124mMQOSERr18L1h_!!3470687433.jpg_430x430q90.jpg' },
+
+  {
+    image: 'https://img.alicdn.com/imgextra/i3/2888462616/O1CN01ERra5J1VCAbZaKI5n_!!0-item_pic.jpg_430x430q90.jpg' },
+
+  {
+    image: 'https://gd3.alicdn.com/imgextra/i3/819381730/O1CN01YV4mXj1OeNhQIhQlh_!!819381730.jpg_400x400.jpg' }] }];
+
+
+
+
+
+var cateList = [{
+  id: 1,
+  name: '大健康' },
+
+{
+  id: 2,
+  name: '大美丽' },
+
+{
+  id: 3,
+  name: '品质生活' },
+
+{
+  id: 5,
+  pid: 1,
+  name: '膏药贴' },
+
+
+{
+  id: 8,
+  pid: 5,
+  name: '膏力士',
+  picture: '/static/temp/cate2.jpg' },
+
+{
+  id: 9,
+  pid: 5,
+  name: '游戏手机',
+  picture: '/static/temp/cate3.jpg' },
+
+{
+  id: 10,
+  pid: 5,
+  name: '老人机',
+  picture: '/static/temp/cate1.jpg' },
+
+{
+  id: 11,
+  pid: 5,
+  name: '拍照手机',
+  picture: '/static/temp/cate4.jpg' },
+
+{
+  id: 12,
+  pid: 5,
+  name: '女性手机',
+  picture: '/static/temp/cate5.jpg' },
+
+{
+  id: 14,
+  pid: 6,
+  name: '合约机',
+  picture: '/static/temp/cate1.jpg' },
+
+{
+  id: 15,
+  pid: 6,
+  name: '选好卡',
+  picture: '/static/temp/cate4.jpg' },
+
+{
+  id: 16,
+  pid: 6,
+  name: '办套餐',
+  picture: '/static/temp/cate5.jpg' },
+
+{
+  id: 17,
+  pid: 2,
+  name: '礼品' },
+
+{
+  id: 18,
+  pid: 2,
+  name: '鲜花' },
+
+{
+  id: 19,
+  pid: 17,
+  name: '公益摆件',
+  picture: '/static/temp/cate7.jpg' },
+
+{
+  id: 20,
+  pid: 17,
+  name: '创意礼品',
+  picture: '/static/temp/cate8.jpg' },
+
+{
+  id: 21,
+  pid: 18,
+  name: '鲜花',
+  picture: '/static/temp/cate9.jpg' },
+
+{
+  id: 22,
+  pid: 18,
+  name: '每周一花',
+  picture: '/static/temp/cate10.jpg' },
+
+{
+  id: 23,
+  pid: 18,
+  name: '卡通花束',
+  picture: '/static/temp/cate11.jpg' },
+
+{
+  id: 24,
+  pid: 18,
+  name: '永生花',
+  picture: '/static/temp/cate12.jpg' },
+
+{
+  id: 25,
+  pid: 3,
+  name: '男装' },
+
+{
+  id: 26,
+  pid: 3,
+  name: '女装' },
+
+{
+  id: 27,
+  pid: 25,
+  name: '男士T恤',
+  picture: '/static/temp/cate13.jpg' },
+
+{
+  id: 28,
+  pid: 25,
+  name: '男士外套',
+  picture: '/static/temp/cate14.jpg' },
+
+{
+  id: 29,
+  pid: 26,
+  name: '裙装',
+  picture: '/static/temp/cate15.jpg' },
+
+{
+  id: 30,
+  pid: 26,
+  name: 'T恤',
+  picture: '/static/temp/cate16.jpg' },
+
+{
+  id: 31,
+  pid: 26,
+  name: '上装',
+  picture: '/static/temp/cate15.jpg' },
+
+{
+  id: 32,
+  pid: 26,
+  name: '下装',
+  picture: '/static/temp/cate16.jpg' },
+
+{
+  id: 33,
+  pid: 4,
+  name: '奶粉' },
+
+{
+  id: 34,
+  pid: 4,
+  name: '营养辅食' },
+
+{
+  id: 35,
+  pid: 4,
+  name: '童装' },
+
+{
+  id: 39,
+  pid: 4,
+  name: '喂养用品' },
+
+{
+  id: 36,
+  pid: 33,
+  name: '有机奶粉',
+  picture: '/static/temp/cate17.jpg' },
+
+{
+  id: 37,
+  pid: 34,
+  name: '果泥/果汁',
+  picture: '/static/temp/cate18.jpg' },
+
+{
+  id: 39,
+  pid: 34,
+  name: '面条/粥',
+  picture: '/static/temp/cate20.jpg' },
+
+{
+  id: 42,
+  pid: 35,
+  name: '婴童衣橱',
+  picture: '/static/temp/cate19.jpg' },
+
+{
+  id: 43,
+  pid: 39,
+  name: '吸奶器',
+  picture: '/static/temp/cate21.jpg' },
+
+{
+  id: 44,
+  pid: 39,
+  name: '儿童餐具',
+  picture: '/static/temp/cate22.jpg' },
+
+{
+  id: 45,
+  pid: 39,
+  name: '牙胶安抚',
+  picture: '/static/temp/cate23.jpg' },
+
+{
+  id: 46,
+  pid: 39,
+  name: '围兜',
+  picture: '/static/temp/cate24.jpg' }];var _default =
+
+
+
+{
+  carouselList: carouselList,
+  cartList: cartList,
+  detailData: detailData,
+  lazyLoadList: lazyLoadList,
+  userInfo: userInfo,
+  shareList: shareList,
+  goodsList: goodsList,
+  orderList: orderList,
+  cateList: cateList };exports.default = _default;
+
+/***/ }),
+
+/***/ 188:
+/*!**************************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/static/weCropper.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {(function (global, factory) {
+   true ? module.exports = factory() :
+  undefined;
+})(void 0, function () {
+  'use strict';
+
+  /**
+                 * Created by sail on 2017/6/11.
+                 */
+  var device = void 0;
+  var TOUCH_STATE = ['touchstarted', 'touchmoved', 'touchended'];
+
+  function firstLetterUpper(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function setTouchState(instance) {
+    for (var _len = arguments.length, arg = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      arg[_key - 1] = arguments[_key];
+    }
+
+    TOUCH_STATE.forEach(function (key, i) {
+      if (arg[i] !== undefined) {
+        instance[key] = arg[i];
+      }
+    });
+  }
+
+  function validator(instance, o) {
+    Object.defineProperties(instance, o);
+  }
+
+  function getDevice() {
+    if (!device) {
+      device = wx.getSystemInfoSync();
+    }
+    return device;
+  }
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+
+
+
+
+  var classCallCheck = function classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  };
+
+  var createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+
+
+
+  var slicedToArray = function () {
+    function sliceIterator(arr, i) {
+      var _arr = [];
+      var _n = true;
+      var _d = false;
+      var _e = undefined;
+
+      try {
+        for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+          _arr.push(_s.value);
+
+          if (i && _arr.length === i) break;
+        }
+      } catch (err) {
+        _d = true;
+        _e = err;
+      } finally {
+        try {
+          if (!_n && _i["return"]) _i["return"]();
+        } finally {
+          if (_d) throw _e;
+        }
+      }
+
+      return _arr;
+    }
+
+    return function (arr, i) {
+      if (Array.isArray(arr)) {
+        return arr;
+      } else if (Symbol.iterator in Object(arr)) {
+        return sliceIterator(arr, i);
+      } else {
+        throw new TypeError("Invalid attempt to destructure non-iterable instance");
+      }
+    };
+  }();
+
+  var tmp = {};
+
+  var DEFAULT = {
+    id: {
+      default: 'cropper',
+      get: function get$$1() {
+        return tmp.id;
+      },
+      set: function set$$1(value) {
+        if (typeof value !== 'string') {}
+        tmp.id = value;
+      } },
+
+    width: {
+      default: 750,
+      get: function get$$1() {
+        return tmp.width;
+      },
+      set: function set$$1(value) {
+        tmp.width = value;
+      } },
+
+    height: {
+      default: 750,
+      get: function get$$1() {
+        return tmp.height;
+      },
+      set: function set$$1(value) {
+        tmp.height = value;
+      } },
+
+    scale: {
+      default: 2.5,
+      get: function get$$1() {
+        return tmp.scale;
+      },
+      set: function set$$1(value) {
+        tmp.scale = value;
+      } },
+
+    zoom: {
+      default: 5,
+      get: function get$$1() {
+        return tmp.zoom;
+      },
+      set: function set$$1(value) {
+        tmp.zoom = value;
+      } },
+
+    src: {
+      default: 'cropper',
+      get: function get$$1() {
+        return tmp.src;
+      },
+      set: function set$$1(value) {
+        tmp.src = value;
+      } },
+
+    cut: {
+      default: {},
+      get: function get$$1() {
+        return tmp.cut;
+      },
+      set: function set$$1(value) {
+        tmp.cut = value;
+      } },
+
+    onReady: {
+      default: null,
+      get: function get$$1() {
+        return tmp.ready;
+      },
+      set: function set$$1(value) {
+        tmp.ready = value;
+      } },
+
+    onBeforeImageLoad: {
+      default: null,
+      get: function get$$1() {
+        return tmp.beforeImageLoad;
+      },
+      set: function set$$1(value) {
+        tmp.beforeImageLoad = value;
+      } },
+
+    onImageLoad: {
+      default: null,
+      get: function get$$1() {
+        return tmp.imageLoad;
+      },
+      set: function set$$1(value) {
+        tmp.imageLoad = value;
+      } },
+
+    onBeforeDraw: {
+      default: null,
+      get: function get$$1() {
+        return tmp.beforeDraw;
+      },
+      set: function set$$1(value) {
+        tmp.beforeDraw = value;
+      } } };
+
+
+
+  /**
+              * Created by sail on 2017/6/11.
+              */
+  function prepare() {
+    var self = this;
+
+    var _getDevice = getDevice(),
+    windowWidth = _getDevice.windowWidth;
+
+    self.attachPage = function () {
+      var pages = getCurrentPages
+      //  获取到当前page上下文
+      ();
+      var pageContext = pages[pages.length - 1];
+      //  把this依附在Page上下文的wecropper属性上，便于在page钩子函数中访问
+      pageContext.wecropper = self;
+    };
+
+    self.createCtx = function () {
+      var id = self.id;
+
+      if (id) {
+        self.ctx = wx.createCanvasContext(id);
+      }
+    };
+
+    self.deviceRadio = windowWidth / 750;
+    self.deviceRadio = self.deviceRadio.toFixed(2);
+  }
+
+  /**
+     *
+     */
+  function observer() {
+    var self = this;
+
+    var EVENT_TYPE = ['ready', 'beforeImageLoad', 'beforeDraw', 'imageLoad'];
+
+    self.on = function (event, fn) {
+      if (EVENT_TYPE.indexOf(event) > -1) {
+        if (typeof fn === 'function') {
+          event === 'ready' ? fn(self) : self['on' + firstLetterUpper(event)] = fn;
+        }
+      }
+      return self;
+    };
+  }
+
+  /**
+     * Created by sail on 2017/6/11.
+     */
+  function methods() {
+    var self = this;
+
+    var deviceRadio = self.deviceRadio;
+    console.log(JSON.stringify(self));
+
+    var boundWidth = self.width; // 裁剪框默认宽度，即整个画布宽度
+    var boundHeight = self.height; // 裁剪框默认高度，即整个画布高度
+    var _self$cut = self.cut,
+    _self$cut$x = _self$cut.x,
+    x = _self$cut$x === undefined ? 0 : _self$cut$x,
+    _self$cut$y = _self$cut.y,
+    y = _self$cut$y === undefined ? 0 : _self$cut$y,
+    _self$cut$width = _self$cut.width,
+    width = _self$cut$width === undefined ? boundWidth : _self$cut$width,
+    _self$cut$height = _self$cut.height,
+    height = _self$cut$height === undefined ? boundHeight : _self$cut$height;
+
+
+    self.updateCanvas = function () {
+      if (self.croperTarget) {
+
+        //  画布绘制图片
+        self.ctx.drawImage(self.croperTarget, self.imgLeft, self.imgTop, self.scaleWidth, self.scaleHeight);
+      }
+      typeof self.onBeforeDraw === 'function' && self.onBeforeDraw(self.ctx, self);
+
+      self.setBoundStyle //	设置边界样式
+      ();
+      self.ctx.draw();
+      return self;
+    };
+
+    self.pushOrign = function (src) {
+      self.src = src;
+
+      typeof self.onBeforeImageLoad === 'function' && self.onBeforeImageLoad(self.ctx, self);
+
+      uni.getImageInfo({
+        src: src,
+        success: function success(res) {
+          var innerAspectRadio = res.width / res.height;
+          self.croperTarget = res.path || src;
+          if (innerAspectRadio < width / height) {
+            self.rectX = x;
+            self.baseWidth = width;
+            self.baseHeight = width / innerAspectRadio;
+            self.rectY = y - Math.abs((height - self.baseHeight) / 2);
+          } else {
+            self.rectY = y;
+            self.baseWidth = height * innerAspectRadio;
+            self.baseHeight = height;
+            self.rectX = x - Math.abs((width - self.baseWidth) / 2);
+          }
+
+          self.imgLeft = self.rectX;
+          self.imgTop = self.rectY;
+          self.scaleWidth = self.baseWidth;
+          self.scaleHeight = self.baseHeight;
+
+          self.updateCanvas();
+
+          typeof self.onImageLoad === 'function' && self.onImageLoad(self.ctx, self);
+        } });
+
+
+      self.update();
+      return self;
+    };
+
+    self.getCropperImage = function () {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      var id = self.id;
+
+      var ARG_TYPE = toString.call(args[0]);
+      switch (ARG_TYPE) {
+        case '[object Object]':
+          var _args$0$quality = args[0].quality,
+          quality = _args$0$quality === undefined ? 10 : _args$0$quality;
+          console.log("quality--" + quality);
+
+          uni.canvasToTempFilePath({
+            canvasId: id,
+            x: x,
+            y: y,
+            width: width,
+            height: height,
+            destWidth: width * quality / (deviceRadio * 10),
+            destHeight: height * quality / (deviceRadio * 10),
+            success: function success(res) {
+              typeof args[args.length - 1] === 'function' && args[args.length - 1](res.tempFilePath);
+            } });
+
+          break;
+        case '[object Function]':
+          uni.canvasToTempFilePath({
+            canvasId: id,
+            x: x,
+            y: y,
+            fileType: "jpg",
+            width: width,
+            height: height,
+            destWidth: width,
+            destHeight: height,
+            success: function success(res) {
+              typeof args[args.length - 1] === 'function' && args[args.length - 1](res.tempFilePath);
+            } });
+
+          break;}
+
+
+      return self;
+    };
+  }
+
+  /**
+     * Created by sail on 2017/6/11.
+     */
+  function update() {
+    var self = this;
+    if (!self.src) return;
+
+    self.__oneTouchStart = function (touch) {
+      self.touchX0 = touch.x;
+      self.touchY0 = touch.y;
+    };
+
+    self.__oneTouchMove = function (touch) {
+      var xMove = void 0,
+      yMove = void 0;
+      //计算单指移动的距离
+      if (self.touchended) {
+        return self.updateCanvas();
+      }
+      xMove = touch.x - self.touchX0;
+      yMove = touch.y - self.touchY0;
+
+      var imgLeft = self.rectX + xMove;
+      var imgTop = self.rectY + yMove;
+
+      self.outsideBound(imgLeft, imgTop);
+
+      self.updateCanvas();
+    };
+
+    self.__twoTouchStart = function (touch0, touch1) {
+      var xMove = void 0,
+      yMove = void 0,
+      oldDistance = void 0;
+
+      self.touchX1 = self.rectX + self.scaleWidth / 2;
+      self.touchY1 = self.rectY + self.scaleHeight / 2;
+
+      //计算两指距离
+      xMove = touch1.x - touch0.x;
+      yMove = touch1.y - touch0.y;
+      oldDistance = Math.sqrt(xMove * xMove + yMove * yMove);
+
+      self.oldDistance = oldDistance;
+    };
+
+    self.__twoTouchMove = function (touch0, touch1) {
+      var xMove = void 0,
+      yMove = void 0,
+      newDistance = void 0;
+      var scale = self.scale,
+      zoom = self.zoom;
+      // 计算二指最新距离
+
+      xMove = touch1.x - touch0.x;
+      yMove = touch1.y - touch0.y;
+      newDistance = Math.sqrt(xMove * xMove + yMove * yMove
+
+      //  使用0.005的缩放倍数具有良好的缩放体验
+      );
+      self.newScale = self.oldScale + 0.001 * zoom * (newDistance - self.oldDistance);
+
+      //  设定缩放范围
+      self.newScale <= 1 && (self.newScale = 1);
+      self.newScale >= scale && (self.newScale = scale);
+
+      self.scaleWidth = self.newScale * self.baseWidth;
+      self.scaleHeight = self.newScale * self.baseHeight;
+      var imgLeft = self.touchX1 - self.scaleWidth / 2;
+      var imgTop = self.touchY1 - self.scaleHeight / 2;
+
+      self.outsideBound(imgLeft, imgTop);
+
+      self.updateCanvas();
+    };
+
+    self.__xtouchEnd = function () {
+      self.oldScale = self.newScale;
+      self.rectX = self.imgLeft;
+      self.rectY = self.imgTop;
+    };
+  }
+
+  /**
+     * Created by sail on 2017/6/11.
+     */
+
+  var handle = {
+    //  图片手势初始监测
+    touchStart: function touchStart(e) {
+      var self = this;
+      var _e$touches = slicedToArray(e.touches, 2),
+      touch0 = _e$touches[0],
+      touch1 = _e$touches[1];
+
+      console.log(JSON.stringify(touch1));
+      if (!touch0.x) {
+        touch0.x = touch0.clientX;
+        touch0.y = touch0.clientY;
+        if (touch1) {
+          touch1.x = touch1.clientX;
+          touch1.y = touch1.clientY;
+        }
+      }
+
+      setTouchState(self, true, null, null
+
+      //计算第一个触摸点的位置，并参照改点进行缩放
+      );
+      self.__oneTouchStart(touch0
+
+      // 两指手势触发
+      );
+      if (e.touches.length >= 2) {
+        self.__twoTouchStart(touch0, touch1);
+      }
+    },
+
+
+    //  图片手势动态缩放
+    touchMove: function touchMove(e) {
+      var self = this;
+
+      var _e$touches2 = slicedToArray(e.touches, 2),
+      touch0 = _e$touches2[0],
+      touch1 = _e$touches2[1];
+      if (!touch0.x) {
+        touch0.x = touch0.clientX;
+        touch0.y = touch0.clientY;
+        if (touch1) {
+          touch1.x = touch1.clientX;
+          touch1.y = touch1.clientY;
+        }
+      }
+      setTouchState(self, null, true
+
+      // 单指手势时触发
+      );
+      if (e.touches.length === 1) {
+        self.__oneTouchMove(touch0);
+      }
+      // 两指手势触发
+      if (e.touches.length >= 2) {
+        self.__twoTouchMove(touch0, touch1);
+      }
+    },
+    touchEnd: function touchEnd(e) {
+      var self = this;
+
+      setTouchState(self, false, false, true);
+      self.__xtouchEnd();
+    } };
+
+
+  /**
+          * Created by sail on 1017/6/12.
+          */
+  function cut() {
+    var self = this;
+    var deviceRadio = self.deviceRadio;
+
+    var boundWidth = self.width; // 裁剪框默认宽度，即整个画布宽度
+    var boundHeight = self.height;
+    // 裁剪框默认高度，即整个画布高度
+    var _self$cut = self.cut,
+    _self$cut$x = _self$cut.x,
+    x = _self$cut$x === undefined ? 0 : _self$cut$x,
+    _self$cut$y = _self$cut.y,
+    y = _self$cut$y === undefined ? 0 : _self$cut$y,
+    _self$cut$width = _self$cut.width,
+    width = _self$cut$width === undefined ? boundWidth : _self$cut$width,
+    _self$cut$height = _self$cut.height,
+    height = _self$cut$height === undefined ? boundHeight : _self$cut$height;
+
+    /**
+                                                                               * 设置边界
+                                                                               * @param imgLeft 图片左上角横坐标值
+                                                                               * @param imgTop 图片左上角纵坐标值
+                                                                               */
+
+    self.outsideBound = function (imgLeft, imgTop) {
+      self.imgLeft = imgLeft >= x ? x : self.scaleWidth + imgLeft - x <= width ? x + width - self.scaleWidth : imgLeft;
+
+      self.imgTop = imgTop >= y ? y : self.scaleHeight + imgTop - y <= height ? y + height - self.scaleHeight : imgTop;
+    };
+
+    /**
+        * 设置边界样式
+        * @param color	边界颜色
+        */
+    self.setBoundStyle = function () {
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$color = _ref.color,
+      color = _ref$color === undefined ? '#04b00f' : _ref$color,
+      _ref$mask = _ref.mask,
+      mask = _ref$mask === undefined ? 'rgba(0, 0, 0, 0.3)' : _ref$mask,
+      _ref$lineWidth = _ref.lineWidth,
+      lineWidth = _ref$lineWidth === undefined ? 1 : _ref$lineWidth;
+
+      // 绘制半透明层
+      self.ctx.beginPath();
+      self.ctx.setFillStyle(mask);
+      self.ctx.fillRect(0, 0, x, boundHeight);
+      self.ctx.fillRect(x, 0, width, y);
+      self.ctx.fillRect(x, y + height, width, boundHeight - y - height);
+      self.ctx.fillRect(x + width, 0, boundWidth - x - width, boundHeight);
+      self.ctx.fill
+
+      // 设置边界左上角样式
+      // 为使边界样式处于边界外边缘，此时x、y均要减少lineWidth
+      ();
+      self.ctx.beginPath();
+      self.ctx.setStrokeStyle(color);
+      self.ctx.setLineWidth(lineWidth);
+      self.ctx.moveTo(x - lineWidth, y + 10 - lineWidth);
+      self.ctx.lineTo(x - lineWidth, y - lineWidth);
+      self.ctx.lineTo(x + 10 - lineWidth, y - lineWidth);
+      self.ctx.stroke
+
+      // 设置边界左下角样式
+      // 为使边界样式处于边界外边缘，此时x要减少lineWidth、y要增加lineWidth
+      ();
+      self.ctx.beginPath();
+      self.ctx.setStrokeStyle(color);
+      self.ctx.setLineWidth(lineWidth);
+      self.ctx.moveTo(x - lineWidth, y + height - 10 + lineWidth);
+      self.ctx.lineTo(x - lineWidth, y + height + lineWidth);
+      self.ctx.lineTo(x + 10 - lineWidth, y + height + lineWidth);
+      self.ctx.stroke
+
+      // 设置边界右上角样式
+      // 为使边界样式处于边界外边缘，此时x要增加lineWidth、y要减少lineWidth
+      ();
+      self.ctx.beginPath();
+      self.ctx.setStrokeStyle(color);
+      self.ctx.setLineWidth(lineWidth);
+      self.ctx.moveTo(x + width - 10 + lineWidth, y - lineWidth);
+      self.ctx.lineTo(x + width + lineWidth, y - lineWidth);
+      self.ctx.lineTo(x + width + lineWidth, y + 10 - lineWidth);
+      self.ctx.stroke
+
+      // 设置边界右下角样式
+      // 为使边界样式处于边界外边缘，此时x、y均要增加lineWidth
+      ();
+      self.ctx.beginPath();
+      self.ctx.setStrokeStyle(color);
+      self.ctx.setLineWidth(lineWidth);
+      self.ctx.moveTo(x + width + lineWidth, y + height - 10 + lineWidth);
+      self.ctx.lineTo(x + width + lineWidth, y + height + lineWidth);
+      self.ctx.lineTo(x + width - 10 + lineWidth, y + height + lineWidth);
+      self.ctx.stroke();
+    };
+  }
+
+  var __version__ = '1.1.4';
+
+  var weCropper = function () {
+    function weCropper(params) {
+      classCallCheck(this, weCropper);
+
+      var self = this;
+      var _default = {};
+
+      validator(self, DEFAULT);
+
+      Object.keys(DEFAULT).forEach(function (key) {
+        _default[key] = DEFAULT[key].default;
+      });
+      Object.assign(self, _default, params);
+
+      self.prepare();
+      self.attachPage();
+      self.createCtx();
+      self.observer();
+      self.cutt();
+      self.methods();
+      self.init();
+      self.update();
+
+      return self;
+    }
+
+    createClass(weCropper, [{
+      key: 'init',
+      value: function init() {
+        var self = this;
+        var src = self.src;
+
+
+        self.version = __version__;
+
+        typeof self.onReady === 'function' && self.onReady(self.ctx, self);
+
+        if (src) {
+          self.pushOrign(src);
+        }
+        setTouchState(self, false, false, false);
+
+        self.oldScale = 1;
+        self.newScale = 1;
+
+        return self;
+      } }]);
+
+    return weCropper;
+  }();
+
+  Object.assign(weCropper.prototype, handle);
+
+
+  weCropper.prototype.prepare = prepare;
+  weCropper.prototype.observer = observer;
+  weCropper.prototype.methods = methods;
+  weCropper.prototype.cutt = cut;
+  weCropper.prototype.update = update;
+
+  return weCropper;
+
+});
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -7458,7 +10030,8 @@ internalMixin(Vue);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 3 */
+
+/***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -7488,7 +10061,747 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
+
+/***/ 38:
+/*!***********************************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/js_sdk/ccdzhang-dokey/md5.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process, global) {var __WEBPACK_AMD_DEFINE_RESULT__; /**
+               * [js-md5]{@link https://github.com/emn178/js-md5}
+               *
+               * @namespace md5
+               * @version 0.7.3
+               * @author Chen, Yi-Cyuan [emn178@gmail.com]
+               * @copyright Chen, Yi-Cyuan 2014-2017
+               * @license MIT
+               */
+(function () {
+  'use strict';
+
+  var ERROR = 'input is invalid type';
+  var WINDOW = typeof window === 'object';
+  var root = WINDOW ? window : {};
+  if (root.JS_MD5_NO_WINDOW) {
+    WINDOW = false;
+  }
+  var WEB_WORKER = !WINDOW && typeof self === 'object';
+  var NODE_JS = !root.JS_MD5_NO_NODE_JS && typeof process === 'object' && process.versions && process.versions.node;
+  if (NODE_JS) {
+    root = global;
+  } else if (WEB_WORKER) {
+    root = self;
+  }
+  var COMMON_JS = !root.JS_MD5_NO_COMMON_JS && typeof module === 'object' && module.exports;
+  var AMD =  true && __webpack_require__(/*! !webpack amd options */ 41);
+  var ARRAY_BUFFER = !root.JS_MD5_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
+  var HEX_CHARS = '0123456789abcdef'.split('');
+  var EXTRA = [128, 32768, 8388608, -2147483648];
+  var SHIFT = [0, 8, 16, 24];
+  var OUTPUT_TYPES = ['hex', 'array', 'digest', 'buffer', 'arrayBuffer', 'base64'];
+  var BASE64_ENCODE_CHAR = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
+
+  var blocks = [],buffer8;
+  if (ARRAY_BUFFER) {
+    var buffer = new ArrayBuffer(68);
+    buffer8 = new Uint8Array(buffer);
+    blocks = new Uint32Array(buffer);
+  }
+
+  if (root.JS_MD5_NO_NODE_JS || !Array.isArray) {
+    Array.isArray = function (obj) {
+      return Object.prototype.toString.call(obj) === '[object Array]';
+    };
+  }
+
+  if (ARRAY_BUFFER && (root.JS_MD5_NO_ARRAY_BUFFER_IS_VIEW || !ArrayBuffer.isView)) {
+    ArrayBuffer.isView = function (obj) {
+      return typeof obj === 'object' && obj.buffer && obj.buffer.constructor === ArrayBuffer;
+    };
+  }
+
+  /**
+     * @method hex
+     * @memberof md5
+     * @description Output hash as hex string
+     * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+     * @returns {String} Hex string
+     * @example
+     * md5.hex('The quick brown fox jumps over the lazy dog');
+     * // equal to
+     * md5('The quick brown fox jumps over the lazy dog');
+     */
+  /**
+         * @method digest
+         * @memberof md5
+         * @description Output hash as bytes array
+         * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+         * @returns {Array} Bytes array
+         * @example
+         * md5.digest('The quick brown fox jumps over the lazy dog');
+         */
+  /**
+             * @method array
+             * @memberof md5
+             * @description Output hash as bytes array
+             * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+             * @returns {Array} Bytes array
+             * @example
+             * md5.array('The quick brown fox jumps over the lazy dog');
+             */
+  /**
+                 * @method arrayBuffer
+                 * @memberof md5
+                 * @description Output hash as ArrayBuffer
+                 * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+                 * @returns {ArrayBuffer} ArrayBuffer
+                 * @example
+                 * md5.arrayBuffer('The quick brown fox jumps over the lazy dog');
+                 */
+  /**
+                     * @method buffer
+                     * @deprecated This maybe confuse with Buffer in node.js. Please use arrayBuffer instead.
+                     * @memberof md5
+                     * @description Output hash as ArrayBuffer
+                     * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+                     * @returns {ArrayBuffer} ArrayBuffer
+                     * @example
+                     * md5.buffer('The quick brown fox jumps over the lazy dog');
+                     */
+  /**
+                         * @method base64
+                         * @memberof md5
+                         * @description Output hash as base64 string
+                         * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+                         * @returns {String} base64 string
+                         * @example
+                         * md5.base64('The quick brown fox jumps over the lazy dog');
+                         */
+  var createOutputMethod = function createOutputMethod(outputType) {
+    return function (message) {
+      return new Md5(true).update(message)[outputType]();
+    };
+  };
+
+  /**
+      * @method create
+      * @memberof md5
+      * @description Create Md5 object
+      * @returns {Md5} Md5 object.
+      * @example
+      * var hash = md5.create();
+      */
+  /**
+          * @method update
+          * @memberof md5
+          * @description Create and update Md5 object
+          * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+          * @returns {Md5} Md5 object.
+          * @example
+          * var hash = md5.update('The quick brown fox jumps over the lazy dog');
+          * // equal to
+          * var hash = md5.create();
+          * hash.update('The quick brown fox jumps over the lazy dog');
+          */
+  var createMethod = function createMethod() {
+    var method = createOutputMethod('hex');
+    if (NODE_JS) {
+      method = nodeWrap(method);
+    }
+    method.create = function () {
+      return new Md5();
+    };
+    method.update = function (message) {
+      return method.create().update(message);
+    };
+    for (var i = 0; i < OUTPUT_TYPES.length; ++i) {
+      var type = OUTPUT_TYPES[i];
+      method[type] = createOutputMethod(type);
+    }
+    return method;
+  };
+
+  var nodeWrap = function nodeWrap(method) {
+    var crypto = eval("require('crypto')");
+    var Buffer = eval("require('buffer').Buffer");
+    var nodeMethod = function nodeMethod(message) {
+      if (typeof message === 'string') {
+        return crypto.createHash('md5').update(message, 'utf8').digest('hex');
+      } else {
+        if (message === null || message === undefined) {
+          throw ERROR;
+        } else if (message.constructor === ArrayBuffer) {
+          message = new Uint8Array(message);
+        }
+      }
+      if (Array.isArray(message) || ArrayBuffer.isView(message) ||
+      message.constructor === Buffer) {
+        return crypto.createHash('md5').update(new Buffer(message)).digest('hex');
+      } else {
+        return method(message);
+      }
+    };
+    return nodeMethod;
+  };
+
+
+
+  /**
+      * Md5 class
+      * @class Md5
+      * @description This is internal class.
+      * @see {@link md5.create}
+      */
+  function Md5(sharedMemory) {
+    if (sharedMemory) {
+      blocks[0] = blocks[16] = blocks[1] = blocks[2] = blocks[3] =
+      blocks[4] = blocks[5] = blocks[6] = blocks[7] =
+      blocks[8] = blocks[9] = blocks[10] = blocks[11] =
+      blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
+      this.blocks = blocks;
+      this.buffer8 = buffer8;
+    } else {
+      if (ARRAY_BUFFER) {
+        var buffer = new ArrayBuffer(68);
+        this.buffer8 = new Uint8Array(buffer);
+        this.blocks = new Uint32Array(buffer);
+      } else {
+        this.blocks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
+    }
+    this.h0 = this.h1 = this.h2 = this.h3 = this.start = this.bytes = this.hBytes = 0;
+    this.finalized = this.hashed = false;
+    this.first = true;
+  }
+
+  /**
+     * @method update
+     * @memberof Md5
+     * @instance
+     * @description Update hash
+     * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+     * @returns {Md5} Md5 object.
+     * @see {@link md5.update}
+     */
+  Md5.prototype.update = function (message) {
+    if (this.finalized) {
+      return;
+    }
+
+    var notString,type = typeof message;
+    if (type !== 'string') {
+      if (type === 'object') {
+        if (message === null) {
+          throw ERROR;
+        } else if (ARRAY_BUFFER && message.constructor === ArrayBuffer) {
+          message = new Uint8Array(message);
+        } else if (!Array.isArray(message)) {
+          if (!ARRAY_BUFFER || !ArrayBuffer.isView(message)) {
+            throw ERROR;
+          }
+        }
+      } else {
+        throw ERROR;
+      }
+      notString = true;
+    }
+    var code,index = 0,i,length = message.length,blocks = this.blocks;
+    var buffer8 = this.buffer8;
+
+    while (index < length) {
+      if (this.hashed) {
+        this.hashed = false;
+        blocks[0] = blocks[16];
+        blocks[16] = blocks[1] = blocks[2] = blocks[3] =
+        blocks[4] = blocks[5] = blocks[6] = blocks[7] =
+        blocks[8] = blocks[9] = blocks[10] = blocks[11] =
+        blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
+      }
+
+      if (notString) {
+        if (ARRAY_BUFFER) {
+          for (i = this.start; index < length && i < 64; ++index) {
+            buffer8[i++] = message[index];
+          }
+        } else {
+          for (i = this.start; index < length && i < 64; ++index) {
+            blocks[i >> 2] |= message[index] << SHIFT[i++ & 3];
+          }
+        }
+      } else {
+        if (ARRAY_BUFFER) {
+          for (i = this.start; index < length && i < 64; ++index) {
+            code = message.charCodeAt(index);
+            if (code < 0x80) {
+              buffer8[i++] = code;
+            } else if (code < 0x800) {
+              buffer8[i++] = 0xc0 | code >> 6;
+              buffer8[i++] = 0x80 | code & 0x3f;
+            } else if (code < 0xd800 || code >= 0xe000) {
+              buffer8[i++] = 0xe0 | code >> 12;
+              buffer8[i++] = 0x80 | code >> 6 & 0x3f;
+              buffer8[i++] = 0x80 | code & 0x3f;
+            } else {
+              code = 0x10000 + ((code & 0x3ff) << 10 | message.charCodeAt(++index) & 0x3ff);
+              buffer8[i++] = 0xf0 | code >> 18;
+              buffer8[i++] = 0x80 | code >> 12 & 0x3f;
+              buffer8[i++] = 0x80 | code >> 6 & 0x3f;
+              buffer8[i++] = 0x80 | code & 0x3f;
+            }
+          }
+        } else {
+          for (i = this.start; index < length && i < 64; ++index) {
+            code = message.charCodeAt(index);
+            if (code < 0x80) {
+              blocks[i >> 2] |= code << SHIFT[i++ & 3];
+            } else if (code < 0x800) {
+              blocks[i >> 2] |= (0xc0 | code >> 6) << SHIFT[i++ & 3];
+              blocks[i >> 2] |= (0x80 | code & 0x3f) << SHIFT[i++ & 3];
+            } else if (code < 0xd800 || code >= 0xe000) {
+              blocks[i >> 2] |= (0xe0 | code >> 12) << SHIFT[i++ & 3];
+              blocks[i >> 2] |= (0x80 | code >> 6 & 0x3f) << SHIFT[i++ & 3];
+              blocks[i >> 2] |= (0x80 | code & 0x3f) << SHIFT[i++ & 3];
+            } else {
+              code = 0x10000 + ((code & 0x3ff) << 10 | message.charCodeAt(++index) & 0x3ff);
+              blocks[i >> 2] |= (0xf0 | code >> 18) << SHIFT[i++ & 3];
+              blocks[i >> 2] |= (0x80 | code >> 12 & 0x3f) << SHIFT[i++ & 3];
+              blocks[i >> 2] |= (0x80 | code >> 6 & 0x3f) << SHIFT[i++ & 3];
+              blocks[i >> 2] |= (0x80 | code & 0x3f) << SHIFT[i++ & 3];
+            }
+          }
+        }
+      }
+      this.lastByteIndex = i;
+      this.bytes += i - this.start;
+      if (i >= 64) {
+        this.start = i - 64;
+        this.hash();
+        this.hashed = true;
+      } else {
+        this.start = i;
+      }
+    }
+    if (this.bytes > 4294967295) {
+      this.hBytes += this.bytes / 4294967296 << 0;
+      this.bytes = this.bytes % 4294967296;
+    }
+    return this;
+  };
+
+  Md5.prototype.finalize = function () {
+    if (this.finalized) {
+      return;
+    }
+    this.finalized = true;
+    var blocks = this.blocks,i = this.lastByteIndex;
+    blocks[i >> 2] |= EXTRA[i & 3];
+    if (i >= 56) {
+      if (!this.hashed) {
+        this.hash();
+      }
+      blocks[0] = blocks[16];
+      blocks[16] = blocks[1] = blocks[2] = blocks[3] =
+      blocks[4] = blocks[5] = blocks[6] = blocks[7] =
+      blocks[8] = blocks[9] = blocks[10] = blocks[11] =
+      blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
+    }
+    blocks[14] = this.bytes << 3;
+    blocks[15] = this.hBytes << 3 | this.bytes >>> 29;
+    this.hash();
+  };
+
+  Md5.prototype.hash = function () {
+    var a,b,c,d,bc,da,blocks = this.blocks;
+
+    if (this.first) {
+      a = blocks[0] - 680876937;
+      a = (a << 7 | a >>> 25) - 271733879 << 0;
+      d = (-1732584194 ^ a & 2004318071) + blocks[1] - 117830708;
+      d = (d << 12 | d >>> 20) + a << 0;
+      c = (-271733879 ^ d & (a ^ -271733879)) + blocks[2] - 1126478375;
+      c = (c << 17 | c >>> 15) + d << 0;
+      b = (a ^ c & (d ^ a)) + blocks[3] - 1316259209;
+      b = (b << 22 | b >>> 10) + c << 0;
+    } else {
+      a = this.h0;
+      b = this.h1;
+      c = this.h2;
+      d = this.h3;
+      a += (d ^ b & (c ^ d)) + blocks[0] - 680876936;
+      a = (a << 7 | a >>> 25) + b << 0;
+      d += (c ^ a & (b ^ c)) + blocks[1] - 389564586;
+      d = (d << 12 | d >>> 20) + a << 0;
+      c += (b ^ d & (a ^ b)) + blocks[2] + 606105819;
+      c = (c << 17 | c >>> 15) + d << 0;
+      b += (a ^ c & (d ^ a)) + blocks[3] - 1044525330;
+      b = (b << 22 | b >>> 10) + c << 0;
+    }
+
+    a += (d ^ b & (c ^ d)) + blocks[4] - 176418897;
+    a = (a << 7 | a >>> 25) + b << 0;
+    d += (c ^ a & (b ^ c)) + blocks[5] + 1200080426;
+    d = (d << 12 | d >>> 20) + a << 0;
+    c += (b ^ d & (a ^ b)) + blocks[6] - 1473231341;
+    c = (c << 17 | c >>> 15) + d << 0;
+    b += (a ^ c & (d ^ a)) + blocks[7] - 45705983;
+    b = (b << 22 | b >>> 10) + c << 0;
+    a += (d ^ b & (c ^ d)) + blocks[8] + 1770035416;
+    a = (a << 7 | a >>> 25) + b << 0;
+    d += (c ^ a & (b ^ c)) + blocks[9] - 1958414417;
+    d = (d << 12 | d >>> 20) + a << 0;
+    c += (b ^ d & (a ^ b)) + blocks[10] - 42063;
+    c = (c << 17 | c >>> 15) + d << 0;
+    b += (a ^ c & (d ^ a)) + blocks[11] - 1990404162;
+    b = (b << 22 | b >>> 10) + c << 0;
+    a += (d ^ b & (c ^ d)) + blocks[12] + 1804603682;
+    a = (a << 7 | a >>> 25) + b << 0;
+    d += (c ^ a & (b ^ c)) + blocks[13] - 40341101;
+    d = (d << 12 | d >>> 20) + a << 0;
+    c += (b ^ d & (a ^ b)) + blocks[14] - 1502002290;
+    c = (c << 17 | c >>> 15) + d << 0;
+    b += (a ^ c & (d ^ a)) + blocks[15] + 1236535329;
+    b = (b << 22 | b >>> 10) + c << 0;
+    a += (c ^ d & (b ^ c)) + blocks[1] - 165796510;
+    a = (a << 5 | a >>> 27) + b << 0;
+    d += (b ^ c & (a ^ b)) + blocks[6] - 1069501632;
+    d = (d << 9 | d >>> 23) + a << 0;
+    c += (a ^ b & (d ^ a)) + blocks[11] + 643717713;
+    c = (c << 14 | c >>> 18) + d << 0;
+    b += (d ^ a & (c ^ d)) + blocks[0] - 373897302;
+    b = (b << 20 | b >>> 12) + c << 0;
+    a += (c ^ d & (b ^ c)) + blocks[5] - 701558691;
+    a = (a << 5 | a >>> 27) + b << 0;
+    d += (b ^ c & (a ^ b)) + blocks[10] + 38016083;
+    d = (d << 9 | d >>> 23) + a << 0;
+    c += (a ^ b & (d ^ a)) + blocks[15] - 660478335;
+    c = (c << 14 | c >>> 18) + d << 0;
+    b += (d ^ a & (c ^ d)) + blocks[4] - 405537848;
+    b = (b << 20 | b >>> 12) + c << 0;
+    a += (c ^ d & (b ^ c)) + blocks[9] + 568446438;
+    a = (a << 5 | a >>> 27) + b << 0;
+    d += (b ^ c & (a ^ b)) + blocks[14] - 1019803690;
+    d = (d << 9 | d >>> 23) + a << 0;
+    c += (a ^ b & (d ^ a)) + blocks[3] - 187363961;
+    c = (c << 14 | c >>> 18) + d << 0;
+    b += (d ^ a & (c ^ d)) + blocks[8] + 1163531501;
+    b = (b << 20 | b >>> 12) + c << 0;
+    a += (c ^ d & (b ^ c)) + blocks[13] - 1444681467;
+    a = (a << 5 | a >>> 27) + b << 0;
+    d += (b ^ c & (a ^ b)) + blocks[2] - 51403784;
+    d = (d << 9 | d >>> 23) + a << 0;
+    c += (a ^ b & (d ^ a)) + blocks[7] + 1735328473;
+    c = (c << 14 | c >>> 18) + d << 0;
+    b += (d ^ a & (c ^ d)) + blocks[12] - 1926607734;
+    b = (b << 20 | b >>> 12) + c << 0;
+    bc = b ^ c;
+    a += (bc ^ d) + blocks[5] - 378558;
+    a = (a << 4 | a >>> 28) + b << 0;
+    d += (bc ^ a) + blocks[8] - 2022574463;
+    d = (d << 11 | d >>> 21) + a << 0;
+    da = d ^ a;
+    c += (da ^ b) + blocks[11] + 1839030562;
+    c = (c << 16 | c >>> 16) + d << 0;
+    b += (da ^ c) + blocks[14] - 35309556;
+    b = (b << 23 | b >>> 9) + c << 0;
+    bc = b ^ c;
+    a += (bc ^ d) + blocks[1] - 1530992060;
+    a = (a << 4 | a >>> 28) + b << 0;
+    d += (bc ^ a) + blocks[4] + 1272893353;
+    d = (d << 11 | d >>> 21) + a << 0;
+    da = d ^ a;
+    c += (da ^ b) + blocks[7] - 155497632;
+    c = (c << 16 | c >>> 16) + d << 0;
+    b += (da ^ c) + blocks[10] - 1094730640;
+    b = (b << 23 | b >>> 9) + c << 0;
+    bc = b ^ c;
+    a += (bc ^ d) + blocks[13] + 681279174;
+    a = (a << 4 | a >>> 28) + b << 0;
+    d += (bc ^ a) + blocks[0] - 358537222;
+    d = (d << 11 | d >>> 21) + a << 0;
+    da = d ^ a;
+    c += (da ^ b) + blocks[3] - 722521979;
+    c = (c << 16 | c >>> 16) + d << 0;
+    b += (da ^ c) + blocks[6] + 76029189;
+    b = (b << 23 | b >>> 9) + c << 0;
+    bc = b ^ c;
+    a += (bc ^ d) + blocks[9] - 640364487;
+    a = (a << 4 | a >>> 28) + b << 0;
+    d += (bc ^ a) + blocks[12] - 421815835;
+    d = (d << 11 | d >>> 21) + a << 0;
+    da = d ^ a;
+    c += (da ^ b) + blocks[15] + 530742520;
+    c = (c << 16 | c >>> 16) + d << 0;
+    b += (da ^ c) + blocks[2] - 995338651;
+    b = (b << 23 | b >>> 9) + c << 0;
+    a += (c ^ (b | ~d)) + blocks[0] - 198630844;
+    a = (a << 6 | a >>> 26) + b << 0;
+    d += (b ^ (a | ~c)) + blocks[7] + 1126891415;
+    d = (d << 10 | d >>> 22) + a << 0;
+    c += (a ^ (d | ~b)) + blocks[14] - 1416354905;
+    c = (c << 15 | c >>> 17) + d << 0;
+    b += (d ^ (c | ~a)) + blocks[5] - 57434055;
+    b = (b << 21 | b >>> 11) + c << 0;
+    a += (c ^ (b | ~d)) + blocks[12] + 1700485571;
+    a = (a << 6 | a >>> 26) + b << 0;
+    d += (b ^ (a | ~c)) + blocks[3] - 1894986606;
+    d = (d << 10 | d >>> 22) + a << 0;
+    c += (a ^ (d | ~b)) + blocks[10] - 1051523;
+    c = (c << 15 | c >>> 17) + d << 0;
+    b += (d ^ (c | ~a)) + blocks[1] - 2054922799;
+    b = (b << 21 | b >>> 11) + c << 0;
+    a += (c ^ (b | ~d)) + blocks[8] + 1873313359;
+    a = (a << 6 | a >>> 26) + b << 0;
+    d += (b ^ (a | ~c)) + blocks[15] - 30611744;
+    d = (d << 10 | d >>> 22) + a << 0;
+    c += (a ^ (d | ~b)) + blocks[6] - 1560198380;
+    c = (c << 15 | c >>> 17) + d << 0;
+    b += (d ^ (c | ~a)) + blocks[13] + 1309151649;
+    b = (b << 21 | b >>> 11) + c << 0;
+    a += (c ^ (b | ~d)) + blocks[4] - 145523070;
+    a = (a << 6 | a >>> 26) + b << 0;
+    d += (b ^ (a | ~c)) + blocks[11] - 1120210379;
+    d = (d << 10 | d >>> 22) + a << 0;
+    c += (a ^ (d | ~b)) + blocks[2] + 718787259;
+    c = (c << 15 | c >>> 17) + d << 0;
+    b += (d ^ (c | ~a)) + blocks[9] - 343485551;
+    b = (b << 21 | b >>> 11) + c << 0;
+
+    if (this.first) {
+      this.h0 = a + 1732584193 << 0;
+      this.h1 = b - 271733879 << 0;
+      this.h2 = c - 1732584194 << 0;
+      this.h3 = d + 271733878 << 0;
+      this.first = false;
+    } else {
+      this.h0 = this.h0 + a << 0;
+      this.h1 = this.h1 + b << 0;
+      this.h2 = this.h2 + c << 0;
+      this.h3 = this.h3 + d << 0;
+    }
+  };
+
+  /**
+      * @method hex
+      * @memberof Md5
+      * @instance
+      * @description Output hash as hex string
+      * @returns {String} Hex string
+      * @see {@link md5.hex}
+      * @example
+      * hash.hex();
+      */
+  Md5.prototype.hex = function () {
+    this.finalize();
+
+    var h0 = this.h0,h1 = this.h1,h2 = this.h2,h3 = this.h3;
+
+    return HEX_CHARS[h0 >> 4 & 0x0F] + HEX_CHARS[h0 & 0x0F] +
+    HEX_CHARS[h0 >> 12 & 0x0F] + HEX_CHARS[h0 >> 8 & 0x0F] +
+    HEX_CHARS[h0 >> 20 & 0x0F] + HEX_CHARS[h0 >> 16 & 0x0F] +
+    HEX_CHARS[h0 >> 28 & 0x0F] + HEX_CHARS[h0 >> 24 & 0x0F] +
+    HEX_CHARS[h1 >> 4 & 0x0F] + HEX_CHARS[h1 & 0x0F] +
+    HEX_CHARS[h1 >> 12 & 0x0F] + HEX_CHARS[h1 >> 8 & 0x0F] +
+    HEX_CHARS[h1 >> 20 & 0x0F] + HEX_CHARS[h1 >> 16 & 0x0F] +
+    HEX_CHARS[h1 >> 28 & 0x0F] + HEX_CHARS[h1 >> 24 & 0x0F] +
+    HEX_CHARS[h2 >> 4 & 0x0F] + HEX_CHARS[h2 & 0x0F] +
+    HEX_CHARS[h2 >> 12 & 0x0F] + HEX_CHARS[h2 >> 8 & 0x0F] +
+    HEX_CHARS[h2 >> 20 & 0x0F] + HEX_CHARS[h2 >> 16 & 0x0F] +
+    HEX_CHARS[h2 >> 28 & 0x0F] + HEX_CHARS[h2 >> 24 & 0x0F] +
+    HEX_CHARS[h3 >> 4 & 0x0F] + HEX_CHARS[h3 & 0x0F] +
+    HEX_CHARS[h3 >> 12 & 0x0F] + HEX_CHARS[h3 >> 8 & 0x0F] +
+    HEX_CHARS[h3 >> 20 & 0x0F] + HEX_CHARS[h3 >> 16 & 0x0F] +
+    HEX_CHARS[h3 >> 28 & 0x0F] + HEX_CHARS[h3 >> 24 & 0x0F];
+  };
+
+  /**
+      * @method toString
+      * @memberof Md5
+      * @instance
+      * @description Output hash as hex string
+      * @returns {String} Hex string
+      * @see {@link md5.hex}
+      * @example
+      * hash.toString();
+      */
+  Md5.prototype.toString = Md5.prototype.hex;
+
+  /**
+                                               * @method digest
+                                               * @memberof Md5
+                                               * @instance
+                                               * @description Output hash as bytes array
+                                               * @returns {Array} Bytes array
+                                               * @see {@link md5.digest}
+                                               * @example
+                                               * hash.digest();
+                                               */
+  Md5.prototype.digest = function () {
+    this.finalize();
+
+    var h0 = this.h0,h1 = this.h1,h2 = this.h2,h3 = this.h3;
+    return [
+    h0 & 0xFF, h0 >> 8 & 0xFF, h0 >> 16 & 0xFF, h0 >> 24 & 0xFF,
+    h1 & 0xFF, h1 >> 8 & 0xFF, h1 >> 16 & 0xFF, h1 >> 24 & 0xFF,
+    h2 & 0xFF, h2 >> 8 & 0xFF, h2 >> 16 & 0xFF, h2 >> 24 & 0xFF,
+    h3 & 0xFF, h3 >> 8 & 0xFF, h3 >> 16 & 0xFF, h3 >> 24 & 0xFF];
+
+  };
+
+  /**
+      * @method array
+      * @memberof Md5
+      * @instance
+      * @description Output hash as bytes array
+      * @returns {Array} Bytes array
+      * @see {@link md5.array}
+      * @example
+      * hash.array();
+      */
+  Md5.prototype.array = Md5.prototype.digest;
+
+  /**
+                                               * @method arrayBuffer
+                                               * @memberof Md5
+                                               * @instance
+                                               * @description Output hash as ArrayBuffer
+                                               * @returns {ArrayBuffer} ArrayBuffer
+                                               * @see {@link md5.arrayBuffer}
+                                               * @example
+                                               * hash.arrayBuffer();
+                                               */
+  Md5.prototype.arrayBuffer = function () {
+    this.finalize();
+
+    var buffer = new ArrayBuffer(16);
+    var blocks = new Uint32Array(buffer);
+    blocks[0] = this.h0;
+    blocks[1] = this.h1;
+    blocks[2] = this.h2;
+    blocks[3] = this.h3;
+    return buffer;
+  };
+
+  /**
+      * @method buffer
+      * @deprecated This maybe confuse with Buffer in node.js. Please use arrayBuffer instead.
+      * @memberof Md5
+      * @instance
+      * @description Output hash as ArrayBuffer
+      * @returns {ArrayBuffer} ArrayBuffer
+      * @see {@link md5.buffer}
+      * @example
+      * hash.buffer();
+      */
+  Md5.prototype.buffer = Md5.prototype.arrayBuffer;
+
+  /**
+                                                     * @method base64
+                                                     * @memberof Md5
+                                                     * @instance
+                                                     * @description Output hash as base64 string
+                                                     * @returns {String} base64 string
+                                                     * @see {@link md5.base64}
+                                                     * @example
+                                                     * hash.base64();
+                                                     */
+  Md5.prototype.base64 = function () {
+    var v1,v2,v3,base64Str = '',bytes = this.array();
+    for (var i = 0; i < 15;) {
+      v1 = bytes[i++];
+      v2 = bytes[i++];
+      v3 = bytes[i++];
+      base64Str += BASE64_ENCODE_CHAR[v1 >>> 2] +
+      BASE64_ENCODE_CHAR[(v1 << 4 | v2 >>> 4) & 63] +
+      BASE64_ENCODE_CHAR[(v2 << 2 | v3 >>> 6) & 63] +
+      BASE64_ENCODE_CHAR[v3 & 63];
+    }
+    v1 = bytes[i];
+    base64Str += BASE64_ENCODE_CHAR[v1 >>> 2] +
+    BASE64_ENCODE_CHAR[v1 << 4 & 63] +
+    '==';
+    return base64Str;
+  };
+
+  var exports = createMethod();
+
+  if (COMMON_JS) {
+    module.exports = exports;
+  } else {
+    /**
+           * @method md5
+           * @description Md5 hash function, export to global in browsers.
+           * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
+           * @returns {String} md5 hashes
+           * @example
+           * md5(''); // d41d8cd98f00b204e9800998ecf8427e
+           * md5('The quick brown fox jumps over the lazy dog'); // 9e107d9d372bb6826bd81d3542a419d6
+           * md5('The quick brown fox jumps over the lazy dog.'); // e4d909c290d0fb1ca068ffaddf22cbd0
+           *
+           * // It also supports UTF-8 encoding
+           * md5('中文'); // a7bac2239fcdcb3a067903d8077c4a07
+           *
+           * // It also supports byte `Array`, `Uint8Array`, `ArrayBuffer`
+           * md5([]); // d41d8cd98f00b204e9800998ecf8427e
+           * md5(new Uint8Array([])); // d41d8cd98f00b204e9800998ecf8427e
+           */
+    root.md5 = exports;
+    if (AMD) {
+      !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+        return exports;
+      }).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    }
+  }
+})();
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/node-libs-browser/mock/process.js */ 39), __webpack_require__(/*! ./../../../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/webpack/buildin/global.js */ 3)))
+
+/***/ }),
+
+/***/ 39:
+/*!********************************************************!*\
+  !*** ./node_modules/node-libs-browser/mock/process.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports.nextTick = function nextTick(fn) {
+	setTimeout(fn, 0);
+};
+
+exports.platform = exports.arch = 
+exports.execPath = exports.title = 'browser';
+exports.pid = 1;
+exports.browser = true;
+exports.env = {};
+exports.argv = [];
+
+exports.binding = function (name) {
+	throw new Error('No such module. (Possibly not yet loaded)')
+};
+
+(function () {
+    var cwd = '/';
+    var path;
+    exports.cwd = function () { return cwd };
+    exports.chdir = function (dir) {
+        if (!path) path = __webpack_require__(/*! path */ 40);
+        cwd = path.resolve(dir, cwd);
+    };
+})();
+
+exports.exit = exports.kill = 
+exports.umask = exports.dlopen = 
+exports.uptime = exports.memoryUsage = 
+exports.uvCounters = function() {};
+exports.features = {};
+
+
+/***/ }),
+
+/***/ 4:
 /*!*****************************************************!*\
   !*** /Users/danytang/web/gls/www/glsapp/pages.json ***!
   \*****************************************************/
@@ -7499,7 +10812,258 @@ module.exports = g;
 
 
 /***/ }),
-/* 5 */
+
+/***/ 40:
+/*!***********************************************!*\
+  !*** ./node_modules/path-browserify/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
+};
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 39)))
+
+/***/ }),
+
+/***/ 41:
+/*!****************************************!*\
+  !*** (webpack)/buildin/amd-options.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
+module.exports = __webpack_amd_options__;
+
+/* WEBPACK VAR INJECTION */}.call(this, {}))
+
+/***/ }),
+
+/***/ 5:
 /*!*******************************************************!*\
   !*** ./node_modules/@dcloudio/uni-stat/dist/index.js ***!
   \*******************************************************/
@@ -8382,2866 +11946,8 @@ main();
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 6 */
-/*!******************************************************!*\
-  !*** ./node_modules/@dcloudio/uni-stat/package.json ***!
-  \******************************************************/
-/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, files, gitHead, homepage, license, main, name, repository, scripts, version, default */
-/***/ (function(module) {
 
-module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-23320190923002","_inBundle":false,"_integrity":"sha512-MnftsvgOac3q1FCOBPzivbFn8GNQFo7D2DY325HeEZyFCWgx5GEwHpGYjT1PQU6v7DaDn0ruxa3ObdpUIYbmZw==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-23320190923002.tgz","_shasum":"0c400c140ca0b3c05f52d25f11583cf05a0c4e9a","_spec":"@dcloudio/uni-stat@next","_where":"/Users/fxy/Documents/DCloud/HbuilderX-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"fed4c73fb9142a1b277dd79313939cad90693d3e","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-23320190923002"};
-
-/***/ }),
-/* 7 */
-/*!**********************************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/pages.json?{"type":"style"} ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "引导页" }, "pages/person/logon": { "navigationBarTitleText": "登录页" }, "pages/index/home": { "navigationBarTitleText": "首页" }, "pages/ptype/home": {}, "pages/cart/home": {}, "pages/person/home": {}, "pages/common/footermenu": {}, "pages/person/reg": {}, "pages/order/createOrder": {}, "pages/order/order": {}, "pages/money/pay": {}, "pages/money/paySuccess": {}, "pages/address/address": {}, "pages/address/addressManage": {}, "pages/set/set": {}, "pages/product/list": {}, "pages/product/product": {}, "pages/notice/notice": {}, "pages/detail/detail": {}, "pages/userinfo/userinfo": {}, "pages/order/dispOrder": {}, "pages/person/share": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8", "navigationStyle": "custom" } };exports.default = _default;
-
-/***/ }),
-/* 8 */
-/*!*********************************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/pages.json?{"type":"stat"} ***!
-  \*********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "__UNI__0FFA911" };exports.default = _default;
-
-/***/ }),
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */
-/*!********************************************!*\
-  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
-  \********************************************/
-/*! exports provided: Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
-/**
- * vuex v3.0.1
- * (c) 2017 Evan You
- * @license MIT
- */
-var applyMixin = function (Vue) {
-  var version = Number(Vue.version.split('.')[0]);
-
-  if (version >= 2) {
-    Vue.mixin({ beforeCreate: vuexInit });
-  } else {
-    // override init and inject vuex init procedure
-    // for 1.x backwards compatibility.
-    var _init = Vue.prototype._init;
-    Vue.prototype._init = function (options) {
-      if ( options === void 0 ) options = {};
-
-      options.init = options.init
-        ? [vuexInit].concat(options.init)
-        : vuexInit;
-      _init.call(this, options);
-    };
-  }
-
-  /**
-   * Vuex init hook, injected into each instances init hooks list.
-   */
-
-  function vuexInit () {
-    var options = this.$options;
-    // store injection
-    if (options.store) {
-      this.$store = typeof options.store === 'function'
-        ? options.store()
-        : options.store;
-    } else if (options.parent && options.parent.$store) {
-      this.$store = options.parent.$store;
-    }
-  }
-};
-
-var devtoolHook =
-  typeof window !== 'undefined' &&
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
-
-function devtoolPlugin (store) {
-  if (!devtoolHook) { return }
-
-  store._devtoolHook = devtoolHook;
-
-  devtoolHook.emit('vuex:init', store);
-
-  devtoolHook.on('vuex:travel-to-state', function (targetState) {
-    store.replaceState(targetState);
-  });
-
-  store.subscribe(function (mutation, state) {
-    devtoolHook.emit('vuex:mutation', mutation, state);
-  });
-}
-
-/**
- * Get the first item that pass the test
- * by second argument function
- *
- * @param {Array} list
- * @param {Function} f
- * @return {*}
- */
-/**
- * Deep copy the given object considering circular structure.
- * This function caches all nested objects and its copies.
- * If it detects circular structure, use cached copy to avoid infinite loop.
- *
- * @param {*} obj
- * @param {Array<Object>} cache
- * @return {*}
- */
-
-
-/**
- * forEach for object
- */
-function forEachValue (obj, fn) {
-  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
-}
-
-function isObject (obj) {
-  return obj !== null && typeof obj === 'object'
-}
-
-function isPromise (val) {
-  return val && typeof val.then === 'function'
-}
-
-function assert (condition, msg) {
-  if (!condition) { throw new Error(("[vuex] " + msg)) }
-}
-
-var Module = function Module (rawModule, runtime) {
-  this.runtime = runtime;
-  this._children = Object.create(null);
-  this._rawModule = rawModule;
-  var rawState = rawModule.state;
-  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
-};
-
-var prototypeAccessors$1 = { namespaced: { configurable: true } };
-
-prototypeAccessors$1.namespaced.get = function () {
-  return !!this._rawModule.namespaced
-};
-
-Module.prototype.addChild = function addChild (key, module) {
-  this._children[key] = module;
-};
-
-Module.prototype.removeChild = function removeChild (key) {
-  delete this._children[key];
-};
-
-Module.prototype.getChild = function getChild (key) {
-  return this._children[key]
-};
-
-Module.prototype.update = function update (rawModule) {
-  this._rawModule.namespaced = rawModule.namespaced;
-  if (rawModule.actions) {
-    this._rawModule.actions = rawModule.actions;
-  }
-  if (rawModule.mutations) {
-    this._rawModule.mutations = rawModule.mutations;
-  }
-  if (rawModule.getters) {
-    this._rawModule.getters = rawModule.getters;
-  }
-};
-
-Module.prototype.forEachChild = function forEachChild (fn) {
-  forEachValue(this._children, fn);
-};
-
-Module.prototype.forEachGetter = function forEachGetter (fn) {
-  if (this._rawModule.getters) {
-    forEachValue(this._rawModule.getters, fn);
-  }
-};
-
-Module.prototype.forEachAction = function forEachAction (fn) {
-  if (this._rawModule.actions) {
-    forEachValue(this._rawModule.actions, fn);
-  }
-};
-
-Module.prototype.forEachMutation = function forEachMutation (fn) {
-  if (this._rawModule.mutations) {
-    forEachValue(this._rawModule.mutations, fn);
-  }
-};
-
-Object.defineProperties( Module.prototype, prototypeAccessors$1 );
-
-var ModuleCollection = function ModuleCollection (rawRootModule) {
-  // register root module (Vuex.Store options)
-  this.register([], rawRootModule, false);
-};
-
-ModuleCollection.prototype.get = function get (path) {
-  return path.reduce(function (module, key) {
-    return module.getChild(key)
-  }, this.root)
-};
-
-ModuleCollection.prototype.getNamespace = function getNamespace (path) {
-  var module = this.root;
-  return path.reduce(function (namespace, key) {
-    module = module.getChild(key);
-    return namespace + (module.namespaced ? key + '/' : '')
-  }, '')
-};
-
-ModuleCollection.prototype.update = function update$1 (rawRootModule) {
-  update([], this.root, rawRootModule);
-};
-
-ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
-    var this$1 = this;
-    if ( runtime === void 0 ) runtime = true;
-
-  if (true) {
-    assertRawModule(path, rawModule);
-  }
-
-  var newModule = new Module(rawModule, runtime);
-  if (path.length === 0) {
-    this.root = newModule;
-  } else {
-    var parent = this.get(path.slice(0, -1));
-    parent.addChild(path[path.length - 1], newModule);
-  }
-
-  // register nested modules
-  if (rawModule.modules) {
-    forEachValue(rawModule.modules, function (rawChildModule, key) {
-      this$1.register(path.concat(key), rawChildModule, runtime);
-    });
-  }
-};
-
-ModuleCollection.prototype.unregister = function unregister (path) {
-  var parent = this.get(path.slice(0, -1));
-  var key = path[path.length - 1];
-  if (!parent.getChild(key).runtime) { return }
-
-  parent.removeChild(key);
-};
-
-function update (path, targetModule, newModule) {
-  if (true) {
-    assertRawModule(path, newModule);
-  }
-
-  // update target module
-  targetModule.update(newModule);
-
-  // update nested modules
-  if (newModule.modules) {
-    for (var key in newModule.modules) {
-      if (!targetModule.getChild(key)) {
-        if (true) {
-          console.warn(
-            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
-            'manual reload is needed'
-          );
-        }
-        return
-      }
-      update(
-        path.concat(key),
-        targetModule.getChild(key),
-        newModule.modules[key]
-      );
-    }
-  }
-}
-
-var functionAssert = {
-  assert: function (value) { return typeof value === 'function'; },
-  expected: 'function'
-};
-
-var objectAssert = {
-  assert: function (value) { return typeof value === 'function' ||
-    (typeof value === 'object' && typeof value.handler === 'function'); },
-  expected: 'function or object with "handler" function'
-};
-
-var assertTypes = {
-  getters: functionAssert,
-  mutations: functionAssert,
-  actions: objectAssert
-};
-
-function assertRawModule (path, rawModule) {
-  Object.keys(assertTypes).forEach(function (key) {
-    if (!rawModule[key]) { return }
-
-    var assertOptions = assertTypes[key];
-
-    forEachValue(rawModule[key], function (value, type) {
-      assert(
-        assertOptions.assert(value),
-        makeAssertionMessage(path, key, type, value, assertOptions.expected)
-      );
-    });
-  });
-}
-
-function makeAssertionMessage (path, key, type, value, expected) {
-  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
-  if (path.length > 0) {
-    buf += " in module \"" + (path.join('.')) + "\"";
-  }
-  buf += " is " + (JSON.stringify(value)) + ".";
-  return buf
-}
-
-var Vue; // bind on install
-
-var Store = function Store (options) {
-  var this$1 = this;
-  if ( options === void 0 ) options = {};
-
-  // Auto install if it is not done yet and `window` has `Vue`.
-  // To allow users to avoid auto-installation in some cases,
-  // this code should be placed here. See #731
-  if (!Vue && typeof window !== 'undefined' && window.Vue) {
-    install(window.Vue);
-  }
-
-  if (true) {
-    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
-    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
-    assert(this instanceof Store, "Store must be called with the new operator.");
-  }
-
-  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
-  var strict = options.strict; if ( strict === void 0 ) strict = false;
-
-  var state = options.state; if ( state === void 0 ) state = {};
-  if (typeof state === 'function') {
-    state = state() || {};
-  }
-
-  // store internal state
-  this._committing = false;
-  this._actions = Object.create(null);
-  this._actionSubscribers = [];
-  this._mutations = Object.create(null);
-  this._wrappedGetters = Object.create(null);
-  this._modules = new ModuleCollection(options);
-  this._modulesNamespaceMap = Object.create(null);
-  this._subscribers = [];
-  this._watcherVM = new Vue();
-
-  // bind commit and dispatch to self
-  var store = this;
-  var ref = this;
-  var dispatch = ref.dispatch;
-  var commit = ref.commit;
-  this.dispatch = function boundDispatch (type, payload) {
-    return dispatch.call(store, type, payload)
-  };
-  this.commit = function boundCommit (type, payload, options) {
-    return commit.call(store, type, payload, options)
-  };
-
-  // strict mode
-  this.strict = strict;
-
-  // init root module.
-  // this also recursively registers all sub-modules
-  // and collects all module getters inside this._wrappedGetters
-  installModule(this, state, [], this._modules.root);
-
-  // initialize the store vm, which is responsible for the reactivity
-  // (also registers _wrappedGetters as computed properties)
-  resetStoreVM(this, state);
-
-  // apply plugins
-  plugins.forEach(function (plugin) { return plugin(this$1); });
-
-  if (Vue.config.devtools) {
-    devtoolPlugin(this);
-  }
-};
-
-var prototypeAccessors = { state: { configurable: true } };
-
-prototypeAccessors.state.get = function () {
-  return this._vm._data.$$state
-};
-
-prototypeAccessors.state.set = function (v) {
-  if (true) {
-    assert(false, "Use store.replaceState() to explicit replace store state.");
-  }
-};
-
-Store.prototype.commit = function commit (_type, _payload, _options) {
-    var this$1 = this;
-
-  // check object-style commit
-  var ref = unifyObjectStyle(_type, _payload, _options);
-    var type = ref.type;
-    var payload = ref.payload;
-    var options = ref.options;
-
-  var mutation = { type: type, payload: payload };
-  var entry = this._mutations[type];
-  if (!entry) {
-    if (true) {
-      console.error(("[vuex] unknown mutation type: " + type));
-    }
-    return
-  }
-  this._withCommit(function () {
-    entry.forEach(function commitIterator (handler) {
-      handler(payload);
-    });
-  });
-  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
-
-  if (
-     true &&
-    options && options.silent
-  ) {
-    console.warn(
-      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
-      'Use the filter functionality in the vue-devtools'
-    );
-  }
-};
-
-Store.prototype.dispatch = function dispatch (_type, _payload) {
-    var this$1 = this;
-
-  // check object-style dispatch
-  var ref = unifyObjectStyle(_type, _payload);
-    var type = ref.type;
-    var payload = ref.payload;
-
-  var action = { type: type, payload: payload };
-  var entry = this._actions[type];
-  if (!entry) {
-    if (true) {
-      console.error(("[vuex] unknown action type: " + type));
-    }
-    return
-  }
-
-  this._actionSubscribers.forEach(function (sub) { return sub(action, this$1.state); });
-
-  return entry.length > 1
-    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
-    : entry[0](payload)
-};
-
-Store.prototype.subscribe = function subscribe (fn) {
-  return genericSubscribe(fn, this._subscribers)
-};
-
-Store.prototype.subscribeAction = function subscribeAction (fn) {
-  return genericSubscribe(fn, this._actionSubscribers)
-};
-
-Store.prototype.watch = function watch (getter, cb, options) {
-    var this$1 = this;
-
-  if (true) {
-    assert(typeof getter === 'function', "store.watch only accepts a function.");
-  }
-  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
-};
-
-Store.prototype.replaceState = function replaceState (state) {
-    var this$1 = this;
-
-  this._withCommit(function () {
-    this$1._vm._data.$$state = state;
-  });
-};
-
-Store.prototype.registerModule = function registerModule (path, rawModule, options) {
-    if ( options === void 0 ) options = {};
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (true) {
-    assert(Array.isArray(path), "module path must be a string or an Array.");
-    assert(path.length > 0, 'cannot register the root module by using registerModule.');
-  }
-
-  this._modules.register(path, rawModule);
-  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
-  // reset store to update getters...
-  resetStoreVM(this, this.state);
-};
-
-Store.prototype.unregisterModule = function unregisterModule (path) {
-    var this$1 = this;
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (true) {
-    assert(Array.isArray(path), "module path must be a string or an Array.");
-  }
-
-  this._modules.unregister(path);
-  this._withCommit(function () {
-    var parentState = getNestedState(this$1.state, path.slice(0, -1));
-    Vue.delete(parentState, path[path.length - 1]);
-  });
-  resetStore(this);
-};
-
-Store.prototype.hotUpdate = function hotUpdate (newOptions) {
-  this._modules.update(newOptions);
-  resetStore(this, true);
-};
-
-Store.prototype._withCommit = function _withCommit (fn) {
-  var committing = this._committing;
-  this._committing = true;
-  fn();
-  this._committing = committing;
-};
-
-Object.defineProperties( Store.prototype, prototypeAccessors );
-
-function genericSubscribe (fn, subs) {
-  if (subs.indexOf(fn) < 0) {
-    subs.push(fn);
-  }
-  return function () {
-    var i = subs.indexOf(fn);
-    if (i > -1) {
-      subs.splice(i, 1);
-    }
-  }
-}
-
-function resetStore (store, hot) {
-  store._actions = Object.create(null);
-  store._mutations = Object.create(null);
-  store._wrappedGetters = Object.create(null);
-  store._modulesNamespaceMap = Object.create(null);
-  var state = store.state;
-  // init all modules
-  installModule(store, state, [], store._modules.root, true);
-  // reset vm
-  resetStoreVM(store, state, hot);
-}
-
-function resetStoreVM (store, state, hot) {
-  var oldVm = store._vm;
-
-  // bind store public getters
-  store.getters = {};
-  var wrappedGetters = store._wrappedGetters;
-  var computed = {};
-  forEachValue(wrappedGetters, function (fn, key) {
-    // use computed to leverage its lazy-caching mechanism
-    computed[key] = function () { return fn(store); };
-    Object.defineProperty(store.getters, key, {
-      get: function () { return store._vm[key]; },
-      enumerable: true // for local getters
-    });
-  });
-
-  // use a Vue instance to store the state tree
-  // suppress warnings just in case the user has added
-  // some funky global mixins
-  var silent = Vue.config.silent;
-  Vue.config.silent = true;
-  store._vm = new Vue({
-    data: {
-      $$state: state
-    },
-    computed: computed
-  });
-  Vue.config.silent = silent;
-
-  // enable strict mode for new vm
-  if (store.strict) {
-    enableStrictMode(store);
-  }
-
-  if (oldVm) {
-    if (hot) {
-      // dispatch changes in all subscribed watchers
-      // to force getter re-evaluation for hot reloading.
-      store._withCommit(function () {
-        oldVm._data.$$state = null;
-      });
-    }
-    Vue.nextTick(function () { return oldVm.$destroy(); });
-  }
-}
-
-function installModule (store, rootState, path, module, hot) {
-  var isRoot = !path.length;
-  var namespace = store._modules.getNamespace(path);
-
-  // register in namespace map
-  if (module.namespaced) {
-    store._modulesNamespaceMap[namespace] = module;
-  }
-
-  // set state
-  if (!isRoot && !hot) {
-    var parentState = getNestedState(rootState, path.slice(0, -1));
-    var moduleName = path[path.length - 1];
-    store._withCommit(function () {
-      Vue.set(parentState, moduleName, module.state);
-    });
-  }
-
-  var local = module.context = makeLocalContext(store, namespace, path);
-
-  module.forEachMutation(function (mutation, key) {
-    var namespacedType = namespace + key;
-    registerMutation(store, namespacedType, mutation, local);
-  });
-
-  module.forEachAction(function (action, key) {
-    var type = action.root ? key : namespace + key;
-    var handler = action.handler || action;
-    registerAction(store, type, handler, local);
-  });
-
-  module.forEachGetter(function (getter, key) {
-    var namespacedType = namespace + key;
-    registerGetter(store, namespacedType, getter, local);
-  });
-
-  module.forEachChild(function (child, key) {
-    installModule(store, rootState, path.concat(key), child, hot);
-  });
-}
-
-/**
- * make localized dispatch, commit, getters and state
- * if there is no namespace, just use root ones
- */
-function makeLocalContext (store, namespace, path) {
-  var noNamespace = namespace === '';
-
-  var local = {
-    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if ( true && !store._actions[type]) {
-          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
-          return
-        }
-      }
-
-      return store.dispatch(type, payload)
-    },
-
-    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if ( true && !store._mutations[type]) {
-          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
-          return
-        }
-      }
-
-      store.commit(type, payload, options);
-    }
-  };
-
-  // getters and state object must be gotten lazily
-  // because they will be changed by vm update
-  Object.defineProperties(local, {
-    getters: {
-      get: noNamespace
-        ? function () { return store.getters; }
-        : function () { return makeLocalGetters(store, namespace); }
-    },
-    state: {
-      get: function () { return getNestedState(store.state, path); }
-    }
-  });
-
-  return local
-}
-
-function makeLocalGetters (store, namespace) {
-  var gettersProxy = {};
-
-  var splitPos = namespace.length;
-  Object.keys(store.getters).forEach(function (type) {
-    // skip if the target getter is not match this namespace
-    if (type.slice(0, splitPos) !== namespace) { return }
-
-    // extract local getter type
-    var localType = type.slice(splitPos);
-
-    // Add a port to the getters proxy.
-    // Define as getter property because
-    // we do not want to evaluate the getters in this time.
-    Object.defineProperty(gettersProxy, localType, {
-      get: function () { return store.getters[type]; },
-      enumerable: true
-    });
-  });
-
-  return gettersProxy
-}
-
-function registerMutation (store, type, handler, local) {
-  var entry = store._mutations[type] || (store._mutations[type] = []);
-  entry.push(function wrappedMutationHandler (payload) {
-    handler.call(store, local.state, payload);
-  });
-}
-
-function registerAction (store, type, handler, local) {
-  var entry = store._actions[type] || (store._actions[type] = []);
-  entry.push(function wrappedActionHandler (payload, cb) {
-    var res = handler.call(store, {
-      dispatch: local.dispatch,
-      commit: local.commit,
-      getters: local.getters,
-      state: local.state,
-      rootGetters: store.getters,
-      rootState: store.state
-    }, payload, cb);
-    if (!isPromise(res)) {
-      res = Promise.resolve(res);
-    }
-    if (store._devtoolHook) {
-      return res.catch(function (err) {
-        store._devtoolHook.emit('vuex:error', err);
-        throw err
-      })
-    } else {
-      return res
-    }
-  });
-}
-
-function registerGetter (store, type, rawGetter, local) {
-  if (store._wrappedGetters[type]) {
-    if (true) {
-      console.error(("[vuex] duplicate getter key: " + type));
-    }
-    return
-  }
-  store._wrappedGetters[type] = function wrappedGetter (store) {
-    return rawGetter(
-      local.state, // local state
-      local.getters, // local getters
-      store.state, // root state
-      store.getters // root getters
-    )
-  };
-}
-
-function enableStrictMode (store) {
-  store._vm.$watch(function () { return this._data.$$state }, function () {
-    if (true) {
-      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
-    }
-  }, { deep: true, sync: true });
-}
-
-function getNestedState (state, path) {
-  return path.length
-    ? path.reduce(function (state, key) { return state[key]; }, state)
-    : state
-}
-
-function unifyObjectStyle (type, payload, options) {
-  if (isObject(type) && type.type) {
-    options = payload;
-    payload = type;
-    type = type.type;
-  }
-
-  if (true) {
-    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
-  }
-
-  return { type: type, payload: payload, options: options }
-}
-
-function install (_Vue) {
-  if (Vue && _Vue === Vue) {
-    if (true) {
-      console.error(
-        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
-      );
-    }
-    return
-  }
-  Vue = _Vue;
-  applyMixin(Vue);
-}
-
-var mapState = normalizeNamespace(function (namespace, states) {
-  var res = {};
-  normalizeMap(states).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedState () {
-      var state = this.$store.state;
-      var getters = this.$store.getters;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
-        if (!module) {
-          return
-        }
-        state = module.context.state;
-        getters = module.context.getters;
-      }
-      return typeof val === 'function'
-        ? val.call(this, state, getters)
-        : state[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-var mapMutations = normalizeNamespace(function (namespace, mutations) {
-  var res = {};
-  normalizeMap(mutations).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedMutation () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      var commit = this.$store.commit;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
-        if (!module) {
-          return
-        }
-        commit = module.context.commit;
-      }
-      return typeof val === 'function'
-        ? val.apply(this, [commit].concat(args))
-        : commit.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-var mapGetters = normalizeNamespace(function (namespace, getters) {
-  var res = {};
-  normalizeMap(getters).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    val = namespace + val;
-    res[key] = function mappedGetter () {
-      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
-        return
-      }
-      if ( true && !(val in this.$store.getters)) {
-        console.error(("[vuex] unknown getter: " + val));
-        return
-      }
-      return this.$store.getters[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-var mapActions = normalizeNamespace(function (namespace, actions) {
-  var res = {};
-  normalizeMap(actions).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedAction () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      var dispatch = this.$store.dispatch;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
-        if (!module) {
-          return
-        }
-        dispatch = module.context.dispatch;
-      }
-      return typeof val === 'function'
-        ? val.apply(this, [dispatch].concat(args))
-        : dispatch.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-var createNamespacedHelpers = function (namespace) { return ({
-  mapState: mapState.bind(null, namespace),
-  mapGetters: mapGetters.bind(null, namespace),
-  mapMutations: mapMutations.bind(null, namespace),
-  mapActions: mapActions.bind(null, namespace)
-}); };
-
-function normalizeMap (map) {
-  return Array.isArray(map)
-    ? map.map(function (key) { return ({ key: key, val: key }); })
-    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
-}
-
-function normalizeNamespace (fn) {
-  return function (namespace, map) {
-    if (typeof namespace !== 'string') {
-      map = namespace;
-      namespace = '';
-    } else if (namespace.charAt(namespace.length - 1) !== '/') {
-      namespace += '/';
-    }
-    return fn(namespace, map)
-  }
-}
-
-function getModuleByNamespace (store, helper, namespace) {
-  var module = store._modulesNamespaceMap[namespace];
-  if ( true && !module) {
-    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
-  }
-  return module
-}
-
-var index_esm = {
-  Store: Store,
-  install: install,
-  version: '3.0.1',
-  mapState: mapState,
-  mapMutations: mapMutations,
-  mapGetters: mapGetters,
-  mapActions: mapActions,
-  createNamespacedHelpers: createNamespacedHelpers
-};
-
-
-/* harmony default export */ __webpack_exports__["default"] = (index_esm);
-
-
-/***/ }),
-/* 13 */
-/*!*******************************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/components/utils/http.js ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} // const baseUrl = 'http://api.gls.com';  
-var baseUrl = 'https://api.liangjikang.com';var httpRequest = function httpRequest(opts, data) {var httpDefaultOpts = { url: baseUrl + opts.url, data: data, method: opts.method, header: opts.method == 'get' ? {} : {}, dataType: 'json' };var promise = new Promise(function (resolve, reject) {uni.request(httpDefaultOpts).then(function (res) {resolve(res[1]);}).catch(function (response) {reject(response);});});return promise;}; //带Token请求
-var httpTokenRequest = function httpTokenRequest(opts, data) {// let token = "";
-  // uni.getStorageSync({
-  // 	key: 'token',
-  // 	success: function(ress) {
-  // 		// data["token"] = ress.data,
-  // 		token=ress.data
-  // 	}
-  // });
-  var token = uni.getStorageSync("token"); //此token是登录成功后后台返回保存在storage中的
-  var httpDefaultOpts = { url: baseUrl + opts.url, data: data, method: opts.method, header: opts.method == 'get' ? { 'X-Requested-With': 'XMLHttpRequest', "Accept": "application/json", "Content-Type": "application/json; charset=UTF-8", 'Authorization': token } : { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8;', 'Authorization': token }, dataType: 'json' };var promise = new Promise(function (resolve, reject) {uni.request(httpDefaultOpts).then(function (res) {if (res[1].data["code"] == 99) {uni.showToast({ title: "验证已经过期，请重新登录", icon: 'none' });uni.removeStorage({ key: 'token' });uni.redirectTo({ url: '/pages/person/logon' });return;}resolve(res[1]);}).catch(function (response) {reject(response);});});return promise;};var _default = { baseUrl: baseUrl, httpRequest: httpRequest, httpTokenRequest: httpTokenRequest, methods: _objectSpread({}, (0, _vuex.mapMutations)(['logout'])) };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */
-/*!********************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \********************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 17 */
-/*!*********************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/store/index.js ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 12));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-    token: "" },
-
-  mutations: {
-    login: function login(state, provider) {//改变登录状态
-      state.token = provider,
-
-      uni.setStorage({ //将用户信息保存在本地
-        key: 'token',
-        data: provider });
-
-    },
-    logout: function logout(state) {//退出登录
-      state.token = "",
-
-      uni.removeStorage({
-        key: 'token' });
-
-
-    } } });var _default =
-
-
-
-store;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 18 */
-/*!**************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/Json.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /* 用户 */
-var userInfo = {
-  status: 1,
-  data: {
-    id: 1,
-    mobile: 18888888888,
-    nickname: 'Leo yo',
-    portrait: 'http://img.61ef.cn/news/201409/28/2014092805595807.jpg' },
-
-  msg: '提示'
-
-  /* 首页轮播图 */ };
-var carouselList = [{
-  src: "/static/temp/banner1.jpg",
-  type: "image" },
-
-{
-  src: "/static/temp/banner2.jpg",
-  type: "image" }];
-
-
-
-/* 商品列表 */
-var goodsList = [{
-  image: "/img/gls.png",
-  title: "良吉康，膏力士 定通膏药贴",
-  price: 98,
-  sales: 61 }];
-
-
-
-
-/* 购物车 */
-var cartList = [{
-  id: 1,
-  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553005139&di=3368549edf9eee769a9bcb3fbbed2504&imgtype=jpg&er=1&src=http%3A%2F%2Fimg002.hc360.cn%2Fy3%2FM01%2F5F%2FDB%2FwKhQh1T7iceEGRdWAAAAADQvqk8733.jpg',
-  attr_val: '春装款 L',
-  stock: 15,
-  title: 'OVBE 长袖风衣',
-  price: 278.00,
-  number: 1 },
-
-{
-  id: 3,
-  image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2319343996,1107396922&fm=26&gp=0.jpg',
-  attr_val: '激光导航 扫拖一体',
-  stock: 3,
-  title: '科沃斯 Ecovacs 扫地机器人',
-  price: 1348.00,
-  number: 5 },
-
-{
-  id: 4,
-  image: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2668268226,1765897385&fm=26&gp=0.jpg',
-  attr_val: 'XL',
-  stock: 55,
-  title: '朵绒菲小西装',
-  price: 175.88,
-  number: 1 },
-
-{
-  id: 5,
-  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552410549432&di=06dd3758053fb6d6362516f30a42d055&imgtype=0&src=http%3A%2F%2Fimgcache.mysodao.com%2Fimg3%2FM0A%2F67%2F42%2FCgAPD1vNSsHNm-TnAAEy61txQb4543_400x400x2.JPG',
-  attr_val: '520 #粉红色',
-  stock: 15,
-  title: '迪奥（Dior）烈艳唇膏',
-  price: 1089.00,
-  number: 1 },
-
-{
-  id: 6,
-  image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1031875829,2994442603&fm=26&gp=0.jpg',
-  attr_val: '樱花味润手霜 30ml',
-  stock: 15,
-  title: "欧舒丹（L'OCCITANE）乳木果",
-  price: 128,
-  number: 1 },
-
-{
-  id: 7,
-  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553007107&di=390915aa8a022cf0b03c03340881b0e7&imgtype=jpg&er=1&src=http%3A%2F%2Fimg13.360buyimg.com%2Fn0%2Fjfs%2Ft646%2F285%2F736444951%2F480473%2Faa701c97%2F548176feN10c9ed7b.jpg',
-  attr_val: '特级 12个',
-  stock: 7,
-  title: '新疆阿克苏苹果 特级',
-  price: 58.8,
-  number: 10 },
-
-{
-  id: 8,
-  image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2319343996,1107396922&fm=26&gp=0.jpg',
-  attr_val: '激光导航 扫拖一体',
-  stock: 15,
-  title: '科沃斯 Ecovacs 扫地机器人',
-  price: 1348.00,
-  number: 1 },
-
-{
-  id: 9,
-  image: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2668268226,1765897385&fm=26&gp=0.jpg',
-  attr_val: 'XL',
-  stock: 55,
-  title: '朵绒菲小西装',
-  price: 175.88,
-  number: 1 },
-
-{
-  id: 10,
-  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552410549432&di=06dd3758053fb6d6362516f30a42d055&imgtype=0&src=http%3A%2F%2Fimgcache.mysodao.com%2Fimg3%2FM0A%2F67%2F42%2FCgAPD1vNSsHNm-TnAAEy61txQb4543_400x400x2.JPG',
-  attr_val: '520 #粉红色',
-  stock: 15,
-  title: '迪奥（Dior）烈艳唇膏',
-  price: 1089.00,
-  number: 1 },
-
-{
-  id: 11,
-  image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1031875829,2994442603&fm=26&gp=0.jpg',
-  attr_val: '樱花味润手霜 30ml',
-  stock: 15,
-  title: "欧舒丹（L'OCCITANE）乳木果",
-  price: 128,
-  number: 1 },
-
-{
-  id: 12,
-  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553007107&di=390915aa8a022cf0b03c03340881b0e7&imgtype=jpg&er=1&src=http%3A%2F%2Fimg13.360buyimg.com%2Fn0%2Fjfs%2Ft646%2F285%2F736444951%2F480473%2Faa701c97%2F548176feN10c9ed7b.jpg',
-  attr_val: '特级 12个',
-  stock: 7,
-  title: '新疆阿克苏苹果 特级',
-  price: 58.8,
-  number: 10 },
-
-{
-  id: 13,
-  image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1552405266625&di=a703f2b2cdb0fe7f3f05f62dd91307ab&imgtype=0&src=http%3A%2F%2Fwww.78.cn%2Fzixun%2Fnews%2Fupload%2F20190214%2F1550114706486250.jpg',
-  attr_val: '春装款/m',
-  stock: 15,
-  title: '女装2019春秋新款',
-  price: 420.00,
-  number: 1 }];
-
-
-//详情展示页面
-var detailData = {
-  title: '纯种金毛幼犬活体有血统证书',
-  title2: '拆家小能手 你值得拥有',
-  favorite: true,
-  imgList: [{
-    src: 'http://img0.imgtn.bdimg.com/it/u=2396068252,4277062836&fm=26&gp=0.jpg' },
-
-  {
-    src: 'http://img.pconline.com.cn/images/upload/upc/tx/itbbs/1309/06/c4/25310541_1378426131583.jpg' },
-
-  {
-    src: 'http://img.pconline.com.cn/images/upload/upc/tx/photoblog/1610/26/c4/28926240_1477451226577_mthumb.jpg' },
-
-  {
-    src: 'http://picture.ik123.com/uploads/allimg/190219/12-1Z219105139.jpg' }],
-
-
-  episodeList: [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-
-  guessList: [{
-    src: 'http://img.52z.com/upload/news/image/20180530/20180530081619_31029.jpg',
-    title: '猫眼指甲油',
-    title2: '独树一帜的免照灯猫眼指甲' },
-
-  {
-    src: 'http://m.china-7.net/uploads/14778449362891.jpg',
-    title: '创意屋',
-    title2: '创意屋形上下双层高低床' },
-
-  {
-    src: 'http://www.k73.com/up/allimg/130415/22-130415093527.jpg',
-    title: 'MissCandy 指甲油',
-    title2: '十分适合喜欢素净的妹纸，尽显淡雅的气质' },
-
-  {
-    src: 'http://img0.imgtn.bdimg.com/it/u=2108933440,2194129200&fm=214&gp=0.jpg	',
-    title: 'RMK 2017星空海蓝唇釉',
-    title2: '唇釉质地，上唇后很滋润。少女也会心动的蓝色，透明液体形状。' }],
-
-
-  evaList: [{
-    src: 'http://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/77c6a7efce1b9d1663174705fbdeb48f8d546486.jpg',
-    nickname: 'Ranth Allngal',
-    time: '09-20 12:54',
-    zan: '54',
-    content: '评论不要太苛刻，不管什么产品都会有瑕疵，客服也说了可以退货并且商家承担运费，我觉得至少态度就可以给五星。' },
-
-  {
-    src: 'http://img0.imgtn.bdimg.com/it/u=2396068252,4277062836&fm=26&gp=0.jpg',
-    nickname: 'Ranth Allngal',
-    time: '09-20 12:54',
-    zan: '54',
-    content: '楼上说的好有道理。' }] };
-
-
-
-var shareList = [{
-  type: 1,
-  icon: '/static/temp/share_wechat.png',
-  text: '微信好友' },
-
-{
-  type: 2,
-  icon: '/static/temp/share_moment.png',
-  text: '朋友圈' },
-
-{
-  type: 3,
-  icon: '/static/temp/share_qq.png',
-  text: 'QQ好友' }];
-
-
-var lazyLoadList = [{
-  src: 'http://img0.imgtn.bdimg.com/it/u=2396068252,4277062836&fm=26&gp=0.jpg' },
-
-{
-  src: 'http://img.pconline.com.cn/images/upload/upc/tx/itbbs/1309/06/c4/25310541_1378426131583.jpg' },
-
-{
-  src: 'http://img.pconline.com.cn/images/upload/upc/tx/photoblog/1610/26/c4/28926240_1477451226577_mthumb.jpg' },
-
-{
-  src: 'http://picture.ik123.com/uploads/allimg/190219/12-1Z219105139.jpg' },
-
-{
-  src: 'http://img5.imgtn.bdimg.com/it/u=2904900134,438461613&fm=26&gp=0.jpg' },
-
-{
-  src: 'http://img1.imgtn.bdimg.com/it/u=1690475408,2565370337&fm=26&gp=0.jpg' },
-
-{
-  src: 'http://img.99114.com/group1/M00/7F/99/wKgGS1kVrPGAe5LmAAU2KrJmb3Q923_600_600.jpg' },
-
-{
-  src: 'http://img4.imgtn.bdimg.com/it/u=261047209,372231813&fm=26&gp=0.jpg' },
-
-{
-  src: 'http://i2.17173cdn.com/i7mz64/YWxqaGBf/tu17173com/20150107/eMyVMObjlbcvDEv.jpg' },
-
-{
-  src: 'http://img008.hc360.cn/m4/M02/E7/87/wKhQ6FSrfU6EfUoyAAAAAITAfyc280.jpg' },
-
-{
-  src: 'http://pic1.win4000.com/wallpaper/d/5991569950166.jpg' },
-
-{
-  src: 'http://gss0.baidu.com/9fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/6f061d950a7b0208f9fe945e60d9f2d3572cc85e.jpg' },
-
-{
-  src: 'http://pic41.nipic.com/20140429/18169759_125841756000_2.jpg' },
-
-{
-  src: 'http://www.k73.com/up/allimg/130415/22-130415093527.jpg' },
-
-{
-  src: 'http://img.52z.com/upload/news/image/20180530/20180530081619_31029.jpg' },
-
-{
-  src: 'http://b-ssl.duitang.com/uploads/item/201410/02/20141002111638_tXAzU.jpeg' },
-
-{
-  src: 'http://img2.ph.126.net/C4JW6f57QWSB21-8jh2UGQ==/1762596304262286698.jpg' },
-
-{
-  src: 'http://att.bbs.duowan.com/forum/201405/17/190257nzcvkkdg6w2e8226.jpg' },
-
-{
-  src: 'http://attach.bbs.miui.com/forum/201504/10/223644v3intigyvva0vgym.jpg' },
-
-{
-  src: 'http://pic1.win4000.com/mobile/3/57888a298d61d.jpg' }];
-
-
-
-var orderList = [{
-  time: '2019-04-06 11:37',
-  state: 1,
-  goodsList: [{
-    image: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553187020783&di=bac9dd78b36fd984502d404d231011c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201609%2F26%2F20160926173213_s5adi.jpeg' },
-
-  {
-    image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg' },
-
-  {
-    image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg' },
-
-  {
-    image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg' },
-
-  {
-    image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg' },
-
-  {
-    image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=4031878334,2682695508&fm=11&gp=0.jpg' },
-
-  {
-    image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1620020012,789258862&fm=26&gp=0.jpg' }] },
-
-
-
-{
-  time: '2019-04-06 11:37',
-  state: 9,
-  goodsList: [{
-    title: '古黛妃 短袖t恤女 春夏装2019新款韩版宽松',
-    price: 179.5,
-    image: 'https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg',
-    number: 1,
-    attr: '珊瑚粉 M' }] },
-
-
-{
-  time: '2019-04-06 11:37',
-  state: 1,
-  goodsList: [{
-    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i2/2120460599/O1CN01LBPS4C1GINkwsOTXS_!!2120460599.jpg_430x430q90.jpg' },
-
-  {
-    image: 'https://img.alicdn.com/imgextra/i2/1069876356/TB2ocTQG4WYBuNjy1zkXXXGGpXa_!!1069876356.jpg_430x430q90.jpg' },
-
-  {
-    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/2120460599/O1CN01YsmgwZ1GINkv38rkn_!!2120460599.jpg_430x430q90.jpg' }] },
-
-
-
-{
-  time: '2019-04-06 11:37',
-  state: 1,
-  goodsList: [{
-    title: '回力女鞋高帮帆布鞋女学生韩版鞋子女2019潮鞋女鞋新款春季板鞋女',
-    price: 69,
-    image: 'https://img.alicdn.com/imgextra/i3/2128794607/TB2gzzoc41YBuNjy1zcXXbNcXXa_!!2128794607.jpg_430x430q90.jpg',
-    number: 1,
-    attr: '白色-高帮 39' }] },
-
-
-{
-  time: '2019-04-06 11:37',
-  state: 1,
-  goodsList: [{
-    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/3358098495/O1CN01dhYyid2Ccl5MWLDok_!!3358098495.jpg_430x430q90.jpg' },
-
-  {
-    image: 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i3/3358098495/O1CN01AWsnFA2Ccl5OzvqsL_!!3358098495.jpg_430x430q90.jpg' }] },
-
-
-
-{
-  time: '2019-04-06 11:37',
-  state: 1,
-  goodsList: [{
-    image: 'https://img.alicdn.com/imgextra/i4/3470687433/O1CN0124mMQOSERr18L1h_!!3470687433.jpg_430x430q90.jpg' },
-
-  {
-    image: 'https://img.alicdn.com/imgextra/i3/2888462616/O1CN01ERra5J1VCAbZaKI5n_!!0-item_pic.jpg_430x430q90.jpg' },
-
-  {
-    image: 'https://gd3.alicdn.com/imgextra/i3/819381730/O1CN01YV4mXj1OeNhQIhQlh_!!819381730.jpg_400x400.jpg' }] }];
-
-
-
-
-
-var cateList = [{
-  id: 1,
-  name: '大健康' },
-
-{
-  id: 2,
-  name: '大美丽' },
-
-{
-  id: 3,
-  name: '品质生活' },
-
-{
-  id: 5,
-  pid: 1,
-  name: '膏药贴' },
-
-
-{
-  id: 8,
-  pid: 5,
-  name: '膏力士',
-  picture: '/static/temp/cate2.jpg' },
-
-{
-  id: 9,
-  pid: 5,
-  name: '游戏手机',
-  picture: '/static/temp/cate3.jpg' },
-
-{
-  id: 10,
-  pid: 5,
-  name: '老人机',
-  picture: '/static/temp/cate1.jpg' },
-
-{
-  id: 11,
-  pid: 5,
-  name: '拍照手机',
-  picture: '/static/temp/cate4.jpg' },
-
-{
-  id: 12,
-  pid: 5,
-  name: '女性手机',
-  picture: '/static/temp/cate5.jpg' },
-
-{
-  id: 14,
-  pid: 6,
-  name: '合约机',
-  picture: '/static/temp/cate1.jpg' },
-
-{
-  id: 15,
-  pid: 6,
-  name: '选好卡',
-  picture: '/static/temp/cate4.jpg' },
-
-{
-  id: 16,
-  pid: 6,
-  name: '办套餐',
-  picture: '/static/temp/cate5.jpg' },
-
-{
-  id: 17,
-  pid: 2,
-  name: '礼品' },
-
-{
-  id: 18,
-  pid: 2,
-  name: '鲜花' },
-
-{
-  id: 19,
-  pid: 17,
-  name: '公益摆件',
-  picture: '/static/temp/cate7.jpg' },
-
-{
-  id: 20,
-  pid: 17,
-  name: '创意礼品',
-  picture: '/static/temp/cate8.jpg' },
-
-{
-  id: 21,
-  pid: 18,
-  name: '鲜花',
-  picture: '/static/temp/cate9.jpg' },
-
-{
-  id: 22,
-  pid: 18,
-  name: '每周一花',
-  picture: '/static/temp/cate10.jpg' },
-
-{
-  id: 23,
-  pid: 18,
-  name: '卡通花束',
-  picture: '/static/temp/cate11.jpg' },
-
-{
-  id: 24,
-  pid: 18,
-  name: '永生花',
-  picture: '/static/temp/cate12.jpg' },
-
-{
-  id: 25,
-  pid: 3,
-  name: '男装' },
-
-{
-  id: 26,
-  pid: 3,
-  name: '女装' },
-
-{
-  id: 27,
-  pid: 25,
-  name: '男士T恤',
-  picture: '/static/temp/cate13.jpg' },
-
-{
-  id: 28,
-  pid: 25,
-  name: '男士外套',
-  picture: '/static/temp/cate14.jpg' },
-
-{
-  id: 29,
-  pid: 26,
-  name: '裙装',
-  picture: '/static/temp/cate15.jpg' },
-
-{
-  id: 30,
-  pid: 26,
-  name: 'T恤',
-  picture: '/static/temp/cate16.jpg' },
-
-{
-  id: 31,
-  pid: 26,
-  name: '上装',
-  picture: '/static/temp/cate15.jpg' },
-
-{
-  id: 32,
-  pid: 26,
-  name: '下装',
-  picture: '/static/temp/cate16.jpg' },
-
-{
-  id: 33,
-  pid: 4,
-  name: '奶粉' },
-
-{
-  id: 34,
-  pid: 4,
-  name: '营养辅食' },
-
-{
-  id: 35,
-  pid: 4,
-  name: '童装' },
-
-{
-  id: 39,
-  pid: 4,
-  name: '喂养用品' },
-
-{
-  id: 36,
-  pid: 33,
-  name: '有机奶粉',
-  picture: '/static/temp/cate17.jpg' },
-
-{
-  id: 37,
-  pid: 34,
-  name: '果泥/果汁',
-  picture: '/static/temp/cate18.jpg' },
-
-{
-  id: 39,
-  pid: 34,
-  name: '面条/粥',
-  picture: '/static/temp/cate20.jpg' },
-
-{
-  id: 42,
-  pid: 35,
-  name: '婴童衣橱',
-  picture: '/static/temp/cate19.jpg' },
-
-{
-  id: 43,
-  pid: 39,
-  name: '吸奶器',
-  picture: '/static/temp/cate21.jpg' },
-
-{
-  id: 44,
-  pid: 39,
-  name: '儿童餐具',
-  picture: '/static/temp/cate22.jpg' },
-
-{
-  id: 45,
-  pid: 39,
-  name: '牙胶安抚',
-  picture: '/static/temp/cate23.jpg' },
-
-{
-  id: 46,
-  pid: 39,
-  name: '围兜',
-  picture: '/static/temp/cate24.jpg' }];var _default =
-
-
-
-{
-  carouselList: carouselList,
-  cartList: cartList,
-  detailData: detailData,
-  lazyLoadList: lazyLoadList,
-  userInfo: userInfo,
-  shareList: shareList,
-  goodsList: goodsList,
-  orderList: orderList,
-  cateList: cateList };exports.default = _default;
-
-/***/ }),
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */
-/*!***********************************************************************!*\
-  !*** /Users/danytang/web/gls/www/glsapp/js_sdk/ccdzhang-dokey/md5.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process, global) {var __WEBPACK_AMD_DEFINE_RESULT__; /**
-               * [js-md5]{@link https://github.com/emn178/js-md5}
-               *
-               * @namespace md5
-               * @version 0.7.3
-               * @author Chen, Yi-Cyuan [emn178@gmail.com]
-               * @copyright Chen, Yi-Cyuan 2014-2017
-               * @license MIT
-               */
-(function () {
-  'use strict';
-
-  var ERROR = 'input is invalid type';
-  var WINDOW = typeof window === 'object';
-  var root = WINDOW ? window : {};
-  if (root.JS_MD5_NO_WINDOW) {
-    WINDOW = false;
-  }
-  var WEB_WORKER = !WINDOW && typeof self === 'object';
-  var NODE_JS = !root.JS_MD5_NO_NODE_JS && typeof process === 'object' && process.versions && process.versions.node;
-  if (NODE_JS) {
-    root = global;
-  } else if (WEB_WORKER) {
-    root = self;
-  }
-  var COMMON_JS = !root.JS_MD5_NO_COMMON_JS && typeof module === 'object' && module.exports;
-  var AMD =  true && __webpack_require__(/*! !webpack amd options */ 41);
-  var ARRAY_BUFFER = !root.JS_MD5_NO_ARRAY_BUFFER && typeof ArrayBuffer !== 'undefined';
-  var HEX_CHARS = '0123456789abcdef'.split('');
-  var EXTRA = [128, 32768, 8388608, -2147483648];
-  var SHIFT = [0, 8, 16, 24];
-  var OUTPUT_TYPES = ['hex', 'array', 'digest', 'buffer', 'arrayBuffer', 'base64'];
-  var BASE64_ENCODE_CHAR = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
-
-  var blocks = [],buffer8;
-  if (ARRAY_BUFFER) {
-    var buffer = new ArrayBuffer(68);
-    buffer8 = new Uint8Array(buffer);
-    blocks = new Uint32Array(buffer);
-  }
-
-  if (root.JS_MD5_NO_NODE_JS || !Array.isArray) {
-    Array.isArray = function (obj) {
-      return Object.prototype.toString.call(obj) === '[object Array]';
-    };
-  }
-
-  if (ARRAY_BUFFER && (root.JS_MD5_NO_ARRAY_BUFFER_IS_VIEW || !ArrayBuffer.isView)) {
-    ArrayBuffer.isView = function (obj) {
-      return typeof obj === 'object' && obj.buffer && obj.buffer.constructor === ArrayBuffer;
-    };
-  }
-
-  /**
-     * @method hex
-     * @memberof md5
-     * @description Output hash as hex string
-     * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-     * @returns {String} Hex string
-     * @example
-     * md5.hex('The quick brown fox jumps over the lazy dog');
-     * // equal to
-     * md5('The quick brown fox jumps over the lazy dog');
-     */
-  /**
-         * @method digest
-         * @memberof md5
-         * @description Output hash as bytes array
-         * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-         * @returns {Array} Bytes array
-         * @example
-         * md5.digest('The quick brown fox jumps over the lazy dog');
-         */
-  /**
-             * @method array
-             * @memberof md5
-             * @description Output hash as bytes array
-             * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-             * @returns {Array} Bytes array
-             * @example
-             * md5.array('The quick brown fox jumps over the lazy dog');
-             */
-  /**
-                 * @method arrayBuffer
-                 * @memberof md5
-                 * @description Output hash as ArrayBuffer
-                 * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-                 * @returns {ArrayBuffer} ArrayBuffer
-                 * @example
-                 * md5.arrayBuffer('The quick brown fox jumps over the lazy dog');
-                 */
-  /**
-                     * @method buffer
-                     * @deprecated This maybe confuse with Buffer in node.js. Please use arrayBuffer instead.
-                     * @memberof md5
-                     * @description Output hash as ArrayBuffer
-                     * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-                     * @returns {ArrayBuffer} ArrayBuffer
-                     * @example
-                     * md5.buffer('The quick brown fox jumps over the lazy dog');
-                     */
-  /**
-                         * @method base64
-                         * @memberof md5
-                         * @description Output hash as base64 string
-                         * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-                         * @returns {String} base64 string
-                         * @example
-                         * md5.base64('The quick brown fox jumps over the lazy dog');
-                         */
-  var createOutputMethod = function createOutputMethod(outputType) {
-    return function (message) {
-      return new Md5(true).update(message)[outputType]();
-    };
-  };
-
-  /**
-      * @method create
-      * @memberof md5
-      * @description Create Md5 object
-      * @returns {Md5} Md5 object.
-      * @example
-      * var hash = md5.create();
-      */
-  /**
-          * @method update
-          * @memberof md5
-          * @description Create and update Md5 object
-          * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-          * @returns {Md5} Md5 object.
-          * @example
-          * var hash = md5.update('The quick brown fox jumps over the lazy dog');
-          * // equal to
-          * var hash = md5.create();
-          * hash.update('The quick brown fox jumps over the lazy dog');
-          */
-  var createMethod = function createMethod() {
-    var method = createOutputMethod('hex');
-    if (NODE_JS) {
-      method = nodeWrap(method);
-    }
-    method.create = function () {
-      return new Md5();
-    };
-    method.update = function (message) {
-      return method.create().update(message);
-    };
-    for (var i = 0; i < OUTPUT_TYPES.length; ++i) {
-      var type = OUTPUT_TYPES[i];
-      method[type] = createOutputMethod(type);
-    }
-    return method;
-  };
-
-  var nodeWrap = function nodeWrap(method) {
-    var crypto = eval("require('crypto')");
-    var Buffer = eval("require('buffer').Buffer");
-    var nodeMethod = function nodeMethod(message) {
-      if (typeof message === 'string') {
-        return crypto.createHash('md5').update(message, 'utf8').digest('hex');
-      } else {
-        if (message === null || message === undefined) {
-          throw ERROR;
-        } else if (message.constructor === ArrayBuffer) {
-          message = new Uint8Array(message);
-        }
-      }
-      if (Array.isArray(message) || ArrayBuffer.isView(message) ||
-      message.constructor === Buffer) {
-        return crypto.createHash('md5').update(new Buffer(message)).digest('hex');
-      } else {
-        return method(message);
-      }
-    };
-    return nodeMethod;
-  };
-
-
-
-  /**
-      * Md5 class
-      * @class Md5
-      * @description This is internal class.
-      * @see {@link md5.create}
-      */
-  function Md5(sharedMemory) {
-    if (sharedMemory) {
-      blocks[0] = blocks[16] = blocks[1] = blocks[2] = blocks[3] =
-      blocks[4] = blocks[5] = blocks[6] = blocks[7] =
-      blocks[8] = blocks[9] = blocks[10] = blocks[11] =
-      blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
-      this.blocks = blocks;
-      this.buffer8 = buffer8;
-    } else {
-      if (ARRAY_BUFFER) {
-        var buffer = new ArrayBuffer(68);
-        this.buffer8 = new Uint8Array(buffer);
-        this.blocks = new Uint32Array(buffer);
-      } else {
-        this.blocks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      }
-    }
-    this.h0 = this.h1 = this.h2 = this.h3 = this.start = this.bytes = this.hBytes = 0;
-    this.finalized = this.hashed = false;
-    this.first = true;
-  }
-
-  /**
-     * @method update
-     * @memberof Md5
-     * @instance
-     * @description Update hash
-     * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-     * @returns {Md5} Md5 object.
-     * @see {@link md5.update}
-     */
-  Md5.prototype.update = function (message) {
-    if (this.finalized) {
-      return;
-    }
-
-    var notString,type = typeof message;
-    if (type !== 'string') {
-      if (type === 'object') {
-        if (message === null) {
-          throw ERROR;
-        } else if (ARRAY_BUFFER && message.constructor === ArrayBuffer) {
-          message = new Uint8Array(message);
-        } else if (!Array.isArray(message)) {
-          if (!ARRAY_BUFFER || !ArrayBuffer.isView(message)) {
-            throw ERROR;
-          }
-        }
-      } else {
-        throw ERROR;
-      }
-      notString = true;
-    }
-    var code,index = 0,i,length = message.length,blocks = this.blocks;
-    var buffer8 = this.buffer8;
-
-    while (index < length) {
-      if (this.hashed) {
-        this.hashed = false;
-        blocks[0] = blocks[16];
-        blocks[16] = blocks[1] = blocks[2] = blocks[3] =
-        blocks[4] = blocks[5] = blocks[6] = blocks[7] =
-        blocks[8] = blocks[9] = blocks[10] = blocks[11] =
-        blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
-      }
-
-      if (notString) {
-        if (ARRAY_BUFFER) {
-          for (i = this.start; index < length && i < 64; ++index) {
-            buffer8[i++] = message[index];
-          }
-        } else {
-          for (i = this.start; index < length && i < 64; ++index) {
-            blocks[i >> 2] |= message[index] << SHIFT[i++ & 3];
-          }
-        }
-      } else {
-        if (ARRAY_BUFFER) {
-          for (i = this.start; index < length && i < 64; ++index) {
-            code = message.charCodeAt(index);
-            if (code < 0x80) {
-              buffer8[i++] = code;
-            } else if (code < 0x800) {
-              buffer8[i++] = 0xc0 | code >> 6;
-              buffer8[i++] = 0x80 | code & 0x3f;
-            } else if (code < 0xd800 || code >= 0xe000) {
-              buffer8[i++] = 0xe0 | code >> 12;
-              buffer8[i++] = 0x80 | code >> 6 & 0x3f;
-              buffer8[i++] = 0x80 | code & 0x3f;
-            } else {
-              code = 0x10000 + ((code & 0x3ff) << 10 | message.charCodeAt(++index) & 0x3ff);
-              buffer8[i++] = 0xf0 | code >> 18;
-              buffer8[i++] = 0x80 | code >> 12 & 0x3f;
-              buffer8[i++] = 0x80 | code >> 6 & 0x3f;
-              buffer8[i++] = 0x80 | code & 0x3f;
-            }
-          }
-        } else {
-          for (i = this.start; index < length && i < 64; ++index) {
-            code = message.charCodeAt(index);
-            if (code < 0x80) {
-              blocks[i >> 2] |= code << SHIFT[i++ & 3];
-            } else if (code < 0x800) {
-              blocks[i >> 2] |= (0xc0 | code >> 6) << SHIFT[i++ & 3];
-              blocks[i >> 2] |= (0x80 | code & 0x3f) << SHIFT[i++ & 3];
-            } else if (code < 0xd800 || code >= 0xe000) {
-              blocks[i >> 2] |= (0xe0 | code >> 12) << SHIFT[i++ & 3];
-              blocks[i >> 2] |= (0x80 | code >> 6 & 0x3f) << SHIFT[i++ & 3];
-              blocks[i >> 2] |= (0x80 | code & 0x3f) << SHIFT[i++ & 3];
-            } else {
-              code = 0x10000 + ((code & 0x3ff) << 10 | message.charCodeAt(++index) & 0x3ff);
-              blocks[i >> 2] |= (0xf0 | code >> 18) << SHIFT[i++ & 3];
-              blocks[i >> 2] |= (0x80 | code >> 12 & 0x3f) << SHIFT[i++ & 3];
-              blocks[i >> 2] |= (0x80 | code >> 6 & 0x3f) << SHIFT[i++ & 3];
-              blocks[i >> 2] |= (0x80 | code & 0x3f) << SHIFT[i++ & 3];
-            }
-          }
-        }
-      }
-      this.lastByteIndex = i;
-      this.bytes += i - this.start;
-      if (i >= 64) {
-        this.start = i - 64;
-        this.hash();
-        this.hashed = true;
-      } else {
-        this.start = i;
-      }
-    }
-    if (this.bytes > 4294967295) {
-      this.hBytes += this.bytes / 4294967296 << 0;
-      this.bytes = this.bytes % 4294967296;
-    }
-    return this;
-  };
-
-  Md5.prototype.finalize = function () {
-    if (this.finalized) {
-      return;
-    }
-    this.finalized = true;
-    var blocks = this.blocks,i = this.lastByteIndex;
-    blocks[i >> 2] |= EXTRA[i & 3];
-    if (i >= 56) {
-      if (!this.hashed) {
-        this.hash();
-      }
-      blocks[0] = blocks[16];
-      blocks[16] = blocks[1] = blocks[2] = blocks[3] =
-      blocks[4] = blocks[5] = blocks[6] = blocks[7] =
-      blocks[8] = blocks[9] = blocks[10] = blocks[11] =
-      blocks[12] = blocks[13] = blocks[14] = blocks[15] = 0;
-    }
-    blocks[14] = this.bytes << 3;
-    blocks[15] = this.hBytes << 3 | this.bytes >>> 29;
-    this.hash();
-  };
-
-  Md5.prototype.hash = function () {
-    var a,b,c,d,bc,da,blocks = this.blocks;
-
-    if (this.first) {
-      a = blocks[0] - 680876937;
-      a = (a << 7 | a >>> 25) - 271733879 << 0;
-      d = (-1732584194 ^ a & 2004318071) + blocks[1] - 117830708;
-      d = (d << 12 | d >>> 20) + a << 0;
-      c = (-271733879 ^ d & (a ^ -271733879)) + blocks[2] - 1126478375;
-      c = (c << 17 | c >>> 15) + d << 0;
-      b = (a ^ c & (d ^ a)) + blocks[3] - 1316259209;
-      b = (b << 22 | b >>> 10) + c << 0;
-    } else {
-      a = this.h0;
-      b = this.h1;
-      c = this.h2;
-      d = this.h3;
-      a += (d ^ b & (c ^ d)) + blocks[0] - 680876936;
-      a = (a << 7 | a >>> 25) + b << 0;
-      d += (c ^ a & (b ^ c)) + blocks[1] - 389564586;
-      d = (d << 12 | d >>> 20) + a << 0;
-      c += (b ^ d & (a ^ b)) + blocks[2] + 606105819;
-      c = (c << 17 | c >>> 15) + d << 0;
-      b += (a ^ c & (d ^ a)) + blocks[3] - 1044525330;
-      b = (b << 22 | b >>> 10) + c << 0;
-    }
-
-    a += (d ^ b & (c ^ d)) + blocks[4] - 176418897;
-    a = (a << 7 | a >>> 25) + b << 0;
-    d += (c ^ a & (b ^ c)) + blocks[5] + 1200080426;
-    d = (d << 12 | d >>> 20) + a << 0;
-    c += (b ^ d & (a ^ b)) + blocks[6] - 1473231341;
-    c = (c << 17 | c >>> 15) + d << 0;
-    b += (a ^ c & (d ^ a)) + blocks[7] - 45705983;
-    b = (b << 22 | b >>> 10) + c << 0;
-    a += (d ^ b & (c ^ d)) + blocks[8] + 1770035416;
-    a = (a << 7 | a >>> 25) + b << 0;
-    d += (c ^ a & (b ^ c)) + blocks[9] - 1958414417;
-    d = (d << 12 | d >>> 20) + a << 0;
-    c += (b ^ d & (a ^ b)) + blocks[10] - 42063;
-    c = (c << 17 | c >>> 15) + d << 0;
-    b += (a ^ c & (d ^ a)) + blocks[11] - 1990404162;
-    b = (b << 22 | b >>> 10) + c << 0;
-    a += (d ^ b & (c ^ d)) + blocks[12] + 1804603682;
-    a = (a << 7 | a >>> 25) + b << 0;
-    d += (c ^ a & (b ^ c)) + blocks[13] - 40341101;
-    d = (d << 12 | d >>> 20) + a << 0;
-    c += (b ^ d & (a ^ b)) + blocks[14] - 1502002290;
-    c = (c << 17 | c >>> 15) + d << 0;
-    b += (a ^ c & (d ^ a)) + blocks[15] + 1236535329;
-    b = (b << 22 | b >>> 10) + c << 0;
-    a += (c ^ d & (b ^ c)) + blocks[1] - 165796510;
-    a = (a << 5 | a >>> 27) + b << 0;
-    d += (b ^ c & (a ^ b)) + blocks[6] - 1069501632;
-    d = (d << 9 | d >>> 23) + a << 0;
-    c += (a ^ b & (d ^ a)) + blocks[11] + 643717713;
-    c = (c << 14 | c >>> 18) + d << 0;
-    b += (d ^ a & (c ^ d)) + blocks[0] - 373897302;
-    b = (b << 20 | b >>> 12) + c << 0;
-    a += (c ^ d & (b ^ c)) + blocks[5] - 701558691;
-    a = (a << 5 | a >>> 27) + b << 0;
-    d += (b ^ c & (a ^ b)) + blocks[10] + 38016083;
-    d = (d << 9 | d >>> 23) + a << 0;
-    c += (a ^ b & (d ^ a)) + blocks[15] - 660478335;
-    c = (c << 14 | c >>> 18) + d << 0;
-    b += (d ^ a & (c ^ d)) + blocks[4] - 405537848;
-    b = (b << 20 | b >>> 12) + c << 0;
-    a += (c ^ d & (b ^ c)) + blocks[9] + 568446438;
-    a = (a << 5 | a >>> 27) + b << 0;
-    d += (b ^ c & (a ^ b)) + blocks[14] - 1019803690;
-    d = (d << 9 | d >>> 23) + a << 0;
-    c += (a ^ b & (d ^ a)) + blocks[3] - 187363961;
-    c = (c << 14 | c >>> 18) + d << 0;
-    b += (d ^ a & (c ^ d)) + blocks[8] + 1163531501;
-    b = (b << 20 | b >>> 12) + c << 0;
-    a += (c ^ d & (b ^ c)) + blocks[13] - 1444681467;
-    a = (a << 5 | a >>> 27) + b << 0;
-    d += (b ^ c & (a ^ b)) + blocks[2] - 51403784;
-    d = (d << 9 | d >>> 23) + a << 0;
-    c += (a ^ b & (d ^ a)) + blocks[7] + 1735328473;
-    c = (c << 14 | c >>> 18) + d << 0;
-    b += (d ^ a & (c ^ d)) + blocks[12] - 1926607734;
-    b = (b << 20 | b >>> 12) + c << 0;
-    bc = b ^ c;
-    a += (bc ^ d) + blocks[5] - 378558;
-    a = (a << 4 | a >>> 28) + b << 0;
-    d += (bc ^ a) + blocks[8] - 2022574463;
-    d = (d << 11 | d >>> 21) + a << 0;
-    da = d ^ a;
-    c += (da ^ b) + blocks[11] + 1839030562;
-    c = (c << 16 | c >>> 16) + d << 0;
-    b += (da ^ c) + blocks[14] - 35309556;
-    b = (b << 23 | b >>> 9) + c << 0;
-    bc = b ^ c;
-    a += (bc ^ d) + blocks[1] - 1530992060;
-    a = (a << 4 | a >>> 28) + b << 0;
-    d += (bc ^ a) + blocks[4] + 1272893353;
-    d = (d << 11 | d >>> 21) + a << 0;
-    da = d ^ a;
-    c += (da ^ b) + blocks[7] - 155497632;
-    c = (c << 16 | c >>> 16) + d << 0;
-    b += (da ^ c) + blocks[10] - 1094730640;
-    b = (b << 23 | b >>> 9) + c << 0;
-    bc = b ^ c;
-    a += (bc ^ d) + blocks[13] + 681279174;
-    a = (a << 4 | a >>> 28) + b << 0;
-    d += (bc ^ a) + blocks[0] - 358537222;
-    d = (d << 11 | d >>> 21) + a << 0;
-    da = d ^ a;
-    c += (da ^ b) + blocks[3] - 722521979;
-    c = (c << 16 | c >>> 16) + d << 0;
-    b += (da ^ c) + blocks[6] + 76029189;
-    b = (b << 23 | b >>> 9) + c << 0;
-    bc = b ^ c;
-    a += (bc ^ d) + blocks[9] - 640364487;
-    a = (a << 4 | a >>> 28) + b << 0;
-    d += (bc ^ a) + blocks[12] - 421815835;
-    d = (d << 11 | d >>> 21) + a << 0;
-    da = d ^ a;
-    c += (da ^ b) + blocks[15] + 530742520;
-    c = (c << 16 | c >>> 16) + d << 0;
-    b += (da ^ c) + blocks[2] - 995338651;
-    b = (b << 23 | b >>> 9) + c << 0;
-    a += (c ^ (b | ~d)) + blocks[0] - 198630844;
-    a = (a << 6 | a >>> 26) + b << 0;
-    d += (b ^ (a | ~c)) + blocks[7] + 1126891415;
-    d = (d << 10 | d >>> 22) + a << 0;
-    c += (a ^ (d | ~b)) + blocks[14] - 1416354905;
-    c = (c << 15 | c >>> 17) + d << 0;
-    b += (d ^ (c | ~a)) + blocks[5] - 57434055;
-    b = (b << 21 | b >>> 11) + c << 0;
-    a += (c ^ (b | ~d)) + blocks[12] + 1700485571;
-    a = (a << 6 | a >>> 26) + b << 0;
-    d += (b ^ (a | ~c)) + blocks[3] - 1894986606;
-    d = (d << 10 | d >>> 22) + a << 0;
-    c += (a ^ (d | ~b)) + blocks[10] - 1051523;
-    c = (c << 15 | c >>> 17) + d << 0;
-    b += (d ^ (c | ~a)) + blocks[1] - 2054922799;
-    b = (b << 21 | b >>> 11) + c << 0;
-    a += (c ^ (b | ~d)) + blocks[8] + 1873313359;
-    a = (a << 6 | a >>> 26) + b << 0;
-    d += (b ^ (a | ~c)) + blocks[15] - 30611744;
-    d = (d << 10 | d >>> 22) + a << 0;
-    c += (a ^ (d | ~b)) + blocks[6] - 1560198380;
-    c = (c << 15 | c >>> 17) + d << 0;
-    b += (d ^ (c | ~a)) + blocks[13] + 1309151649;
-    b = (b << 21 | b >>> 11) + c << 0;
-    a += (c ^ (b | ~d)) + blocks[4] - 145523070;
-    a = (a << 6 | a >>> 26) + b << 0;
-    d += (b ^ (a | ~c)) + blocks[11] - 1120210379;
-    d = (d << 10 | d >>> 22) + a << 0;
-    c += (a ^ (d | ~b)) + blocks[2] + 718787259;
-    c = (c << 15 | c >>> 17) + d << 0;
-    b += (d ^ (c | ~a)) + blocks[9] - 343485551;
-    b = (b << 21 | b >>> 11) + c << 0;
-
-    if (this.first) {
-      this.h0 = a + 1732584193 << 0;
-      this.h1 = b - 271733879 << 0;
-      this.h2 = c - 1732584194 << 0;
-      this.h3 = d + 271733878 << 0;
-      this.first = false;
-    } else {
-      this.h0 = this.h0 + a << 0;
-      this.h1 = this.h1 + b << 0;
-      this.h2 = this.h2 + c << 0;
-      this.h3 = this.h3 + d << 0;
-    }
-  };
-
-  /**
-      * @method hex
-      * @memberof Md5
-      * @instance
-      * @description Output hash as hex string
-      * @returns {String} Hex string
-      * @see {@link md5.hex}
-      * @example
-      * hash.hex();
-      */
-  Md5.prototype.hex = function () {
-    this.finalize();
-
-    var h0 = this.h0,h1 = this.h1,h2 = this.h2,h3 = this.h3;
-
-    return HEX_CHARS[h0 >> 4 & 0x0F] + HEX_CHARS[h0 & 0x0F] +
-    HEX_CHARS[h0 >> 12 & 0x0F] + HEX_CHARS[h0 >> 8 & 0x0F] +
-    HEX_CHARS[h0 >> 20 & 0x0F] + HEX_CHARS[h0 >> 16 & 0x0F] +
-    HEX_CHARS[h0 >> 28 & 0x0F] + HEX_CHARS[h0 >> 24 & 0x0F] +
-    HEX_CHARS[h1 >> 4 & 0x0F] + HEX_CHARS[h1 & 0x0F] +
-    HEX_CHARS[h1 >> 12 & 0x0F] + HEX_CHARS[h1 >> 8 & 0x0F] +
-    HEX_CHARS[h1 >> 20 & 0x0F] + HEX_CHARS[h1 >> 16 & 0x0F] +
-    HEX_CHARS[h1 >> 28 & 0x0F] + HEX_CHARS[h1 >> 24 & 0x0F] +
-    HEX_CHARS[h2 >> 4 & 0x0F] + HEX_CHARS[h2 & 0x0F] +
-    HEX_CHARS[h2 >> 12 & 0x0F] + HEX_CHARS[h2 >> 8 & 0x0F] +
-    HEX_CHARS[h2 >> 20 & 0x0F] + HEX_CHARS[h2 >> 16 & 0x0F] +
-    HEX_CHARS[h2 >> 28 & 0x0F] + HEX_CHARS[h2 >> 24 & 0x0F] +
-    HEX_CHARS[h3 >> 4 & 0x0F] + HEX_CHARS[h3 & 0x0F] +
-    HEX_CHARS[h3 >> 12 & 0x0F] + HEX_CHARS[h3 >> 8 & 0x0F] +
-    HEX_CHARS[h3 >> 20 & 0x0F] + HEX_CHARS[h3 >> 16 & 0x0F] +
-    HEX_CHARS[h3 >> 28 & 0x0F] + HEX_CHARS[h3 >> 24 & 0x0F];
-  };
-
-  /**
-      * @method toString
-      * @memberof Md5
-      * @instance
-      * @description Output hash as hex string
-      * @returns {String} Hex string
-      * @see {@link md5.hex}
-      * @example
-      * hash.toString();
-      */
-  Md5.prototype.toString = Md5.prototype.hex;
-
-  /**
-                                               * @method digest
-                                               * @memberof Md5
-                                               * @instance
-                                               * @description Output hash as bytes array
-                                               * @returns {Array} Bytes array
-                                               * @see {@link md5.digest}
-                                               * @example
-                                               * hash.digest();
-                                               */
-  Md5.prototype.digest = function () {
-    this.finalize();
-
-    var h0 = this.h0,h1 = this.h1,h2 = this.h2,h3 = this.h3;
-    return [
-    h0 & 0xFF, h0 >> 8 & 0xFF, h0 >> 16 & 0xFF, h0 >> 24 & 0xFF,
-    h1 & 0xFF, h1 >> 8 & 0xFF, h1 >> 16 & 0xFF, h1 >> 24 & 0xFF,
-    h2 & 0xFF, h2 >> 8 & 0xFF, h2 >> 16 & 0xFF, h2 >> 24 & 0xFF,
-    h3 & 0xFF, h3 >> 8 & 0xFF, h3 >> 16 & 0xFF, h3 >> 24 & 0xFF];
-
-  };
-
-  /**
-      * @method array
-      * @memberof Md5
-      * @instance
-      * @description Output hash as bytes array
-      * @returns {Array} Bytes array
-      * @see {@link md5.array}
-      * @example
-      * hash.array();
-      */
-  Md5.prototype.array = Md5.prototype.digest;
-
-  /**
-                                               * @method arrayBuffer
-                                               * @memberof Md5
-                                               * @instance
-                                               * @description Output hash as ArrayBuffer
-                                               * @returns {ArrayBuffer} ArrayBuffer
-                                               * @see {@link md5.arrayBuffer}
-                                               * @example
-                                               * hash.arrayBuffer();
-                                               */
-  Md5.prototype.arrayBuffer = function () {
-    this.finalize();
-
-    var buffer = new ArrayBuffer(16);
-    var blocks = new Uint32Array(buffer);
-    blocks[0] = this.h0;
-    blocks[1] = this.h1;
-    blocks[2] = this.h2;
-    blocks[3] = this.h3;
-    return buffer;
-  };
-
-  /**
-      * @method buffer
-      * @deprecated This maybe confuse with Buffer in node.js. Please use arrayBuffer instead.
-      * @memberof Md5
-      * @instance
-      * @description Output hash as ArrayBuffer
-      * @returns {ArrayBuffer} ArrayBuffer
-      * @see {@link md5.buffer}
-      * @example
-      * hash.buffer();
-      */
-  Md5.prototype.buffer = Md5.prototype.arrayBuffer;
-
-  /**
-                                                     * @method base64
-                                                     * @memberof Md5
-                                                     * @instance
-                                                     * @description Output hash as base64 string
-                                                     * @returns {String} base64 string
-                                                     * @see {@link md5.base64}
-                                                     * @example
-                                                     * hash.base64();
-                                                     */
-  Md5.prototype.base64 = function () {
-    var v1,v2,v3,base64Str = '',bytes = this.array();
-    for (var i = 0; i < 15;) {
-      v1 = bytes[i++];
-      v2 = bytes[i++];
-      v3 = bytes[i++];
-      base64Str += BASE64_ENCODE_CHAR[v1 >>> 2] +
-      BASE64_ENCODE_CHAR[(v1 << 4 | v2 >>> 4) & 63] +
-      BASE64_ENCODE_CHAR[(v2 << 2 | v3 >>> 6) & 63] +
-      BASE64_ENCODE_CHAR[v3 & 63];
-    }
-    v1 = bytes[i];
-    base64Str += BASE64_ENCODE_CHAR[v1 >>> 2] +
-    BASE64_ENCODE_CHAR[v1 << 4 & 63] +
-    '==';
-    return base64Str;
-  };
-
-  var exports = createMethod();
-
-  if (COMMON_JS) {
-    module.exports = exports;
-  } else {
-    /**
-           * @method md5
-           * @description Md5 hash function, export to global in browsers.
-           * @param {String|Array|Uint8Array|ArrayBuffer} message message to hash
-           * @returns {String} md5 hashes
-           * @example
-           * md5(''); // d41d8cd98f00b204e9800998ecf8427e
-           * md5('The quick brown fox jumps over the lazy dog'); // 9e107d9d372bb6826bd81d3542a419d6
-           * md5('The quick brown fox jumps over the lazy dog.'); // e4d909c290d0fb1ca068ffaddf22cbd0
-           *
-           * // It also supports UTF-8 encoding
-           * md5('中文'); // a7bac2239fcdcb3a067903d8077c4a07
-           *
-           * // It also supports byte `Array`, `Uint8Array`, `ArrayBuffer`
-           * md5([]); // d41d8cd98f00b204e9800998ecf8427e
-           * md5(new Uint8Array([])); // d41d8cd98f00b204e9800998ecf8427e
-           */
-    root.md5 = exports;
-    if (AMD) {
-      !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
-        return exports;
-      }).call(exports, __webpack_require__, exports, module),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-    }
-  }
-})();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/node-libs-browser/mock/process.js */ 39), __webpack_require__(/*! ./../../../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/webpack/buildin/global.js */ 3)))
-
-/***/ }),
-/* 39 */
-/*!********************************************************!*\
-  !*** ./node_modules/node-libs-browser/mock/process.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports.nextTick = function nextTick(fn) {
-	setTimeout(fn, 0);
-};
-
-exports.platform = exports.arch = 
-exports.execPath = exports.title = 'browser';
-exports.pid = 1;
-exports.browser = true;
-exports.env = {};
-exports.argv = [];
-
-exports.binding = function (name) {
-	throw new Error('No such module. (Possibly not yet loaded)')
-};
-
-(function () {
-    var cwd = '/';
-    var path;
-    exports.cwd = function () { return cwd };
-    exports.chdir = function (dir) {
-        if (!path) path = __webpack_require__(/*! path */ 40);
-        cwd = path.resolve(dir, cwd);
-    };
-})();
-
-exports.exit = exports.kill = 
-exports.umask = exports.dlopen = 
-exports.uptime = exports.memoryUsage = 
-exports.uvCounters = function() {};
-exports.features = {};
-
-
-/***/ }),
-/* 40 */
-/*!***********************************************!*\
-  !*** ./node_modules/path-browserify/index.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node-libs-browser/mock/process.js */ 39)))
-
-/***/ }),
-/* 41 */
-/*!****************************************!*\
-  !*** (webpack)/buildin/amd-options.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
-module.exports = __webpack_amd_options__;
-
-/* WEBPACK VAR INJECTION */}.call(this, {}))
-
-/***/ }),
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */
+/***/ 50:
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
   \**********************************************************/
@@ -11252,7 +11958,8 @@ module.exports = __webpack_require__(/*! regenerator-runtime */ 51);
 
 
 /***/ }),
-/* 51 */
+
+/***/ 51:
 /*!************************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
   \************************************************************/
@@ -11299,7 +12006,8 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 52 */
+
+/***/ 52:
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
   \*****************************************************/
@@ -12029,6 +12737,42 @@ if (hadRuntime) {
 );
 
 
+/***/ }),
+
+/***/ 6:
+/*!******************************************************!*\
+  !*** ./node_modules/@dcloudio/uni-stat/package.json ***!
+  \******************************************************/
+/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, files, gitHead, homepage, license, main, name, repository, scripts, version, default */
+/***/ (function(module) {
+
+module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-23320190923002","_inBundle":false,"_integrity":"sha512-MnftsvgOac3q1FCOBPzivbFn8GNQFo7D2DY325HeEZyFCWgx5GEwHpGYjT1PQU6v7DaDn0ruxa3ObdpUIYbmZw==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-23320190923002.tgz","_shasum":"0c400c140ca0b3c05f52d25f11583cf05a0c4e9a","_spec":"@dcloudio/uni-stat@next","_where":"/Users/fxy/Documents/DCloud/HbuilderX-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"fed4c73fb9142a1b277dd79313939cad90693d3e","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-23320190923002"};
+
+/***/ }),
+
+/***/ 7:
+/*!**********************************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/pages.json?{"type":"style"} ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/index": { "navigationBarTitleText": "引导页" }, "pages/person/logon": { "navigationBarTitleText": "登录页" }, "pages/index/home": { "navigationBarTitleText": "首页" }, "pages/ptype/home": {}, "pages/cart/home": {}, "pages/person/home": {}, "pages/common/footermenu": {}, "pages/person/reg": {}, "pages/order/createOrder": {}, "pages/order/order": {}, "pages/money/pay": {}, "pages/money/paySuccess": {}, "pages/address/address": {}, "pages/address/addressManage": {}, "pages/set/set": {}, "pages/product/list": {}, "pages/product/product": {}, "pages/notice/notice": {}, "pages/order/dispOrder": {}, "pages/person/share": {}, "pages/person/upload": {} }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8", "navigationStyle": "custom" } };exports.default = _default;
+
+/***/ }),
+
+/***/ 8:
+/*!*********************************************************************!*\
+  !*** /Users/danytang/web/gls/www/glsapp/pages.json?{"type":"stat"} ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "appid": "__UNI__0FFA911" };exports.default = _default;
+
 /***/ })
-]]);
+
+}]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

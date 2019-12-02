@@ -7,7 +7,7 @@
 		<!-- 地址 -->
 		<navigator url="/pages/address/address?source=1" class="address-section">
 			<view class="order-content">
-				<text class="yticon icon-shouhuodizhi"></text>
+				<text class="iconfont icon-location " style="font-size: 20px; padding:10px;"></text>
 				<view class="cen">
 					<view class="top">
 						<text  v-if="addressData==''" class=" name text-orange">收件地址管理</text>
@@ -16,7 +16,7 @@
 					</view>
 					<text v-if="addressData!=''" class="address">{{ addressData.address }} {{ addressData.area }}</text>
 				</view>
-				<text class="yticon icon-you"></text>
+				<text class="iconfont icon-arrow-copy"></text>
 			</view>
 			<image
 				class="a-bg"

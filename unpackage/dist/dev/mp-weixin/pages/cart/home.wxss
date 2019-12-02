@@ -120,7 +120,7 @@
 }
 .cart-item .del-btn {
     padding: 4rpx 10rpx;
-    font-size: 34rpx;
+    font-size: 50rpx;
     height: 50rpx;
     color: #909399;
 }
@@ -128,7 +128,7 @@
 .action-section {
   position: fixed;
   left: 30rpx;
-  bottom: 160rpx;
+  bottom: 140rpx;
   z-index: 95;
   display: -webkit-box;
   display: -webkit-flex;

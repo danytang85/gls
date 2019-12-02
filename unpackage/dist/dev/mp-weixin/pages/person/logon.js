@@ -333,21 +333,6 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
 
     },
 
-    //  wxGetUserInfo() {
-    // 	let _this = this;
-    // 	uni.getUserInfo({
-    // 		provider: 'weixin',
-    // 		success: function(infoRes) {
-    // 			console.log("infoRes",infoRes);
-    // 			let nickName = infoRes.userInfo.nickName; //昵称
-    // 			let avatarUrl = infoRes.userInfo.avatarUrl; //头像
-    // 			try {
-    // 				uni.setStorageSync('isCanUse', false);//记录是否第一次授权  false:表示不是第一次授权
-    // 			} catch (e) {}
-    // 		},
-    // 		fail(res) {}
-    // 	});
-    // },
     getPhoneNumberHander: function getPhoneNumberHander(e) {var _this4 = this;
 
       console.log("e", e);
@@ -403,7 +388,7 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
         wxopenid: this.OpenId,
         nickname: this.userinfo["nickName"],
         province: this.userinfo["province"],
-        headimg: this.userinfo["avatarUrl"],
+        // headimg: this.userinfo["avatarUrl"],
         city: this.userinfo["city"],
         country: this.userinfo["country"],
         gender: this.userinfo["gender"],
@@ -475,10 +460,6 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
                     } else {
                       var sessionkey = res.data['data'].session_key;
                       var openid = res.data['data'].openid;
-                      uni.setStorage({ //将用户信息保存在本地
-                        key: 'openid',
-                        data: openid });
-
                       _this.OpenId = openid;
                       _this.SessionKey = sessionkey;
                       _this.showModal();
@@ -510,6 +491,16 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
     if (options.backpage) {
       this.backpage = options.backpage;
     }
+
+    try {
+      var value = uni.getStorageSync('vcode');
+      if (value) {
+        this.vcode = value;
+      }
+    } catch (e) {
+      // error
+    }
+
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"], __webpack_require__(/*! ./../../../../../../../../Applications/HBuilderX.app/Contents/HBuilderX/plugins/uniapp-cli/node_modules/webpack/buildin/global.js */ 3)))
 

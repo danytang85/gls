@@ -223,7 +223,7 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
 //
 //
 //
-var duration = 2000;var _default = { components: {}, data: function data() {return { loginMode: 1, usernameType: 'text', codeBut: '获取验证码', codeClick: true, mobile: '', password: '', repassword: '', code: '', backpage: '../index/home', Code: '', SessionKey: '', OpenId: '', bindmobile: false, vcode: uni.getStorage("vcode") };}, computed: (0, _vuex.mapState)(['forcedLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, // 手机号输入
+var duration = 2000;var _default = { components: {}, data: function data() {return { loginMode: 1, usernameType: 'text', codeBut: '获取验证码', codeClick: true, mobile: '', password: '', repassword: '', code: '', backpage: '../index/home', Code: '', SessionKey: '', OpenId: '', bindmobile: false, vcode: "" };}, computed: (0, _vuex.mapState)(['forcedLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, // 手机号输入
     mobileInput: function mobileInput(e) {this.mobile = e.detail.value;}, // 密码输入
     passwordInpur: function passwordInpur(e) {this.password = e.detail.value;}, // 重复密码输入
     repasswordInpur: function repasswordInpur(e) {this.repassword = e.detail.value;}, // 验证码输入
@@ -267,6 +267,7 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
     },
 
     _regrequest: function _regrequest(userdata) {var _this2 = this;
+      var _this = this;
       var opts = {
         url: '/userApi/reg/',
         method: 'post' };
@@ -276,8 +277,7 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
       function (res) {
         //打印请求返回的数据
         if (res.data['code'] == 0) {
-          _this2.userinfo = res.data['userinfo'];
-          _this2.login(_this2.userinfo);
+          _this.login(res.data['token']);
           uni.navigateTo({
             url: _this2.backpage });
 
@@ -382,7 +382,7 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
         wxopenid: this.OpenId,
         nickname: this.userinfo["nickName"],
         province: this.userinfo["province"],
-        headimg: this.userinfo["avatarUrl"],
+        // headimg: this.userinfo["avatarUrl"],
         city: this.userinfo["city"],
         country: this.userinfo["country"],
         gender: this.userinfo["gender"],
@@ -455,10 +455,10 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
                     } else {
                       var sessionkey = res.data['data'].session_key;
                       var openid = res.data['data'].openid;
-                      uni.setStorage({ //将用户信息保存在本地
-                        key: 'openid',
-                        data: openid });
-
+                      // uni.setStorage({//将用户信息保存在本地
+                      //     key: 'openid',
+                      //     data: openid
+                      // });
                       _this.OpenId = openid;
                       _this.SessionKey = sessionkey;
                       _this.showModal();
@@ -484,9 +484,19 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
 
   onReady: function onReady() {},
   onLoad: function onLoad(options) {
-    if (options.backpage) {
-      this.backpage = options.backpage;
+    if (options.backpage != "undefined") {
+      this.backpage = decodeURIComponent(options.backpage);
     }
+
+    try {
+      var value = uni.getStorageSync('vcode');
+      if (value) {
+        this.vcode = value;
+      }
+    } catch (e) {
+      // error
+    }
+
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

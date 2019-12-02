@@ -29,8 +29,8 @@
 	text-align: center;
 	position: relative;
 }
-.uni-numbox-minus .yticon,
-.uni-numbox-plus .yticon{
+.uni-numbox-minus .iconfont,
+.uni-numbox-plus .iconfont{
 	font-size: 36rpx;
 	color: #555;
 }
@@ -53,7 +53,7 @@
 	padding: 0;
 	font-size: 30rpx;
 }
-.uni-numbox-disabled.yticon {
+.uni-numbox-disabled.fonticon {
 	color: #d6d6d6;
 }
 

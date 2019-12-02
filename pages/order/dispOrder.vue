@@ -7,7 +7,7 @@
 		<!-- 地址 -->
 		<view class="address-section">
 			<view class="order-content">
-				<text class="yticon icon-shouhuodizhi"></text>
+				<text class="iconfont icon-location" style="font-size: 20px; padding:10px;"></text>
 				<view class="cen">
 					<view class="top">
 						<text  class="name">{{ orderinfo.rename }}</text>
@@ -15,7 +15,6 @@
 					</view>
 					<text  class="address">{{ orderinfo.readdress }} {{ orderinfo.rearea }}</text>
 				</view>
-				<text class="yticon icon-you"></text>
 			</view>
 			
 		</view>
@@ -54,11 +53,11 @@
 				<text class="cell-tit clamp">运费</text>
 				<text class="cell-tip">￥{{orderinfo.freight_fee}}</text>
 			</view>
-			<view class="yt-list-cell b-b" v-if="orderinfo.pay_type!=''">
+			<view class="yt-list-cell b-b" v-if="orderinfo.ispayment==1">
 				<text class="cell-tit clamp">支付方式</text>
 				<text class="cell-tip">{{orderinfo.pay_type=='wx'?'微信':'支付宝'}}</text>
 			</view>
-			<view class="yt-list-cell b-b" v-if="orderinfo.pay_type!=''">
+			<view class="yt-list-cell b-b" v-if="orderinfo.ispayment==1">
 				<text class="cell-tit clamp">支付时间</text>
 				<text class="cell-tip">{{orderinfo.paymenttime}}</text>
 			</view>

@@ -253,11 +253,15 @@ var _default = { data: function data() {return { title: "", manageType: "add", a
         if (res.data['code'] == 0) {
           _this2.$api.prePage().refreshList(data, _this2.manageType);
           _this2.$api.msg("\u5730\u5740".concat(_this2.manageType == 'edit' ? '修改' : '添加', "\u6210\u529F"));
+          uni.hideLoading();
           setTimeout(function () {
             uni.navigateBack();
           }, 800);
 
         } else {
+          setTimeout(function () {
+            uni.hideLoading();
+          }, 2000);
           uni.showToast({ title: res.data.msg, icon: 'none' });
         }
       },
@@ -269,6 +273,9 @@ var _default = { data: function data() {return { title: "", manageType: "add", a
 
     //提交
     confirm: function confirm() {
+      uni.showLoading({
+        title: '正在提交' });
+
       var data = this.addressData;
       console.log(data);
       if (!data.name) {

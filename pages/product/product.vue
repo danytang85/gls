@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
+		<cu-custom bgColor="bg-gradual-orange" :isBack="isnotupgrade==true?true:false">
 			<block slot="backText">返回</block>
 			<block slot="content">产品详情</block>
 		</cu-custom>
@@ -64,7 +64,7 @@
 				<view class="cuIcon-favor ">
 				</view> 收藏
 			</button>
-			<view  @click="toChart"  class="action text-black"  >
+			<view  @click="toChart"  v-if="isnotupgrade"  class="action text-black"  >
 				<view class="cuIcon-cart">
 					<view class="cu-tag badge">{{cartcount}}</view>
 				</view>
@@ -194,12 +194,14 @@
 		　　// 设置菜单中的转发按钮触发转发事件时的转发内容
 			var shareObj = {
 			　　　　title: that.pinfo.title,        // 默认是小程序的名称(可以写slogan等)
-			　　　　path: '/pages/person/share?v='+that.invitation+'&backurl=/pages/product/product?psid='+that.pinfo.psid,        // 默认是当前页面，必须是以‘/’开头的完整路径
+			　　　　path: '/pages/person/share?vcode='+that.invitation+'&backurl='+ encodeURIComponent('/pages/product/product?psid='+that.pinfo.psid),        // 默认是当前页面，必须是以‘/’开头的完整路径
 			　　　　imageUrl: that.apiServer+that.pinfo.images,     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
 			　　　　success: function(res){
 			　　　　　　// 转发成功之后的回调
+						console.log(res.errMsg);
 			　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
 						console.log("分享成功");
+						that.shareInvitation=false;
 			　　　　　　}
 			　　　　},
 			　　　　fail: function(){

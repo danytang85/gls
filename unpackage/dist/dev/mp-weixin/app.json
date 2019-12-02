@@ -18,10 +18,9 @@
     "pages/product/list",
     "pages/product/product",
     "pages/notice/notice",
-    "pages/detail/detail",
-    "pages/userinfo/userinfo",
     "pages/order/dispOrder",
-    "pages/person/share"
+    "pages/person/share",
+    "pages/person/upload"
   ],
   "subPackages": [],
   "window": {
@@ -39,6 +38,5 @@
   "usingComponents": {
     "footermenu": "/pages/common/footermenu",
     "cu-custom": "/components/colorui/cu-custom"
-  },
-  "sitemapLocation": "sitemap85.json"
+  }
 }

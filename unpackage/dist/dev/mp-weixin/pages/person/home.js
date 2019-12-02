@@ -238,19 +238,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
 var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));
 
-var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var listCell = function listCell() {return __webpack_require__.e(/*! import() | components/mix-list-cell */ "components/mix-list-cell").then(__webpack_require__.bind(null, /*! @/components/mix-list-cell */ 210));};
+var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var listCell = function listCell() {return __webpack_require__.e(/*! import() | components/mix-list-cell */ "components/mix-list-cell").then(__webpack_require__.bind(null, /*! @/components/mix-list-cell */ 203));};
 var startY = 0,
 moveY = 0,
 pageAtTop = true;var _default =
@@ -260,6 +250,7 @@ pageAtTop = true;var _default =
 
   data: function data() {
     return {
+      src: '/static/missing-face.png',
       title: '个人中心',
       coverTransform: 'translateY(0px)',
       coverTransition: '0s',
@@ -387,20 +378,36 @@ pageAtTop = true;var _default =
           }
         } });
 
+    },
+
+    upload: function upload() {
+      uni.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function success(res) {
+          var src = res.tempFilePaths[0];
+
+          uni.redirectTo({
+            url: './upload?src=' + src });
+
+        } });
+
     } }),
 
 
   onShareAppMessage: function onShareAppMessage(options) {
     var that = this;
     // 设置菜单中的转发按钮触发转发事件时的转发内容
+    //console.log('/pages/person/share?vcode='+that.invitation);
     var shareObj = {
-      title: this.sharetitle, // 默认是小程序的名称(可以写slogan等)
-      path: '/pages/person/share?v=' + this.invitation, // 默认是当前页面，必须是以‘/’开头的完整路径
-      imageUrl: this.apiServer + this.shareimg, //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+      title: that.sharetitle, // 默认是小程序的名称(可以写slogan等)
+      path: '/pages/person/share?vcode=' + that.invitation, // 默认是当前页面，必须是以‘/’开头的完整路径
+      imageUrl: that.apiServer + that.shareimg, //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
       success: function success(res) {
         // 转发成功之后的回调
         if (res.errMsg == 'shareAppMessage:ok') {
-
+          that.shareInvitation = false;
         }
       },
       fail: function fail() {
@@ -420,14 +427,16 @@ pageAtTop = true;var _default =
     return shareObj;
   },
 
-  onLoad: function onLoad() {var _this3 = this;
+  onLoad: function onLoad(options) {var _this3 = this;
+    // if(options.headimg!=undefined){
+    // 	this.src=decodeURIComponent(options.headimg);
+    // }
 
     if (global.islogon() == false) {
       uni.redirectTo({
         url: "./logon" });
 
     } else {
-      // let token = uni.getStorageSync('token');
       var opts = {
         url: '/base/getuserinfo/',
         method: 'post' };
@@ -437,6 +446,7 @@ pageAtTop = true;var _default =
       function (res) {
         if (res.data['code'] == 0) {
           _this3.userinfo = res.data['userinfo'];
+          _this3.src = _this3.apiServer + res.data["userinfo"].headimg;
         }
       },
       function (error) {
