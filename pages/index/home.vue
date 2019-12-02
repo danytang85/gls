@@ -11,16 +11,16 @@
 		</view>
 		<!-- 分类 -->
 		<view class="cate-section">
-			<view class="cate-item">
+			<view class="cate-item" @click="navTo('../notice/notice')" >
 				<text class="iconfont icon-cuxiaohuodong indexicon basecolor"></text>
 				<text>促销活动</text>
 			</view>
-			<view class="cate-item">
+			<view class="cate-item" @click="navTo('../index/membercenter')">
 				<text class="iconfont icon-huiyuanzhongxin2 indexicon unbasecolor"></text>
 
 				<text>会员中心</text>
 			</view>
-			<view class="cate-item">
+			<view class="cate-item" @click="navTo('../index/productinfo')">
 				<text class="iconfont icon-chanpinzixun indexicon basecolor"></text>
 
 				<text>产品资讯</text>
@@ -95,6 +95,12 @@ export default {
 	},
 
 	methods: {
+		
+		navTo(url) {
+			uni.navigateTo({
+				url
+			});
+		},
 		/**
 		 * 请求静态数据只是为了代码不那么乱
 		 * 分次请求未作整合

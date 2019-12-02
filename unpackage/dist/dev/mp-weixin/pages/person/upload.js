@@ -212,20 +212,48 @@ var device = uni.getSystemInfoSync();var width = device.windowWidth;var height =
       uni.showLoading({
         title: "头像更新中..." });
 
-      var pathurl = _this.apiServer + '/user/upload'; //上传服务器地址
+      var pathurl = _this.apiServer + '/base/uploadheadimg/'; //上传服务器地址
       this.weCropper.getCropperImage(function (avatar) {
         if (avatar) {
+          // let token = uni.getStorageSync("token");
+          // uni.uploadFile({
+          // 	url: pathurl,
+          // 	filePath: avatar,
+          // 	name: 'file',
+          // 	header:{
+          // 		'Authorization': token,
+          // 	},
+          // 	success: res => {
+          // 		let data=JSON.parse(res.data);
+          // 		if (data['code'] == 0) {
+          // 			wx.navigateTo({
+          // 			  url: './home'
+          // 			})
+          // 		} else {
+          // 			 uni.hideLoading();
+          // 			 this.$api.msg(data.msg);
+          // 		}
+          // 	},
+          // 	ail: err => {
+          // 		uni.showModal({
+          // 			content: err.errMsg,
+          // 			showCancel: false
+          // 		});
+          // 		uni.hideLoading();
+          // 	},
+          // 	complete: () => {
+          // 		console.log('complate');
+          // 	}
+          // });
+
+
+
           //  获取到裁剪后的图片
-          //  获取到裁剪后的图片
-
-
-
           var opts = {
             url: '/base/uploadheadimg/',
             method: 'post' };
 
           var param = {};
-
 
           _http.default.httpTokenUpload(opts, avatar, param).then(
           function (res) {
@@ -233,17 +261,12 @@ var device = uni.getSystemInfoSync();var width = device.windowWidth;var height =
             var data = JSON.parse(res.data);
             console.log(data);
             if (data['code'] == 0) {
-
               wx.navigateTo({
                 url: './home' });
 
 
             } else {
               uni.hideLoading();
-              // uni.showModal({
-              // 	content: data.msg,
-              // 	showCancel: false
-              // });
               _this2.$api.msg(data.msg);
 
             }

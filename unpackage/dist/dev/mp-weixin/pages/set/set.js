@@ -168,7 +168,9 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _objectSpread(target) {
   (0, _vuex.mapMutations)(['logout']), {
 
     navTo: function navTo(url) {
-      this.$api.msg("\u8DF3\u8F6C\u5230".concat(url));
+      uni.navigateTo({
+        url: url });
+
     },
     //退出登录
     toLogout: function toLogout() {var _this = this;

@@ -27,12 +27,13 @@
 
 			<view class="tj-sction">
 				<view class="tj-item">
-					<text class="num">{{userinfo.itaccount}}</text>
-					<text>余额</text>
+					<text class="num text-price">{{userinfo.itaccount}}</text>
+					
+					<text>活期</text>
 				</view>
 				<view class="tj-item">
-					<text class="num">0</text>
-					<text>优惠券</text>
+					<text class="num text-price">{{userinfo.frozenaccounts}}</text>
+					<text>冻结</text>
 				</view>
 				<view class="tj-item">
 					<text class="num">{{userinfo.growth}}</text>
@@ -65,8 +66,8 @@
 				<!-- <list-cell icon="icon-tousujianyi-copy" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
 				<list-cell icon="icon-btn-shiyongzhongxin" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
 				<list-cell icon="icon-bangzhu" iconColor="#fb7e06" title="帮助与客服"></list-cell> -->
-				<list-cell icon="icon-shouyi" iconColor="#5fcda2" title="我的收益" border=""></list-cell>
-				<list-cell icon="icon-tuandui" iconColor="#fb7e06" title="我的团队" border="" ></list-cell>
+				<list-cell icon="icon-shouyi" iconColor="#5fcda2" title="我的收益" border=""  @eventClick="navTo('/pages/person/myprofit')"></list-cell>
+				<list-cell icon="icon-tuandui" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
 				<list-cell icon="icon-tuichu2" iconColor="#5fcda2" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
 			</view>
 		</view>

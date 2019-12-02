@@ -78,6 +78,24 @@
 		}, {
 			"path": "pages/person/upload",
 			"style": {}
+		}, {
+			"path": "pages/person/myprofit",
+			"style": {}
+		}, {
+			"path": "pages/person/myteam",
+			"style": {}
+		}, {
+			"path": "pages/index/membercenter",
+			"style": {}
+		}, {
+			"path": "pages/index/productinfo",
+			"style": {}
+		}, {
+			"path": "pages/person/personinfo",
+			"style": {}
+		}, {
+			"path": "pages/person/auth",
+			"style": {}
 		}
 
 

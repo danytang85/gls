@@ -83,7 +83,6 @@ const httpTokenUpload = (opts, filePath, formData) => {
 		} : {
 			'Authorization': token,
 		},
-		dataType: 'json',
 	}
 	let promise = new Promise(function(resolve, reject) {
 		console.log(httpDefaultOpts);

@@ -20,7 +20,13 @@
     "pages/notice/notice",
     "pages/order/dispOrder",
     "pages/person/share",
-    "pages/person/upload"
+    "pages/person/upload",
+    "pages/person/myprofit",
+    "pages/person/myteam",
+    "pages/index/membercenter",
+    "pages/index/productinfo",
+    "pages/person/personinfo",
+    "pages/person/auth"
   ],
   "subPackages": [],
   "window": {

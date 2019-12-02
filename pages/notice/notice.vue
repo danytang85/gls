@@ -3,7 +3,7 @@
 	<view>
 		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">活动信息</block>
+			<block slot="content">促销活动</block>
 		</cu-custom>
 		<view class="notice-item">
 			<text class="time">11:30</text>

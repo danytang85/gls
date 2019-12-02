@@ -88,38 +88,61 @@ export default {
 			uni.showLoading({
 				title:"头像更新中..."
 			})
-			let pathurl = _this.apiServer + '/user/upload';//上传服务器地址
+			let pathurl = _this.apiServer + '/base/uploadheadimg/';//上传服务器地址
 			this.weCropper.getCropperImage(avatar => {
 				if (avatar) {
+					// let token = uni.getStorageSync("token");
+					// uni.uploadFile({
+					// 	url: pathurl,
+					// 	filePath: avatar,
+					// 	name: 'file',
+					// 	header:{
+					// 		'Authorization': token,
+					// 	},
+					// 	success: res => {
+					// 		let data=JSON.parse(res.data);
+					// 		if (data['code'] == 0) {
+					// 			wx.navigateTo({
+					// 			  url: './home'
+					// 			})
+					// 		} else {
+					// 			 uni.hideLoading();
+					// 			 this.$api.msg(data.msg);
+					// 		}
+					// 	},
+					// 	ail: err => {
+					// 		uni.showModal({
+					// 			content: err.errMsg,
+					// 			showCancel: false
+					// 		});
+					// 		uni.hideLoading();
+					// 	},
+					// 	complete: () => {
+					// 		console.log('complate');
+					// 	}
+					// });
+					
+					
+					
 					//  获取到裁剪后的图片
-					//  获取到裁剪后的图片
-					
-					
-					
 					let opts = {
 						url: '/base/uploadheadimg/',
 						method: 'post'
 					};
 					let param = {
 					};
-					
 					http.httpTokenUpload(opts,avatar,param).then(
 						res => {
 							//打印请求返回的数据
 							let data=JSON.parse(res.data);
 							console.log(data);
 							if (data['code'] == 0) {
-								
 								wx.navigateTo({
 								  url: './home'
 								})
 								
 							} else {
 								 uni.hideLoading();
-								 // uni.showModal({
-								 // 	content: data.msg,
-								 // 	showCancel: false
-								 // });
 								 this.$api.msg(data.msg);
 								
 							}
