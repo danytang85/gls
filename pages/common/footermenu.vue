@@ -6,11 +6,11 @@
 				</view>
 				<view class="footfontsize" :class="PageCur=='index'?'menu_text_color_on':'menu_text_color_off'">首页</view>
 			</view>
-			<view class="action text-gray" @click="NavChange" data-cur="ptype">
+			<view class="action text-gray" @click="navTo('/pages/product/list?fid=1&sid=3&tid=4')" data-cur="ptype">
 				<view class='cuIcon-cu-image'>
 					<text class="iconfont icon-leimupinleifenleileibie footicon"  :class="PageCur=='ptype'?'menu_text_color_on':'menu_text_color_off'"></text>
 				</view>
-				<view class="footfontsize" :class="PageCur=='ptype'?'menu_text_color_on':'menu_text_color_off'">分类</view>
+				<view class="footfontsize" :class="PageCur=='ptype'?'menu_text_color_on':'menu_text_color_off'">产品</view>
 			</view>
 			
 			<view class="action text-gray" @click="NavChange" data-cur="cart">
@@ -48,7 +48,13 @@
 					url: '/pages/'+e.currentTarget.dataset.cur+'/home'
 				});
 				
-			}
+			},
+			
+			navTo(url) {
+				uni.navigateTo({
+					url
+				});
+			},
 		}
 	}
 </script>
