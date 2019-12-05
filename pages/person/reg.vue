@@ -360,10 +360,9 @@ export default {
 	},
 	onReady() {},
 	onLoad(options) {
-		if (options.backpage!="undefined") {
-			this.backpage = decodeURIComponent(options.backpage);
+		if (options.backurl!="undefined") {
+			this.backpage = decodeURIComponent(options.backurl);
 		}
-		
 		try {
 		    const value = uni.getStorageSync('vcode');
 		    if (value) {

@@ -18,8 +18,8 @@
 		
 		
 		<view class="cu-bar btn-group foot">
-			<button class="cu-btn bg-green shadow-blur" @tap="uploadTap">重新选择</button>
-			<button class="cu-btn bg-orange shadow"  @tap="getCropperImage">确定</button>
+			<button class="cu-btn bg-green shadow-blur " @tap="uploadTap">重新选择</button>
+			<button class="cu-btn bg-orange shadow "  @tap="getCropperImage">确定</button>
 		</view>
 		
 	</view>
@@ -91,71 +91,85 @@ export default {
 			let pathurl = _this.apiServer + '/base/uploadheadimg/';//上传服务器地址
 			this.weCropper.getCropperImage(avatar => {
 				if (avatar) {
-					// let token = uni.getStorageSync("token");
-					// uni.uploadFile({
-					// 	url: pathurl,
-					// 	filePath: avatar,
-					// 	name: 'file',
-					// 	header:{
-					// 		'Authorization': token,
-					// 	},
-					// 	success: res => {
-					// 		let data=JSON.parse(res.data);
-					// 		if (data['code'] == 0) {
-					// 			wx.navigateTo({
-					// 			  url: './home'
-					// 			})
-					// 		} else {
-					// 			 uni.hideLoading();
-					// 			 this.$api.msg(data.msg);
-					// 		}
-					// 	},
-					// 	ail: err => {
-					// 		uni.showModal({
-					// 			content: err.errMsg,
-					// 			showCancel: false
-					// 		});
-					// 		uni.hideLoading();
-					// 	},
-					// 	complete: () => {
-					// 		console.log('complate');
-					// 	}
-					// });
-					
-					
-					
-					//  获取到裁剪后的图片
-					let opts = {
-						url: '/base/uploadheadimg/',
-						method: 'post'
-					};
-					let param = {
-					};
-					http.httpTokenUpload(opts,avatar,param).then(
-						res => {
-							//打印请求返回的数据
+					let token = uni.getStorageSync("token");
+					 let uploadTask=uni.uploadFile({
+						url: pathurl,
+						filePath: avatar,
+						name: 'file',
+						header:{
+							'Authorization': token,
+						},
+						success: res => {
 							let data=JSON.parse(res.data);
-							console.log(data);
 							if (data['code'] == 0) {
 								wx.navigateTo({
 								  url: './home'
 								})
-								
 							} else {
 								 uni.hideLoading();
 								 this.$api.msg(data.msg);
-								
 							}
 						},
-						error => {
-							console.log('uploadImage fail', err);
+						ail: err => {
 							uni.showModal({
 								content: err.errMsg,
 								showCancel: false
 							});
 							uni.hideLoading();
+						},
+						
+						complete: (e) => {
+							// uni.showModal({
+							// 	content: "complate",
+							// 	showCancel: false
+							// });
+							console.log('complate');
 						}
-					);
+					});
+					// uploadTask.onProgressUpdate((res) => {
+					//             console.log('上传进度' + res.progress);
+					//             console.log('已经上传的数据长度' + res.totalBytesSent);
+					//             console.log('预期需要上传的数据总长度' + res.totalBytesExpectedToSend);
+					
+					//             // 测试条件，取消上传任务。
+					//             // if (res.progress > 50) {
+					//             //     uploadTask.abort();
+					//             // }
+					//         });
+					
+					
+					//  获取到裁剪后的图片
+					// let opts = {
+					// 	url: '/base/uploadheadimg/',
+					// 	method: 'post'
+					// };
+					// let param = {
+					// };
+					// http.httpTokenUpload(opts,avatar,param).then(
+					// 	res => {
+					// 		//打印请求返回的数据
+					// 		let data=JSON.parse(res.data);
+					// 		console.log(data);
+					// 		if (data['code'] == 0) {
+					// 			wx.navigateTo({
+					// 			  url: './home'
+					// 			})
+								
+					// 		} else {
+					// 			 uni.hideLoading();
+					// 			 this.$api.msg(data.msg);
+								
+					// 		}
+					// 	},
+					// 	error => {
+					// 		console.log('uploadImage fail', err);
+					// 		uni.showModal({
+					// 			content: err.errMsg,
+					// 			showCancel: false
+					// 		});
+					// 		uni.hideLoading();
+					// 	}
+					// );
 				} else {
 					console.log('获取图片失败，请稍后重试');
 				}

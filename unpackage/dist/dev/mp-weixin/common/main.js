@@ -52,7 +52,7 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
 
 var _footermenu = _interopRequireDefault(__webpack_require__(/*! ./pages/common/footermenu.vue */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var msg = function msg(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;var icon = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'none'; //统一提示方便全局修改
   if (Boolean(title) === false) {return;}uni.showToast({ title: title, duration: duration, mask: mask, icon: icon });};var json = function json(type) {//模拟异步请求数据
-  return new Promise(function (resolve) {setTimeout(function () {resolve(_Json.default[type]);}, 500);});};var prePage = function prePage() {var pages = getCurrentPages();var prePage = pages[pages.length - 2];return prePage.$vm;};_vue.default.config.productionTip = false;_vue.default.component('footermenu', _footermenu.default);var cuCustom = function cuCustom() {return __webpack_require__.e(/*! import() | components/colorui/cu-custom */ "components/colorui/cu-custom").then(__webpack_require__.bind(null, /*! ./components/colorui/cu-custom.vue */ 191));};
+  return new Promise(function (resolve) {setTimeout(function () {resolve(_Json.default[type]);}, 500);});};var prePage = function prePage() {var pages = getCurrentPages();var prePage = pages[pages.length - 2];return prePage.$vm;};_vue.default.config.productionTip = false;_vue.default.component('footermenu', _footermenu.default);var cuCustom = function cuCustom() {return __webpack_require__.e(/*! import() | components/colorui/cu-custom */ "components/colorui/cu-custom").then(__webpack_require__.bind(null, /*! ./components/colorui/cu-custom.vue */ 256));};
 
 
 _vue.default.component('cu-custom', cuCustom);
@@ -395,6 +395,12 @@ var _default =
       uni.navigateTo({
         url: '/pages/' + e.currentTarget.dataset.cur + '/home' });
 
+
+    },
+
+    navTo: function navTo(url) {
+      uni.navigateTo({
+        url: url });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

@@ -4,13 +4,17 @@
 			<block slot="backText">返回</block>
 			<block slot="content">设置</block>
 		</cu-custom>
-		<view class="list-cell b-b m-t" @click="navTo('../person/myprofit')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b m-t" @click="navTo('../person/personinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">个人资料</text>
 			<text class="cell-more iconfont icon-arrow-copy"></text>
 		</view>
 	
-		<view class="list-cell" @click="navTo('../person/auth')" hover-class="cell-hover" :hover-stay-time="50">
+		<!-- <view class="list-cell" @click="navTo('../person/auth')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">实名认证</text>
+			<text class="cell-more iconfont icon-arrow-copy"></text>
+		</view> -->
+		<view class="list-cell" @click="navTo('../person/repass')" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">密码修改</text>
 			<text class="cell-more iconfont icon-arrow-copy"></text>
 		</view>
 		

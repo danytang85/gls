@@ -484,10 +484,9 @@ var duration = 2000;var _default = { components: {}, data: function data() {retu
 
   onReady: function onReady() {},
   onLoad: function onLoad(options) {
-    if (options.backpage != "undefined") {
-      this.backpage = decodeURIComponent(options.backpage);
+    if (options.backurl != "undefined") {
+      this.backpage = decodeURIComponent(options.backurl);
     }
-
     try {
       var value = uni.getStorageSync('vcode');
       if (value) {

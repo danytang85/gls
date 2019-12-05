@@ -80,7 +80,9 @@
 			"style": {}
 		}, {
 			"path": "pages/person/myprofit",
-			"style": {}
+			"style": {
+				 "enablePullDownRefresh": true
+			}
 		}, {
 			"path": "pages/person/myteam",
 			"style": {}
@@ -96,6 +98,15 @@
 		}, {
 			"path": "pages/person/auth",
 			"style": {}
+		}, {
+			"path": "pages/person/growthlogs",
+			"style": {}
+		}, {
+			"path": "pages/person/repass",
+			"style": {}
+		}, {
+			"path": "pages/product/upgrade",
+			"style": {}
 		}
 
 
@@ -107,6 +118,8 @@
 		"backgroundColor": "#F8F8F8",
 		"navigationStyle": "custom"
 	},
+	
+	
 
 
 	"condition": { //模式配置，仅开发期间生效

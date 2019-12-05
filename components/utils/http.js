@@ -82,6 +82,8 @@ const httpTokenUpload = (opts, filePath, formData) => {
 			'Authorization': token,
 		} : {
 			'Authorization': token,
+			"Content-Type": "application/json; charset=UTF-8",
+			
 		},
 	}
 	let promise = new Promise(function(resolve, reject) {

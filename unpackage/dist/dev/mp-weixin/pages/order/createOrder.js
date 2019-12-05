@@ -245,7 +245,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniNumberBox = function uniNumberBox() {return __webpack_require__.e(/*! import() | components/uni-number-box */ "components/uni-number-box").then(__webpack_require__.bind(null, /*! @/components/uni-number-box.vue */ 196));};var _default =
+var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var uniNumberBox = function uniNumberBox() {return __webpack_require__.e(/*! import() | components/uni-number-box */ "components/uni-number-box").then(__webpack_require__.bind(null, /*! @/components/uni-number-box.vue */ 261));};var _default =
 {
   components: {
     uniNumberBox: uniNumberBox },

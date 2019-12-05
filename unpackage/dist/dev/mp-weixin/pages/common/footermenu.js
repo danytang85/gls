@@ -155,6 +155,12 @@ var _default =
         url: '/pages/' + e.currentTarget.dataset.cur + '/home' });
 
 
+    },
+
+    navTo: function navTo(url) {
+      uni.navigateTo({
+        url: url });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

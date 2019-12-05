@@ -19,7 +19,7 @@
 					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="iconfont icon-arrow-up xia"></text>
 				</view>
 			</view>
-			<text class="cate-item iconfont icon-leimupinleifenleileibie" @click="toggleCateMask('show')"></text>
+			<text class="cate-item iconfont icon-leimupinleifenleileibie text-gray" @click="toggleCateMask('show')"></text>
 		</view>
 		<view class="goods-list">
 			<view 
@@ -29,7 +29,7 @@
 			>
 				<view class="image-wrapper">
 					<image :src="server+item.images" mode="aspectFill"></image>
-					<text class="coupon-tip">{{item.discount}}折</text>
+					<text class="coupon-tip" v-if="item.discount!=100">{{item.discount}}折</text>
 				</view>
 				<text class="title clamp">{{item.title}}</text>
 				<view class="price-box">
@@ -187,7 +187,7 @@
 							this.goodsList = this.goodsList.concat(goodsList);
 							
 							//判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
-							this.loadingType  = this.goodsList.length > 20 ? 'nomore' : 'more';
+							this.loadingType  = goodsList.length<20 ? 'nomore' : 'more';
 							if(type === 'refresh'){
 								if(loading == 1){
 									uni.hideLoading()

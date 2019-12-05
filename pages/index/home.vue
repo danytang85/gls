@@ -37,10 +37,10 @@
 			<text class="iconfont icon-iconcj indexicon unbasecolor"></text>
 
 			<view class="tit-box">
-				<text class="tit">初级经销商直升产品</text>
+				<text class="tit"  @click="navTo('../product/upgrade?salegrade=1')">初级经销商直升产品</text>
 				<!-- <text class="tit2">Hot</text> -->
 			</view>
-			<text class="iconfont icon-arrow-copy"></text>
+			<text class="iconfont icon-arrow-copy" @click="navTo('../product/upgrade?salegrade=1')"></text>
 		</view>
 
 		<view class="guess-section">
@@ -55,10 +55,10 @@
 			<text class="iconfont icon-zhongji indexicon basecolor"></text>
 
 			<view class="tit-box">
-				<text class="tit">中级经销商直升产品</text>
+				<text class="tit"  @click="navTo('../product/upgrade?salegrade=2')">中级经销商直升产品</text>
 				<!-- <text class="tit2">Hot</text> -->
 			</view>
-			<text class="iconfont icon-arrow-copy"></text>
+			<text class="iconfont icon-arrow-copy"  @click="navTo('../product/upgrade?salegrade=2')"></text>
 		</view>
 
 		<view class="guess-section">

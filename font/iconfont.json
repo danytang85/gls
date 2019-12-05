@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1464",
+      "name": "促",
+      "font_class": "cu",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "115135",
       "name": "qq",
       "font_class": "qq",
@@ -20,11 +27,32 @@
       "unicode_decimal": 58898
     },
     {
+      "icon_id": "897927",
+      "name": "享",
+      "font_class": "xiang",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1570569",
+      "name": "促销活动",
+      "font_class": "cuxiaohuodong1",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
       "icon_id": "1575557",
       "name": "微信",
       "font_class": "weixin",
       "unicode": "e938",
       "unicode_decimal": 59704
+    },
+    {
+      "icon_id": "1635383",
+      "name": "成长值",
+      "font_class": "chengchangzhi",
+      "unicode": "e638",
+      "unicode_decimal": 58936
     },
     {
       "icon_id": "1746395",
@@ -69,6 +97,13 @@
       "unicode_decimal": 58896
     },
     {
+      "icon_id": "2688227",
+      "name": "折扣",
+      "font_class": "zhekou",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
       "icon_id": "2809520",
       "name": "购物车",
       "font_class": "gouwuche",
@@ -88,6 +123,13 @@
       "font_class": "cuxiaohuodong",
       "unicode": "e602",
       "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "3188440",
+      "name": "折扣",
+      "font_class": "zhekou1",
+      "unicode": "e620",
+      "unicode_decimal": 58912
     },
     {
       "icon_id": "3199059",
@@ -125,6 +167,13 @@
       "unicode_decimal": 58908
     },
     {
+      "icon_id": "3523489",
+      "name": "试",
+      "font_class": "shi",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
       "icon_id": "3693181",
       "name": "投诉建议",
       "font_class": "tousujianyi-copy",
@@ -158,6 +207,13 @@
       "font_class": "haibao",
       "unicode": "e616",
       "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "5789681",
+      "name": "试",
+      "font_class": "shi1",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
     },
     {
       "icon_id": "6027220",
@@ -286,6 +342,13 @@
       "unicode_decimal": 59117
     },
     {
+      "icon_id": "9436900",
+      "name": "注册会员",
+      "font_class": "zhucehuiyuan1",
+      "unicode": "e678",
+      "unicode_decimal": 59000
+    },
+    {
       "icon_id": "9642123",
       "name": "高级",
       "font_class": "gaoji",
@@ -354,6 +417,13 @@
       "font_class": "zhucehuiyuan",
       "unicode": "ebea",
       "unicode_decimal": 60394
+    },
+    {
+      "icon_id": "11327649",
+      "name": "分 享",
+      "font_class": "fenxiang1",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
     }
   ]
 }

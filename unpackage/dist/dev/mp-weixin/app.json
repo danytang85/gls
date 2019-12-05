@@ -26,7 +26,10 @@
     "pages/index/membercenter",
     "pages/index/productinfo",
     "pages/person/personinfo",
-    "pages/person/auth"
+    "pages/person/auth",
+    "pages/person/growthlogs",
+    "pages/person/repass",
+    "pages/product/upgrade"
   ],
   "subPackages": [],
   "window": {

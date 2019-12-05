@@ -33,7 +33,7 @@
 				}
 			}else{
 				uni.redirectTo({
-					url: '../person/reg?backpage='+encodeURIComponent(backurl),
+					url: '../person/reg?backurl='+encodeURIComponent(backurl),
 				});
 			}
 			

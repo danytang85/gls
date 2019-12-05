@@ -114,7 +114,9 @@
         "appid" : "wx28de415a2c929103",
         "setting" : {
             "urlCheck" : false,
-            "es6" : false
+            "es6" : false,
+            "minified" : true,
+            "postcss" : true
         },
         "usingComponents" : true,
         "permission" : {

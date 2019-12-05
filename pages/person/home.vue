@@ -63,12 +63,14 @@
 				<list-cell icon="icon-yaoqing" iconColor="#fb7e06" @eventClick="getinvitation()" title="邀请好友" tips="邀请好友快速升级"></list-cell>
 				<list-cell icon="icon-shezhi" iconColor="#5fcda2" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 				<list-cell icon="icon-dizhiguanli" iconColor="#fb7e06" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
+				<list-cell icon="icon-chengchangzhi" iconColor="#5fcda2" title="我的成长值" @eventClick="navTo('/pages/person/growthlogs')"></list-cell>
+				
 				<!-- <list-cell icon="icon-tousujianyi-copy" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
 				<list-cell icon="icon-btn-shiyongzhongxin" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
 				<list-cell icon="icon-bangzhu" iconColor="#fb7e06" title="帮助与客服"></list-cell> -->
-				<list-cell icon="icon-shouyi" iconColor="#5fcda2" title="我的收益" border=""  @eventClick="navTo('/pages/person/myprofit')"></list-cell>
-				<list-cell icon="icon-tuandui" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
-				<list-cell icon="icon-tuichu2" iconColor="#5fcda2" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
+				<list-cell icon="icon-shouyi" iconColor="#fb7e06" title="我的收益" border=""  @eventClick="navTo('/pages/person/myprofit')"></list-cell>
+				<list-cell icon="icon-tuandui" iconColor="#5fcda2" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
+				<list-cell icon="icon-tuichu2" iconColor="#fb7e06" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
 			</view>
 		</view>
 
@@ -280,7 +282,7 @@ export default {
 	　　var shareObj = {
 	　　　　title: that.sharetitle,        // 默认是小程序的名称(可以写slogan等)
 	　　　　path: '/pages/person/share?vcode='+that.invitation,        // 默认是当前页面，必须是以‘/’开头的完整路径
-	　　　　imageUrl: that.apiServer+that.shareimg,     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+	　　　　imageUrl: that.apiServer+that.shareimg?that.shareimg:"/img/headimg.jpg",     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
 	　　　　success: function(res){
 	　　　　　　// 转发成功之后的回调
 	　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
