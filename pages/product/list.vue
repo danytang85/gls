@@ -32,6 +32,7 @@
 					<text class="coupon-tip" v-if="item.discount!=100">{{item.discount}}折</text>
 				</view>
 				<text class="title clamp">{{item.title}}</text>
+				<text class="text-gray">{{item.attr_val}}</text>
 				<view class="price-box">
 					<text class="price">{{item.price}}</text>
 					<text>已售 {{item.salenum}}</text>
@@ -403,11 +404,9 @@
 		.goods-item{
 			display:flex;
 			flex-direction: column;
-			width: 48%;
+			width: 100%;
 			padding-bottom: 40upx;
-			&:nth-child(2n+1){
-				margin-right: 4%;
-			}
+			
 		}
 		.image-wrapper{
 			width: 100%;

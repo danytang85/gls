@@ -3,9 +3,9 @@
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
-				<view class="portrait-box"><image class="portrait" :src="src"  @tap="upload"></image></view>
+				<view class="portrait-box"><image class="portrait"  :src="src"  @tap="upload"></image></view>
 				<view class="info-box">
-					<text class="username">{{ userinfo.gradetype}} 您好！</text>
+					<text class="username text-bold text-lg">{{ userinfo.gradetype}} 您好！</text>
 				</view>
 			</view>
 
@@ -68,8 +68,10 @@
 				<!-- <list-cell icon="icon-tousujianyi-copy" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
 				<list-cell icon="icon-btn-shiyongzhongxin" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
 				<list-cell icon="icon-bangzhu" iconColor="#fb7e06" title="帮助与客服"></list-cell> -->
-				<list-cell icon="icon-shouyi" iconColor="#fb7e06" title="我的收益" border=""  @eventClick="navTo('/pages/person/myprofit')"></list-cell>
-				<list-cell icon="icon-tuandui" iconColor="#5fcda2" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
+			
+				<list-cell icon="icon-tuandui" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
+				<list-cell icon="icon-shouyi" iconColor="#5fcda2" title="财务管理" border="" @eventClick="navTo('/pages/person/financial')" ></list-cell>
+				
 				<list-cell icon="icon-tuichu2" iconColor="#fb7e06" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
 			</view>
 		</view>
@@ -86,25 +88,13 @@
 					
 					<scroll-view class="view-content" scroll-y>
 						<view class="share-list">
-							<!-- #ifdef MP-WEIXIN -->
 								<view class="share-item mpshare-item" >
 								<button class="cu-btn block bg-white margin-tb-sm"  open-type="share">
-									<text class="iconfont icon-weixin" style="font-size: 30px; color: #39B54A;"></text>
+									<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
 									 
 								</button>
 								</view>
-								<view class="share-item mpshare-item" @tap="createCanvasImageEvn">
-									<text class="iconfont icon-haibao" style="font-size: 30px;color: #fb7e06;"></text>
-								</view>
-							<!-- #endif -->
-							
-								  
-							<!--#ifdef H5-->
-							<view v-for="(item, index) in shareList" :key="index" class="share-item" @click="shareToFriend(item.type)">
-								<image :src="item.icon" mode=""></image>
-								<text>{{ item.text }}</text>
-							</view>
-							 <!-- #endif -->
+								
 						</view>
 					</scroll-view>
 					
@@ -325,7 +315,13 @@ export default {
 				res => {
 					if (res.data['code'] == 0) {
 						this.userinfo = res.data['userinfo'];
-						this.src=this.apiServer+res.data["userinfo"].headimg;
+						if(res.data["userinfo"].headimg){
+							this.src=this.apiServer+res.data["userinfo"].headimg;
+						}else{
+							this.src="/static/missing-face.png";
+						}
+						
+						
 					}
 				},
 				error => {
@@ -536,7 +532,7 @@ export default {
 	}
 }
 .mpshare-item {
-	min-width: 50%;
+	min-width: 100%;
 	}
 
 .history-section {

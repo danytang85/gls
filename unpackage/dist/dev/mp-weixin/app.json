@@ -29,7 +29,11 @@
     "pages/person/auth",
     "pages/person/growthlogs",
     "pages/person/repass",
-    "pages/product/upgrade"
+    "pages/product/upgrade",
+    "pages/order/wuliu",
+    "pages/person/financial",
+    "pages/person/bank",
+    "pages/person/cashout"
   ],
   "subPackages": [],
   "window": {

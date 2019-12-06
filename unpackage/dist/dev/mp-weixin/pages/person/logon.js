@@ -170,10 +170,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
 var _md = _interopRequireDefault(__webpack_require__(/*! @/js_sdk/ccdzhang-dokey/md5.js */ 38));
 var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));
 var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
@@ -222,15 +218,15 @@ var _vuex = __webpack_require__(/*! vuex */ 12);function _interopRequireDefault(
 //
 //
 //
-//
-//
-//
-//
 var duration = 2000;var _default = { components: {}, data: function data() {return { backpage: '../index/home', loginMode: 1, usernameType: 'text', codeBut: '获取验证码', codeClick: true, mobile: '', password: '', code: '', SessionKey: '', OpenId: '', nickName: null, avatarUrl: null, bindmobile: false, Code: "", userinfo: [], vcode: "" };}, computed: (0, _vuex.mapState)(['uerInfo', 'hasLogin']), methods: _objectSpread({}, (0, _vuex.mapMutations)(['login']), { showModal: function showModal() {this.bindmobile = true;}, hideModal: function hideModal(e) {this.bindmobile = false;}, loginCode: function loginCode() {this.loginMode = 2;}, loginmobile: function loginmobile() {this.loginMode = 1;}, // 手机号输入
     mobileInput: function mobileInput(e) {this.mobile = e.detail.value;}, // 密码输入
     passwordInpur: function passwordInpur(e) {this.password = e.detail.value;}, // 验证码输入
-    codeInput: function codeInput(e) {this.code = e.detail.value;}, // 获取验证码
-    getCode: function getCode() {var _that = this;
+    codeInput: function codeInput(e) {
+      this.code = e.detail.value;
+    },
+    // 获取验证码
+    getCode: function getCode() {
+      var _that = this;
 
       if (_that.codeClick) {
         if (_that.mobile[0] != 1 || _that.mobile.length != 11) {

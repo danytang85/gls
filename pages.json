@@ -107,6 +107,19 @@
 		}, {
 			"path": "pages/product/upgrade",
 			"style": {}
+		}, {
+			"path": "pages/order/wuliu",
+			"style": {}
+		}, {
+			"path": "pages/person/financial",
+			"style": {}
+		}
+		, {
+			"path": "pages/person/bank",
+			"style": {}
+		}, {
+			"path": "pages/person/cashout",
+			"style": {}
 		}
 
 

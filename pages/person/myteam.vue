@@ -67,7 +67,7 @@
 			tabSelect(e) {
 				this.gid = e.currentTarget.id;
 				this.page=1;
-				this.getteam();
+				this.getteam('refresh');
 			},
 	
 			getteam(type='add',loading) {

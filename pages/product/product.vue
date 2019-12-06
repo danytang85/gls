@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<cu-custom bgColor="bg-gradual-orange" :isBack="isnotupgrade==true?true:false">
+		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">产品详情</block>
 		</cu-custom>
@@ -18,6 +18,7 @@
 		
 		<view class="introduce-section">
 			<text class="title">{{pinfo.title}}</text>
+			<text class="text-gray ">{{pinfo.attr_val}}</text>
 			<view class="price-box">
 				<text class="price-tip">¥</text>
 				<text class="price">{{pinfo.price}}</text>
@@ -93,9 +94,7 @@
 									 
 								</button>
 								</view>
-								<view class="share-item mpshare-item" @tap="createCanvasImageEvn">
-									<text class="iconfont icon-haibao" style="font-size: 40px;color: #fb7e06;"></text>
-								</view>
+								
 							<!-- #endif -->
 							<!--#ifdef H5-->
 							<view v-for="(item, index) in shareList" :key="index" class="share-item" @click="shareToFriend(item.type)">
@@ -393,7 +392,7 @@
 		}
 	}
 	.mpshare-item {
-		min-width: 50%;
+		min-width: 100%;
 		}
 	
 	/* 标题简介 */

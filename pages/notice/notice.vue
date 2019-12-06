@@ -6,7 +6,7 @@
 			<block slot="content">促销活动</block>
 		</cu-custom>
 		<view class="notice-item" v-for="(item, index) in nlist" :key="index">
-			<text class="time">{{item.create_time|formatDate}}</text>
+			<text class="time">{{item.create_time}}</text>
 			<view class="content">
 				<text class="title">{{item.title}}</text>
 				<view class="img-wrapper">
@@ -32,15 +32,9 @@
 </template>
 
 <script>
-	import {formatDate} from '@/common/date.js'
 	import http from '@/components/utils/http.js';
 	export default {
-		filters: {
-		        formatDate(time) {
-		            var date = new Date(time);
-		            return formatDate(date, 'yyyy-MM-dd hh:mm');
-		        }
-		    },
+		
 		data() {
 			return {
 				nlist:[],
@@ -102,12 +96,7 @@
 		color: #7d7d7d;
 	}
 
-	.content {
-		width: 710upx;
-		padding: 0 24upx;
-		background-color: #fff;
-		border-radius: 4upx;
-	}
+	
 
 	.title {
 		display: flex;

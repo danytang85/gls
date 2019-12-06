@@ -16,7 +16,7 @@
 						<view class="desc">
 							<view class="text-content"> {{item.intr}}</view>
 							<view>
-								<view class="cu-tag bg-white light sm round">{{item.create_time|formatDate}}</view>
+								<view class="cu-tag bg-white light sm round">{{item.create_time}}</view>
 								<!-- <view class="cu-tag bg-green light sm round">史诗</view> -->
 							</view>
 						</view>
@@ -34,15 +34,9 @@
 </template>
 
 <script>
-	import {formatDate} from '@/common/date.js'
 	import http from '@/components/utils/http.js';
 	export default {
-		filters: {
-		        formatDate(time) {
-		            var date = new Date(time);
-		            return formatDate(date, 'yyyy-MM-dd hh:mm');
-		        }
-		    },
+		
 		data() {
 			return {
 				nlist:[],
@@ -103,12 +97,7 @@
 		color: #7d7d7d;
 	}
 
-	.content {
-		width: 710upx;
-		padding: 0 24upx;
-		background-color: #fff;
-		border-radius: 4upx;
-	}
+	
 
 	.title {
 		display: flex;

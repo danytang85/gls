@@ -78,29 +78,20 @@
 }
 .otherLogin {
 	
-	width: 500rpx;
 	height: 95rpx;
-	margin: 10px auto;
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
+	margin: 30px auto;
+	text-align: center;
 	-webkit-box-pack: justify;
 	-webkit-justify-content: space-between;
 	    -ms-flex-pack: justify;
 	        justify-content: space-between;
 }
 .otherLogin > view {
-	width: 95rpx;
-	height: 95rpx;
+	/* width: 95upx;
+	height: 95upx;
 	background: #fff;
-	border-radius: 95rpx;
+	border-radius: 95upx; */
 }
-.otherLoginTitle {
-	width: 100%;
-	text-align: center;
-	color: #555555;
-	font-size: 28rpx;
-	line-height: 80rpx;
-}
+
+
 

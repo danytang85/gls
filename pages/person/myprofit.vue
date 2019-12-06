@@ -9,14 +9,17 @@
 			<view class="flex text-center">
 				<view class="cu-item flex-sub" :class="TabCur == 'sharingamout' ? 'text-orange cur' : ''" @tap="tabSelect" id="sharingamout">差价收益</view>
 				<view class="cu-item flex-sub" :class="TabCur == 'edubonus' ? 'text-orange cur' : ''" @tap="tabSelect" id="edubonus">教育利润</view>
-				<view class="cu-item flex-sub" :class="TabCur == 'profit3' ? 'text-orange cur' : ''" @tap="tabSelect" id="profit3">市场补贴</view>
+				<view class="cu-item flex-sub" :class="TabCur == 'market' ? 'text-orange cur' : ''" @tap="tabSelect" id="market">市场补贴</view>
 			</view>
 		</scroll-view>
 
 		<block v-if="TabCur == 'sharingamout'">
 			<view class="padding bg-white solid-bottom" v-for="(item, index) in profit" :key="index">
 				<view class="flex  p-xs margin-bottom-sm mb-sm ">
-					<view class="flex-treble bg-white  margin-xs radius">{{ item.create_time | formatDate }}</view>
+					<view class="flex-treble bg-white  margin-xs radius">
+					<view>{{ item.create_time  }}</view>
+					<view>{{item.oid}}</view>
+					</view>
 					<view class="flex-sub bg-white margin-xs radius ">
 						<text class="text-price">{{ item.sharingamout }}</text>
 					</view>
@@ -27,7 +30,10 @@
 		<block v-if="TabCur == 'edubonus'">
 			<view class="padding bg-white solid-bottom" v-for="(item, index) in profit" :key="index">
 				<view class="flex  p-xs margin-bottom-sm mb-sm ">
-					<view class="flex-treble bg-white  margin-xs radius">{{ item.create_time | formatDate }}</view>
+					<view class="flex-treble bg-white  margin-xs radius">
+						<view>{{ item.create_time }}</view>
+						<view>{{item.oid}}</view>
+					</view>
 					<view class="flex-sub bg-white margin-xs radius ">
 						<text class="text-price">{{ item.edubonus }}</text>
 					</view>
@@ -35,7 +41,19 @@
 			</view>
 		</block>
 		
-		
+		<block v-if="TabCur == 'market'">
+			<view class="padding bg-white solid-bottom" v-for="(item, index) in profit" :key="index">
+				<view class="flex  p-xs margin-bottom-sm mb-sm ">
+					<view class="flex-treble bg-white  margin-xs radius">
+						<view>{{ item.create_time}}</view>
+						<view>{{item.oid}}</view>
+					</view>
+					<view class="flex-sub bg-white margin-xs radius ">
+						<text class="text-price">{{ item.market }}</text>
+					</view>
+				</view>
+			</view>
+		</block>
 		<uni-load-more :status="loadingType"></uni-load-more>
 		
 		
@@ -43,19 +61,13 @@
 </template>
 
 <script>
-import { formatDate } from '@/common/date.js';
 import http from '@/components/utils/http.js';
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 export default {
 		components: {
 			uniLoadMore	
 		},
-	filters: {
-		formatDate(time) {
-			var date = new Date(time);
-			return formatDate(date, 'yyyy-MM-dd hh:mm');
-		}
-	},
+	
 	data() {
 		return {
 			TabCur: "sharingamout",

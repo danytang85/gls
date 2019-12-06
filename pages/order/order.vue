@@ -70,7 +70,8 @@
 						<view class="action-box b-t">
 							<button class="action-btn" v-if="item.state == 1" @click="cancelOrder(item)">取消订单</button>
 							<button class="action-btn recom" @click="payOrder(item)" v-if="item.state == 1" >立即支付</button>
-							<button class="action-btn recom" v-if="item.state == 2" >查看物流</button>
+							<button class="action-btn recom bg-grey" v-if="item.logistics==''" >还未发货</button>
+							<button class="action-btn recom" @click="wuliu(item)" v-if="item.logistics" >查看物流</button>
 							<button class="action-btn recom" v-if="item.state == 3" >再次购买</button>
 						</view>
 					</view>
@@ -347,6 +348,12 @@
 			disporder(item){
 				uni.navigateTo({
 					url: 'dispOrder?id='+item.id
+				});
+			},
+			
+			wuliu(item){
+				uni.navigateTo({
+					url: 'wuliu?oid='+item.id
 				});
 			}
 			

@@ -218,11 +218,8 @@
     -webkit-flex-direction: column;
         -ms-flex-direction: column;
             flex-direction: column;
-    width: 48%;
+    width: 100%;
     padding-bottom: 40rpx;
-}
-.goods-list .goods-item:nth-child(2n+1) {
-      margin-right: 4%;
 }
 .goods-list .image-wrapper {
     width: 100%;

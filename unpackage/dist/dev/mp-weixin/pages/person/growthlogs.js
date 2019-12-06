@@ -88,23 +88,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.growth, function(item, index) {
-    var f0 = _vm._f("formatDate")(item.create_time)
-
-    return {
-      $orig: _vm.__get_orig(item),
-      f0: f0
-    }
-  })
-
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        l0: l0
-      }
-    }
-  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -169,9 +152,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-var _date = __webpack_require__(/*! @/common/date.js */ 166);
 var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/http.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -203,14 +183,8 @@ var _http = _interopRequireDefault(__webpack_require__(/*! @/components/utils/ht
 //
 //
 //
-//
-//
-var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 275));};var _default = { components: { uniLoadMore: uniLoadMore }, filters: { formatDate: function formatDate(time) {var date = new Date(time);return (0, _date.formatDate)(date, 'MM-dd hh:mm');} }, data: function data() {return { page: 1, growth: [], loadingType: 'more' };}, onLoad: function onLoad() {this.getgrowth(this.page, this.gid);}, onPullDownRefresh: function onPullDownRefresh() {this.getgrowth('refresh');}, //加载更多
-  onReachBottom: function onReachBottom() {this.page = this.page + 1;this.getgrowth();}, methods: { getgrowth: function getgrowth() {var _this = this;var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'add';var loading = arguments.length > 1 ? arguments[1] : undefined;uni.showLoading({
-        title: "数据加载中" });
-
-      var _that = this;
-      var opts = {
+var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! import() | components/uni-load-more/uni-load-more */ "components/uni-load-more/uni-load-more").then(__webpack_require__.bind(null, /*! @/components/uni-load-more/uni-load-more.vue */ 275));};var _default = { components: { uniLoadMore: uniLoadMore }, data: function data() {return { page: 1, growth: [], loadingType: 'more' };}, onLoad: function onLoad() {this.getgrowth(this.page, this.gid);}, onPullDownRefresh: function onPullDownRefresh() {this.getgrowth('refresh');}, //加载更多
+  onReachBottom: function onReachBottom() {this.page = this.page + 1;this.getgrowth();}, methods: { getgrowth: function getgrowth() {var _this = this;var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'add';var loading = arguments.length > 1 ? arguments[1] : undefined;uni.showLoading({ title: '数据加载中' });var _that = this;var opts = {
         url: '/base/getgrowth/',
         method: 'post' };
 
@@ -222,13 +196,11 @@ var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! impor
         //打印请求返回的数据
         uni.hideLoading();
         if (res.data['code'] == 0) {
-
           var growth = res.data['growthlist'];
           if (type === 'refresh') {
             _that.growth = [];
           }
           _that.growth = _that.growth.concat(growth);
-
 
           //判断是否还有下一页，有是more  没有是nomore(测试数据判断大于20就没有了)
           _that.loadingType = growth.length < 20 ? 'nomore' : 'more';
@@ -239,7 +211,6 @@ var uniLoadMore = function uniLoadMore() {return __webpack_require__.e(/*! impor
               uni.stopPullDownRefresh();
             }
           }
-
         } else {
           _this.$api.msg(res.data.msg);
         }
