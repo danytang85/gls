@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="user-section">
-			<image class="bg" src="/static/user-bg.jpg"></image>
+			<image class="bg" :src="userheadimg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box"><image class="portrait"  :src="src"  @tap="upload"></image></view>
 				<view class="info-box">
@@ -61,16 +61,16 @@
 
 			<view class="history-section icon">
 				<list-cell icon="icon-yaoqing" iconColor="#fb7e06" @eventClick="getinvitation()" title="邀请好友" tips="邀请好友快速升级"></list-cell>
-				<list-cell icon="icon-shezhi" iconColor="#5fcda2" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
-				<list-cell icon="icon-dizhiguanli" iconColor="#fb7e06" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-chengchangzhi" iconColor="#5fcda2" title="我的成长值" @eventClick="navTo('/pages/person/growthlogs')"></list-cell>
+				<list-cell icon="icon-dizhiguanli" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
+				<list-cell icon="icon-chengchangzhi" iconColor="#fb7e06" title="我的成长值" @eventClick="navTo('/pages/person/growthlogs')"></list-cell>
 				
 				<!-- <list-cell icon="icon-tousujianyi-copy" iconColor="#fb7e06" title="投诉建议" tips=""></list-cell>
 				<list-cell icon="icon-btn-shiyongzhongxin" iconColor="#5fcda2" title="试用中心" tips=""></list-cell>
 				<list-cell icon="icon-bangzhu" iconColor="#fb7e06" title="帮助与客服"></list-cell> -->
 			
-				<list-cell icon="icon-tuandui" iconColor="#fb7e06" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
-				<list-cell icon="icon-shouyi" iconColor="#5fcda2" title="财务管理" border="" @eventClick="navTo('/pages/person/financial')" ></list-cell>
+				<list-cell icon="icon-tuandui" iconColor="#5fcda2" title="我的团队" border="" @eventClick="navTo('/pages/person/myteam')" ></list-cell>
+				<list-cell icon="icon-shouyi" iconColor="#fb7e06" title="财务管理" border="" @eventClick="navTo('/pages/person/financial')" ></list-cell>
+				<list-cell icon="icon-shezhi" iconColor="#5fcda2" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 				
 				<list-cell icon="icon-tuichu2" iconColor="#fb7e06" title="退出登录" border="" @eventClick="toLogout()"></list-cell>
 			</view>
@@ -78,7 +78,7 @@
 
 		<footermenu PageCur="person"></footermenu>
 		
-		<view class="cu-modal bottom-modal" :class="shareInvitation?'show':''">
+		<view class="cu-modal bottom-modal" :class="shareInvitation?'show':''" @tap="hideModal">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
 					<view class="action text-black">分享邀请更多好友</view>
@@ -87,15 +87,20 @@
 				<view class="padding-xl">
 					
 					<scroll-view class="view-content" scroll-y>
-						<view class="share-list">
-								<view class="share-item mpshare-item" >
-								<button class="cu-btn block bg-white margin-tb-sm"  open-type="share">
-									<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
-									 
-								</button>
+							
+							<view class="flex  padding justify-center">
+								<view class=" padding-sm margin-xs ">
+									<button class="cu-btn block bg-white margin-tb-sm"  open-type="share">
+										<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+										 
+									</button>
+									<text class="text-black">发送给微信好友</text>
 								</view>
+							</view>
+							
+							
 								
-						</view>
+								
 					</scroll-view>
 					
 					
@@ -119,7 +124,8 @@ export default {
 	},
 	data() {
 		return {
-			src: '/static/missing-face.png',
+			userheadimg:this.apiServer+'/img/user-bg.jpg',
+			src: this.apiServer+'/img/missing-face.png',
 			title: '个人中心',
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
@@ -272,11 +278,11 @@ export default {
 	　　var shareObj = {
 	　　　　title: that.sharetitle,        // 默认是小程序的名称(可以写slogan等)
 	　　　　path: '/pages/person/share?vcode='+that.invitation,        // 默认是当前页面，必须是以‘/’开头的完整路径
-	　　　　imageUrl: that.apiServer+that.shareimg?that.shareimg:"/img/headimg.jpg",     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+	　　　　imageUrl: that.apiServer+"/img/headimg.jpg",     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
 	　　　　success: function(res){
 	　　　　　　// 转发成功之后的回调
 	　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
-				that.shareInvitation=false;
+				that.hideModal();
 	　　　　　　}
 	　　　　},
 	　　　　fail: function(){

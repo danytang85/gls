@@ -15,10 +15,10 @@
 		</scroll-view>
 		
 		<block >
-			<view class="padding bg-white solid-bottom" v-for="(item, index) in team" :key="index">
-				<view class="flex  p-xs margin-bottom-sm mb-sm ">
-					<view class="flex-treble bg-white  margin-xs radius">{{ item.nickname}}</view>
-					<view class="flex-sub bg-white margin-xs radius ">
+			<view class="padding bg-white solid-bottom " v-for="(item, index) in team" :key="index">
+				<view class="flex  justify-between">
+					<view class="">{{ item.nickname}}</view>
+					<view class="">
 						<text class="">{{ item.addtime }}</text>
 					</view>
 				</view>

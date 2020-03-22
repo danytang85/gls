@@ -57,6 +57,7 @@
 							<view class="right">
 								<text class="title clamp">{{goodsItem.title}}</text>
 								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.number}}</text>
+								<text class="attr-box">【{{ goodsItem.ptname }}】</text>
 								<text class="price">{{goodsItem.price}}</text>
 							</view>
 						</view>

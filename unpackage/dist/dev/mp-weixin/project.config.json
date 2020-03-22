@@ -10,9 +10,9 @@
 		"postcss": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.7.0",
+	"libVersion": "2.9.2",
 	"appid": "wx28de415a2c929103",
-	"projectname": "膏力士",
+	"projectname": "膏力士-最火的大健康社交新零售平台",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

@@ -7,8 +7,8 @@
 		</cu-custom>
 		
 		
-		<view class="cu-card article" v-for="(item, index) in nlist" :key="index">
-				<view class="cu-item shadow">
+		<view class="cu-card article"  v-for="(item, index) in nlist" :key="index">
+				<view class="cu-item shadow" @click="navTo(item.id)">
 					<view class="title"><view class="text-cut">{{item.title}}</view></view>
 					<view class="content">
 						<image :src="serverapi +item.pic"
@@ -48,7 +48,11 @@
 			this.getproductinfolist()
 		},
 		methods: {
-			
+			navTo(id) {
+				uni.navigateTo({
+					url:"./productinfoshow?id="+id
+				});
+			},
 		getproductinfolist(){
 			let	_that=this;
 			let opts = {

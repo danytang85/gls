@@ -27,14 +27,11 @@ page {
 .carousel .swiper-item {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     -webkit-align-content: center;
-        -ms-flex-line-pack: center;
             align-content: center;
     height: 750rpx;
     overflow: hidden;
@@ -46,30 +43,24 @@ page {
 .share-list {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
           flex-wrap: wrap;
 }
 .share-item {
   min-width: 33.33%;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   height: 180rpx;
 }
@@ -99,12 +90,10 @@ page {
 .introduce-section .price-box {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     position: relative;
     -webkit-box-align: baseline;
     -webkit-align-items: baseline;
-        -ms-flex-align: baseline;
             align-items: baseline;
     height: 64rpx;
     padding: 10rpx 0;
@@ -128,7 +117,6 @@ page {
 .introduce-section .coupon-tip {
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     padding: 4rpx 10rpx;
     background: #fb7e06;
@@ -137,17 +125,14 @@ page {
     border-radius: 6rpx;
     line-height: 1;
     -webkit-transform: translateY(-4rpx);
-        -ms-transform: translateY(-4rpx);
             transform: translateY(-4rpx);
 }
 .introduce-section .bot-row {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     height: 50rpx;
     font-size: 24rpx;
@@ -156,33 +141,27 @@ page {
 .introduce-section .bot-row text {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
-          -ms-flex: 1;
               flex: 1;
 }
 /* 分享 */
 .share-section {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   color: #606266;
-  background: -webkit-gradient(linear, left top, right top, from(#fdf5f6), to(#fbebf6));
-  background: -o-linear-gradient(left, #fdf5f6, #fbebf6);
+  background: -webkit-linear-gradient(left, #fdf5f6, #fbebf6);
   background: linear-gradient(left, #fdf5f6, #fbebf6);
   padding: 12rpx 30rpx;
 }
 .share-section .share-icon {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     width: 70rpx;
     height: 30rpx;
@@ -225,7 +204,6 @@ page {
 .share-section .share-btn {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     text-align: right;
     font-size: 24rpx;
@@ -244,11 +222,9 @@ page {
 .c-list .c-row {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     padding: 20rpx 30rpx;
     position: relative;
@@ -259,7 +235,6 @@ page {
 .c-list .con {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     color: #303133;
 }
@@ -278,16 +253,13 @@ page {
 .c-list .con-list {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     color: #303133;
     line-height: 40rpx;
@@ -299,12 +271,10 @@ page {
 .eva-section {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   padding: 20rpx 30rpx;
   background: #fff;
@@ -313,11 +283,9 @@ page {
 .eva-section .e-header {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     height: 70rpx;
     font-size: 26rpx;
@@ -331,7 +299,6 @@ page {
 .eva-section .e-header .tip {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
-          -ms-flex: 1;
               flex: 1;
       text-align: right;
 }
@@ -341,13 +308,11 @@ page {
 .eva-box {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   padding: 20rpx 0;
 }
 .eva-box .portrait {
     -webkit-flex-shrink: 0;
-        -ms-flex-negative: 0;
             flex-shrink: 0;
     width: 80rpx;
     height: 80rpx;
@@ -356,16 +321,13 @@ page {
 .eva-box .right {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     font-size: 28rpx;
     color: #606266;
@@ -379,11 +341,9 @@ page {
 .eva-box .right .bot {
       display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       -webkit-box-pack: justify;
       -webkit-justify-content: space-between;
-          -ms-flex-pack: justify;
               justify-content: space-between;
       font-size: 24rpx;
       color: #909399;
@@ -396,15 +356,12 @@ page {
 .detail-desc .d-header {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     height: 80rpx;
     font-size: 30rpx;
@@ -422,7 +379,6 @@ page {
       left: 50%;
       top: 50%;
       -webkit-transform: translateX(-50%);
-          -ms-transform: translateX(-50%);
               transform: translateX(-50%);
       width: 300rpx;
       height: 0;
@@ -436,14 +392,12 @@ page {
 .attr-content .a-t {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
 }
 .attr-content .a-t image {
       width: 170rpx;
       height: 170rpx;
       -webkit-flex-shrink: 0;
-          -ms-flex-negative: 0;
               flex-shrink: 0;
       margin-top: -40rpx;
       border-radius: 8rpx;
@@ -451,12 +405,10 @@ page {
 .attr-content .a-t .right {
       display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
       -webkit-flex-direction: column;
-          -ms-flex-direction: column;
               flex-direction: column;
       padding-left: 24rpx;
       font-size: 26rpx;
@@ -474,12 +426,10 @@ page {
 .attr-content .attr-list {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     font-size: 30rpx;
     color: #606266;
@@ -490,24 +440,19 @@ page {
     padding: 20rpx 0 0;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-flex-wrap: wrap;
-        -ms-flex-wrap: wrap;
             flex-wrap: wrap;
 }
 .attr-content .item-list text {
       display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       -webkit-box-align: center;
       -webkit-align-items: center;
-          -ms-flex-align: center;
               align-items: center;
       -webkit-box-pack: center;
       -webkit-justify-content: center;
-          -ms-flex-pack: center;
               justify-content: center;
       background: #eee;
       margin-right: 20rpx;
@@ -530,7 +475,7 @@ page {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 99;
+  z-index: 1025;
 }
 .popup.show {
     display: block;

@@ -120,6 +120,12 @@
 		}, {
 			"path": "pages/person/cashout",
 			"style": {}
+		}, {
+			"path": "pages/notice/noticeshow",
+			"style": {}
+		}, {
+			"path": "pages/index/productinfoshow",
+			"style": {}
 		}
 
 

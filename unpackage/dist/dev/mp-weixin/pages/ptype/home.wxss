@@ -8,12 +8,10 @@
 .scrollcontent {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
 }
 .left-aside {
   -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
           flex-shrink: 0;
   width: 200rpx;
   height: 100%;
@@ -22,15 +20,12 @@
 .f-item {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
           justify-content: center;
   width: 100%;
   height: 100rpx;
@@ -48,7 +43,6 @@
       left: 0;
       top: 50%;
       -webkit-transform: translateY(-50%);
-          -ms-transform: translateY(-50%);
               transform: translateY(-50%);
       height: 36rpx;
       width: 8rpx;
@@ -59,7 +53,6 @@
 .right-aside {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-      -ms-flex: 1;
           flex: 1;
   overflow: hidden;
   padding-left: 20rpx;
@@ -67,11 +60,9 @@
 .s-item {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   height: 70rpx;
   padding-top: 8rpx;
@@ -81,10 +72,8 @@
 .t-list {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
           flex-wrap: wrap;
   width: 50%;
   background: #fff;
@@ -95,30 +84,24 @@
     content: '';
     -webkit-box-flex: 99;
     -webkit-flex: 99;
-        -ms-flex: 99;
             flex: 99;
     height: 0;
 }
 .t-item {
   -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
           flex-shrink: 0;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   width: 100%;
   font-size: 26rpx;

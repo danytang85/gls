@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/person/logon",
+    "pages/index/home",
+    "pages/ptype/home",
+    "pages/cart/home",
+    "pages/person/home",
+    "pages/common/footermenu",
+    "pages/person/reg",
+    "pages/order/createOrder",
+    "pages/order/order",
+    "pages/money/pay",
+    "pages/money/paySuccess",
+    "pages/address/address",
+    "pages/address/addressManage",
+    "pages/set/set",
+    "pages/product/list",
+    "pages/product/product",
+    "pages/notice/notice",
+    "pages/order/dispOrder",
+    "pages/person/share",
+    "pages/person/upload",
+    "pages/person/myprofit",
+    "pages/person/myteam",
+    "pages/index/membercenter",
+    "pages/index/productinfo",
+    "pages/person/personinfo",
+    "pages/person/auth",
+    "pages/person/growthlogs",
+    "pages/person/repass",
+    "pages/product/upgrade",
+    "pages/order/wuliu",
+    "pages/person/financial",
+    "pages/person/bank",
+    "pages/person/cashout",
+    "pages/notice/noticeshow",
+    "pages/index/productinfoshow"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "navigationStyle": "custom"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "收货地址管理"
+    }
+  },
+  "usingComponents": {
+    "footermenu": "/pages/common/footermenu",
+    "cu-custom": "/components/colorui/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

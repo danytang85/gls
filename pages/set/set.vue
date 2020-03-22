@@ -60,7 +60,9 @@
 				    	if(e.confirm){
 				    		this.logout();
 				    		setTimeout(()=>{
-				    			uni.navigateBack();
+				    			uni.redirectTo({
+				    				url:"../person/logon"
+				    			})
 				    		}, 200)
 				    	}
 				    }

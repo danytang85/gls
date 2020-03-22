@@ -21,7 +21,7 @@
 
 		<view class="goods-section">
 			<view class="g-header b-b">
-				<image class="logo" src="/static/gls_logo.png"></image>
+				<image class="logo" :src="logo"></image>
 				<text class="name">良吉康</text>
 			</view>
 			<!-- 商品列表 -->
@@ -31,6 +31,7 @@
 					<view class="right">
 						<text class="title clamp">{{ item.title }}</text>
 						<text class="spec">{{ item.attr_val }}</text>
+						<text class="spec">【{{ item.ptname }}】</text>
 						<view class="price-box">
 							<view class="price">￥{{ item.price }}</view>
 							<view class="number" >x{{ item.number }}</view>
@@ -91,6 +92,7 @@ export default {
 			orderinfo:[],
 			server:this.apiServer,
 			cartList: [],
+			logo:this.apiServer+"/img/gls_logo.png"
 			
 		};
 	},

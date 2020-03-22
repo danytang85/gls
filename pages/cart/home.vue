@@ -36,7 +36,7 @@
 						</view>
 						<view class="item-right">
 							<text class="clamp title">{{ item.title }}</text>
-							<text class="attr">{{ item.attr_val }}</text>
+							<text class="attr">{{ item.ptname }}</text>
 							<text class="price">¥{{ item.price }}</text>
 							<uni-number-box
 								class="step"
@@ -390,7 +390,7 @@ export default {
 			line-height: 40upx;
 		}
 		.attr {
-			font-size: $font-sm + 2upx;
+			font-size: $font-sm - 2upx;
 			color: $font-color-light;
 			height: 50upx;
 			line-height: 50upx;

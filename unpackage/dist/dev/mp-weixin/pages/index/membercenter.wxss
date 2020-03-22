@@ -20,20 +20,16 @@ page {
     border-radius: 16px;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     margin-left: 10px;
     margin-right: 10px;
@@ -87,20 +83,16 @@ page {
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
           flex-direction: row;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
           justify-content: space-between;
 }
 .title_line .title.data-v-41c18233 {
@@ -130,26 +122,21 @@ page {
 .slider .s_item .content.data-v-41c18233 {
       display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
       -webkit-flex-direction: column;
-          -ms-flex-direction: column;
               flex-direction: column;
       -webkit-box-align: center;
       -webkit-align-items: center;
-          -ms-flex-align: center;
               align-items: center;
       -webkit-box-pack: center;
       -webkit-justify-content: center;
-          -ms-flex-pack: center;
               justify-content: center;
       border-radius: 8px;
       background: white;
       margin-top: 5px;
-      -webkit-box-shadow: 0px 2px 6px 0px rgba(103, 103, 103, 0.2);
-              box-shadow: 0px 2px 6px 0px rgba(103, 103, 103, 0.2);
+      box-shadow: 0px 2px 6px 0px rgba(103, 103, 103, 0.2);
 }
 .slider .s_item .content .img.data-v-41c18233 {
         width: 103px;
@@ -172,10 +159,9 @@ page {
         width: 80px;
         height: 30px;
         margin-bottom: 10px;
-        background: -o-linear-gradient(356deg, #c0a069, #e9d5ac);
+        background: -webkit-linear-gradient(356deg, #c0a069, #e9d5ac);
         background: linear-gradient(94deg, #c0a069, #e9d5ac);
-        -webkit-box-shadow: 0px 9px 28px 0px rgba(195, 164, 110, 0.23);
-                box-shadow: 0px 9px 28px 0px rgba(195, 164, 110, 0.23);
+        box-shadow: 0px 9px 28px 0px rgba(195, 164, 110, 0.23);
         border-radius: 29px;
         font-size: 12px;
         font-weight: 400;
@@ -183,40 +169,32 @@ page {
         line-height: 21px;
         display: -webkit-box;
         display: -webkit-flex;
-        display: -ms-flexbox;
         display: flex;
         -webkit-box-align: center;
         -webkit-align-items: center;
-            -ms-flex-align: center;
                 align-items: center;
         -webkit-box-pack: center;
         -webkit-justify-content: center;
-            -ms-flex-pack: center;
                 justify-content: center;
 }
 .welfare.data-v-41c18233 {
   width: 92%;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   margin: 10px auto;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
-      -ms-flex-direction: row;
           flex-direction: row;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
           justify-content: space-between;
   background: white;
-  -webkit-box-shadow: 0px 1px 21px 0px rgba(103, 103, 103, 0.2);
-          box-shadow: 0px 1px 21px 0px rgba(103, 103, 103, 0.2);
+  box-shadow: 0px 1px 21px 0px rgba(103, 103, 103, 0.2);
   border-radius: 10px;
   margin-bottom: 10px;
 }
@@ -224,20 +202,16 @@ page {
     padding: 10px;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
 }
 .welfare .item .border.data-v-41c18233 {
@@ -248,15 +222,12 @@ page {
       border-radius: 50%;
       display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       -webkit-box-align: center;
       -webkit-align-items: center;
-          -ms-flex-align: center;
               align-items: center;
       -webkit-box-pack: center;
       -webkit-justify-content: center;
-          -ms-flex-pack: center;
               justify-content: center;
       text-align: center;
 }

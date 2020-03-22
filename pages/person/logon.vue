@@ -36,9 +36,16 @@
 		</view>
 		<!-- 其他登录方式 -->
 		<view class="otherLogin">
-				<button class="cu-btn block margin-tb-sm"  open-type="getUserInfo"  @getuserinfo="weixinlogin">
-					<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
-				</button>
+			
+			<view class="flex  padding justify-center">
+				<view class=" padding-sm margin-xs ">
+					<button class="cu-btn block margin-tb-sm"  open-type="getUserInfo"  @getuserinfo="weixinlogin">
+						<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+					</button>
+					<text class="text-black">微信一键登录</text>
+				</view>
+			</view>
+				
 		</view>
 
 	</view>
@@ -360,7 +367,7 @@ export default {
 				url: '../person/home'
 			});
 		}
-		if (options.backpage) {
+		if (options.backpage!=undefined) {
 			this.backpage = options.backpage;
 		}
 		

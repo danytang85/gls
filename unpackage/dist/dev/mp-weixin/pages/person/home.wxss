@@ -8,32 +8,25 @@
 .order-section .order-item, .tj-sction .tj-item {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
 }
 .order-section, .tj-sction {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-justify-content: space-around;
-      -ms-flex-pack: distribute;
           justify-content: space-around;
   -webkit-align-content: center;
-      -ms-flex-line-pack: center;
           align-content: center;
   background: #fff;
   border-radius: 10rpx;
@@ -70,11 +63,9 @@
   height: 180rpx;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   position: relative;
   z-index: 1;
@@ -91,17 +82,14 @@
 .vip-card-box {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   color: #f7d680;
   height: 240rpx;
-  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.7)), to(rgba(0, 0, 0, 0.8)));
-  background: -o-linear-gradient(left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8));
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8));
   background: linear-gradient(left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8));
   border-radius: 16rpx 16rpx 0 0;
   overflow: hidden;
@@ -126,8 +114,7 @@
     font-size: 22rpx;
     color: #36343c;
     border-radius: 20px;
-    background: -webkit-gradient(linear, left top, right top, from(#f9e6af), to(#ffd465));
-    background: -o-linear-gradient(left, #f9e6af, #ffd465);
+    background: -webkit-linear-gradient(left, #f9e6af, #ffd465);
     background: linear-gradient(left, #f9e6af, #ffd465);
     z-index: 1;
 }
@@ -183,7 +170,6 @@
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   height: 140rpx;
   font-size: 24rpx;
@@ -200,15 +186,12 @@
   color: font-color-dark;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
           justify-content: center;
   padding-top: 10rpx;
 }
@@ -218,7 +201,6 @@
     heighg: 0;
     border-top: 1px solid #E4E7ED;
     -webkit-transform: scaleY(0.5);
-        -ms-transform: scaleY(0.5);
             transform: scaleY(0.5);
     margin-right: 30rpx;
 }
@@ -229,30 +211,24 @@
 .share-list {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
           flex-wrap: wrap;
 }
 .share-item {
   min-width: 33.33%;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-      -ms-flex-pack: center;
           justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   height: 180rpx;
 }
@@ -277,11 +253,9 @@
 .history-section .sec-header {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     font-size: 28rpx;
     color: #303133;

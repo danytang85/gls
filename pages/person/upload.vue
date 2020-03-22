@@ -1,5 +1,11 @@
 <template>
 	<view class="content">
+		
+		<cu-custom bgColor="bg-gradual-orange" :isBack="false">
+			<block slot="backText">返回</block>
+			<block slot="content">个人头像</block>
+		</cu-custom>
+		
 		<view class="cropper-wrapper" style="height:617px">
 			<canvas
 				class="cropper"
@@ -222,7 +228,6 @@ export default {
 
 <style>
 .content {
-	background: rgba(255, 255, 255, 1);
 }
 
 .head-list {

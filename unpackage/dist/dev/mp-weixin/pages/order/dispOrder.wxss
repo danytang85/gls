@@ -17,28 +17,22 @@ page {
 .address-section .order-content {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
 }
 .address-section .icon-shouhuodizhi {
     -webkit-flex-shrink: 0;
-        -ms-flex-negative: 0;
             flex-shrink: 0;
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     width: 90rpx;
     color: #888;
@@ -47,16 +41,13 @@ page {
 .address-section .cen {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     font-size: 28rpx;
     color: #303133;
@@ -91,11 +82,9 @@ page {
 .goods-section .g-header {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     height: 84rpx;
     padding: 0 30rpx;
@@ -115,13 +104,11 @@ page {
 .goods-section .g-item {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     margin: 20rpx 30rpx;
 }
 .goods-section .g-item image {
       -webkit-flex-shrink: 0;
-          -ms-flex-negative: 0;
               flex-shrink: 0;
       display: block;
       width: 140rpx;
@@ -131,7 +118,6 @@ page {
 .goods-section .g-item .right {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
-          -ms-flex: 1;
               flex: 1;
       padding-left: 24rpx;
       overflow: hidden;
@@ -147,11 +133,9 @@ page {
 .goods-section .g-item .price-box {
       display: -webkit-box;
       display: -webkit-flex;
-      display: -ms-flexbox;
       display: flex;
       -webkit-box-align: center;
       -webkit-align-items: center;
-          -ms-flex-align: center;
               align-items: center;
       font-size: 32rpx;
       color: #303133;
@@ -175,11 +159,9 @@ page {
 .yt-list-cell {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   padding: 10rpx 30rpx 10rpx 40rpx;
   line-height: 70rpx;
@@ -210,7 +192,6 @@ page {
 }
 .yt-list-cell .cell-more {
     -webkit-align-self: center;
-        -ms-flex-item-align: center;
             align-self: center;
     font-size: 24rpx;
     color: #909399;
@@ -220,7 +201,6 @@ page {
 .yt-list-cell .cell-tit {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     font-size: 26rpx;
     color: #909399;
@@ -245,7 +225,6 @@ page {
 .yt-list-cell .desc {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     font-size: 28rpx;
     color: #303133;
@@ -259,11 +238,9 @@ page {
 .pay-list .pay-item {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     padding-right: 20rpx;
     line-height: 1;
@@ -283,15 +260,12 @@ page {
 .pay-list .icon-xuanzhong2 {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     width: 60rpx;
     height: 60rpx;
@@ -303,7 +277,6 @@ page {
     color: #303133;
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
 }
 .footer {
@@ -313,24 +286,20 @@ page {
   z-index: 995;
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-      -ms-flex-align: center;
           align-items: center;
   width: 100%;
   height: 90rpx;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
           justify-content: space-between;
   font-size: 30rpx;
   background-color: #fff;
   z-index: 998;
   color: #606266;
-  -webkit-box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 }
 .footer .price-content {
     padding-left: 30rpx;
@@ -346,15 +315,12 @@ page {
 .footer .submit {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     width: 280rpx;
     height: 100%;
@@ -366,11 +332,9 @@ page {
 .mask {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: end;
   -webkit-align-items: flex-end;
-      -ms-flex-align: end;
           align-items: flex-end;
   position: fixed;
   left: 0;
@@ -380,7 +344,6 @@ page {
   background: transparent;
   z-index: 9995;
   -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
   transition: 0.3s;
 }
 .mask .mask-content {
@@ -389,10 +352,8 @@ page {
     max-height: 70vh;
     background: #f3f3f3;
     -webkit-transform: translateY(100%);
-        -ms-transform: translateY(100%);
             transform: translateY(100%);
     -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
     transition: 0.3s;
     overflow-y: scroll;
 }
@@ -404,19 +365,16 @@ page {
 }
 .mask.show .mask-content {
       -webkit-transform: translateY(0);
-          -ms-transform: translateY(0);
               transform: translateY(0);
 }
 /* 优惠券列表 */
 .coupon-item {
   display: -webkit-box;
   display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
           flex-direction: column;
   margin: 20rpx 24rpx;
   background: #fff;
@@ -424,11 +382,9 @@ page {
 .coupon-item .con {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     position: relative;
     height: 120rpx;
@@ -443,26 +399,21 @@ page {
       height: 0;
       border-bottom: 1px dashed #f3f3f3;
       -webkit-transform: scaleY(50%);
-          -ms-transform: scaleY(50%);
               transform: scaleY(50%);
 }
 .coupon-item .left {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-flex: 1;
     -webkit-flex: 1;
-        -ms-flex: 1;
             flex: 1;
     overflow: hidden;
     height: 100rpx;
@@ -479,20 +430,16 @@ page {
 .coupon-item .right {
     display: -webkit-box;
     display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
-        -ms-flex-direction: column;
             flex-direction: column;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-        -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-align: center;
     -webkit-align-items: center;
-        -ms-flex-align: center;
             align-items: center;
     font-size: 26rpx;
     color: #606266;

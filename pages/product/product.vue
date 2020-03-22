@@ -18,12 +18,12 @@
 		
 		<view class="introduce-section">
 			<text class="title">{{pinfo.title}}</text>
-			<text class="text-gray ">{{pinfo.attr_val}}</text>
+			<view class="text-gray  ">{{pinfo.attr_val}}</view>
 			<view class="price-box">
 				<text class="price-tip">¥</text>
-				<text class="price">{{pinfo.price}}</text>
-				<text class="m-price">¥{{pinfo.cprice}}</text>
-				<text class="coupon-tip" v-if="pinfo.upgrade!=1">{{pinfo.discount}}折</text> 
+				<text class="price">{{specSelected[0].price}}</text>
+				<text class="m-price">¥{{specSelected[0].cprice}}</text>
+				<text class="coupon-tip" v-if="pinfo.upgrade!=1 && pinfo.discount!=100">{{pinfo.discount}}折</text> 
 				<!-- #ifdef H5 -->
 				<view @click="share" class="share-right text-orange cuIcon-share "></view>
 				<!-- #endif -->
@@ -37,14 +37,22 @@
 			</view>
 			<view class="bot-row">
 				<text>销量: {{pinfo.salenum}}</text>
-				<text>库存: {{pinfo.stock}}</text>
+				<text>库存: {{specSelected[0].stock}}</text>
 				<text>浏览量: {{pinfo.innum}}</text>
 			</view>
 		</view>
 		
 		
 		<view class="c-list">
-			
+			<view class="c-row b-b" @click="toggleSpec" v-if="ishow">
+				<text class="tit">商品规格</text>
+				<view class="con">
+					<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
+						{{sItem.name}}
+					</text>
+				</view>
+				<text class="iconfont icon-arrow-copy text-gray"></text>
+			</view>
 		</view>
 		
 		
@@ -77,7 +85,7 @@
 		</view>
 		
 		
-		<view class="cu-modal bottom-modal" :class="shareInvitation?'show':''">
+		<view class="cu-modal bottom-modal" :class="shareInvitation?'show':''" @tap="hideModal">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
 					<view class="action text-black">分享邀请更多好友</view>
@@ -86,30 +94,73 @@
 				<view class="padding-xl">
 					
 					<scroll-view class="view-content" scroll-y>
-						<view class="share-list">
+						
 							<!-- #ifdef MP-WEIXIN -->
-								<view class="share-item mpshare-item" >
-								<button class="cu-btn block bg-white margin-tb-sm"  style="background-color: inherit;"  open-type="share">
-									<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
-									 
-								</button>
+							<view class="flex  padding justify-center">
+								<view class=" padding-sm margin-xs ">
+									<button class="cu-btn block bg-white margin-tb-sm"  style="background-color: inherit;"  open-type="share">
+										<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+										 
+									</button>
+									<text class="text-black">发送给微信好友</text>
 								</view>
+							</view>
 								
 							<!-- #endif -->
 							<!--#ifdef H5-->
+							<view class="share-list">
 							<view v-for="(item, index) in shareList" :key="index" class="share-item" @click="shareToFriend(item.type)">
 								<image :src="item.icon" mode=""></image>
 								<text>{{ item.text }}</text>
 							</view>
+							</view>
 							 <!-- #endif -->
 								  
 							
-						</view>
+						
 					</scroll-view>
 					
 					
 					
 				</view>
+			</view>
+		</view>
+		
+		<!-- 规格-模态层弹窗 -->
+		<view class="popup spec" 
+			:class="specClass"
+			@touchmove.stop.prevent="stopPrevent"
+			@click="toggleSpec">
+			<!-- 遮罩层 -->
+			<view class="mask"></view>
+			<view class="layer attr-content" @click.stop="stopPrevent">
+				<view class="a-t">
+					<image :src="server+specSelected[0]['thumb']"></image>
+					<view class="right">
+						<text class="price text-price">{{specSelected[0].price}}</text>
+						<text class="stock">库存：{{specSelected[0].stock}}</text>
+						<view class="selected">
+							已选：
+							<text class="selected-text" v-for="(sItem, sIndex) in specSelected" :key="sIndex">
+								{{sItem.name}}
+							</text>
+						</view>
+					</view>
+				</view>
+				<view class="attr-list">
+					<text>商品规格</text>
+					<view class="item-list">
+						<text 
+							v-for="(childItem, childIndex) in specChildList" 
+							:key="childIndex" class="tit"
+							:class="{selected: childItem.selected}"
+							@click="selectSpec(childIndex)"
+						>
+							{{childItem.name}}
+						</text>
+					</view>
+				</view>
+				<button class="btn" @click="toggleSpec">完成</button>
 			</view>
 		</view>
 		<!-- 分享 -->
@@ -133,7 +184,12 @@
 				cartcount:0,
 				server:this.apiServer,
 				specClass: 'none',
-				specSelected:[],
+				specSelected:[{
+					name:"规格",
+					price:100,
+					stock:100,
+					thumb:'',
+				}],
 				favorite: false,
 				shareList: [],
 				pinfo:[],
@@ -141,11 +197,13 @@
 				desc: "",
 				sharedata:[],
 				isnotupgrade:false,
-				
 				shareInvitation:false,
 				invitation:"",
 				sharetitle:"良吉康-最火的社交新零售商城！",
 				shareimg:'/img/banner2.jpg',
+				
+				ishow:false,
+				specChildList: []
 				
 			};
 		},
@@ -154,6 +212,17 @@
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
 			let psid = options.psid;
 			
+			
+			//规格 默认选中第一条
+			// this.specList.forEach(item=>{
+			// 	for(let cItem of this.specChildList){
+			// 		if(cItem.pid === item.id){
+			// 			this.$set(cItem, 'selected', true);
+			// 			this.specSelected.push(cItem);
+			// 			break; //forEach不能使用break
+			// 		}
+			// 	}
+			// })
 			
 			let opts = {
 				url: '/productApi/getproductinfo/',
@@ -171,7 +240,24 @@
 						this.desc=this.pinfo["content"];
 						this.favorite=res.data["isfav"];
 						this.cartcount=res.data["cartcount"];
-						this.sharedata={title:res.data["pinfo"].title,img:res.data["pinfo"].images}
+						this.sharedata={title:res.data["pinfo"].title,img:res.data["pinfo"].images};
+						
+						this.specChildList=res.data["val"];
+						if(this.specChildList!=undefined){
+							if(this.specChildList.length>0){
+								for(let cItem of this.specChildList){
+										this.$set(cItem, 'selected', true);
+										this.specSelected=[];
+										this.specSelected.push(cItem);
+										this.ishow=true;
+										break; //forEach不能使用break
+								}
+							}
+						}
+						
+						
+						
+						
 					} else {
 						uni.showToast({title: res.data.msg,icon: 'none'});
 					}
@@ -200,7 +286,7 @@
 						console.log(res.errMsg);
 			　　　　　　if(res.errMsg == 'shareAppMessage:ok'){
 						console.log("分享成功");
-						that.shareInvitation=false;
+						that.hideModal();
 			　　　　　　}
 			　　　　},
 			　　　　fail: function(){
@@ -222,6 +308,42 @@
 		},
 		
 		methods:{
+			
+			//规格弹窗开关
+			toggleSpec() {
+				if(this.specClass === 'show'){
+					this.specClass = 'hide';
+					setTimeout(() => {
+						this.specClass = 'none';
+					}, 250);
+				}else if(this.specClass === 'none'){
+					this.specClass = 'show';
+				}
+			},
+			
+			//选择规格
+			selectSpec(index){
+				let list = this.specChildList;
+				list.forEach(item=>{
+						this.$set(item, 'selected', false);
+					
+				})
+			
+				this.$set(list[index], 'selected', true);
+				//存储已选择
+				/**
+				 * 修复选择规格存储错误
+				 * 将这几行代码替换即可
+				 * 选择的规格存放在specSelected中
+				 */
+				this.specSelected = []; 
+				list.forEach(item=>{ 
+					if(item.selected === true){ 
+						this.specSelected.push(item); 
+					} 
+				})
+				
+			},
 			hideModal(e) {
 				this.shareInvitation = false;
 			},
@@ -291,7 +413,7 @@
 						//打印请求返回的数据
 						if (res.data['code'] == 0) {
 							uni.navigateTo({
-								url: `/pages/order/createOrder?psid=${this.pinfo.psid}`
+								url: `/pages/order/createOrder?psid=${this.pinfo.psid}&ptid=${this.specSelected[0].id}`
 							})
 						} else {
 							uni.showToast({title: res.data.msg,icon: 'none'});
@@ -315,7 +437,7 @@
 					url: '/productApi/addcart/',
 					method: 'post'
 				};
-				let param = {psid:this.pinfo["psid"]};
+				let param = {psid:this.pinfo["psid"],ptid:this.specSelected[0].id};
 				http.httpTokenRequest(opts, param).then(
 					res => {
 						//打印请求返回的数据
@@ -711,7 +833,7 @@
 		top: 0;
 		right: 0;
 		bottom: 0;
-		z-index: 99;
+		z-index: 1025;
 		
 		&.show {
 			display: block;

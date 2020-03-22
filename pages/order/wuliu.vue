@@ -1,9 +1,6 @@
 <template>
-	
 	<view >
-		
-		
-		
+
 		<cu-custom bgColor="bg-gradual-orange" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">物流查看</block>
@@ -84,10 +81,10 @@ page {
 	padding: 30upx 0;
 	background: #fff;
 	position: relative;
-
 	
+}
 
-	.icon-shouhuodizhi {
+.icon-shouhuodizhi {
 		flex-shrink: 0;
 		display: flex;
 		align-items: center;
@@ -96,7 +93,6 @@ page {
 		color: #888;
 		font-size: 44upx;
 	}
-
 	.cen {
 		display: flex;
 		flex-direction: column;
@@ -130,6 +126,5 @@ page {
 		width: 100%;
 		height: 5upx;
 	}
-}
 
 </style>

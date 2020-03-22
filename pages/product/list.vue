@@ -15,8 +15,8 @@
 			<view class="nav-item" :class="{current: filterIndex === 2}" @click="tabClick(2)">
 				<text>价格</text>
 				<view class="p-box">
-					<text :class="{active: priceOrder === 1 && filterIndex === 2}" class="iconfont icon-arrow-up"></text>
-					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="iconfont icon-arrow-up xia"></text>
+					<text :class="{active: priceOrder === 1 && filterIndex === 2}" class="iconfont icon-top"></text>
+					<text :class="{active: priceOrder === 2 && filterIndex === 2}" class="iconfont icon-top xia"></text>
 				</view>
 			</view>
 			<text class="cate-item iconfont icon-leimupinleifenleileibie text-gray" @click="toggleCateMask('show')"></text>
@@ -28,7 +28,7 @@
 				@click="navToDetailPage(item)"
 			>
 				<view class="image-wrapper">
-					<image :src="server+item.images" mode="aspectFill"></image>
+					<image :src="server+item.headimg" mode="aspectFill"></image>
 					<text class="coupon-tip" v-if="item.discount!=100">{{item.discount}}折</text>
 				</view>
 				<text class="title clamp">{{item.title}}</text>
@@ -410,7 +410,7 @@
 		}
 		.image-wrapper{
 			width: 100%;
-			height: 330upx;
+			height: 500upx;
 			border-radius: 3px;
 			overflow: hidden;
 			position: relative;

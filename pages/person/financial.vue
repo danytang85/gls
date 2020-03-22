@@ -21,9 +21,9 @@
 			<view class="text-lg text-gray">冻结余额(元)(订单完成后解冻)</view>
 			<view class=" text-price text-bold text-lg text-gray">{{frozenaccounts}}</view>
 		</view>
-		<view class="cu-list menu sm-border   bg-white" >
+		<view class="cu-list menu sm-border   bg-white"  @click="navTo('/pages/person/myprofit')" >
 			<view class="cu-item arrow" >
-				<view class="content"  @click="navTo('/pages/person/myprofit')">
+				<view class="content" >
 					<text class="text-grey">提现余额明细</text>
 				</view>
 			</view>
@@ -32,9 +32,9 @@
 					<text class="text-grey">账户余额明细</text>
 				</view>
 			</view> -->
-			<view class="cu-item arrow" >
+			<view class="cu-item arrow" @click="navTo('/pages/person/bank')" >
 				<view class="content">
-					<text class="text-grey" @click="navTo('/pages/person/bank')">添加银行卡</text>
+					<text class="text-grey" >添加银行卡</text>
 				</view>
 			</view>
 		</view>

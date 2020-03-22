@@ -5,20 +5,20 @@
 			<block slot="content">我的成长值</block>
 		</cu-custom>
 		<view class="padding bg-white">
-			<view class="  solid-bottom">
+			<view class="solid-bottom">
 				<view class="flex  p-xs margin-bottom-sm mb-sm ">
 					<view class="flex-treble   margin-xs radius">订单</view>
-					<view class="flex-sub  margin-xs radius "><text class="">成长值</text></view>
+					<view class="flex-sub  margin-xs radius text-center"><text class="">成长值</text></view>
 				</view>
 			</view>
 
-			<view class="  solid-bottom" v-for="(item, index) in growth" :key="index">
+			<view class="solid-bottom" v-for="(item, index) in growth" :key="index">
 				<view class="flex  p-xs margin-bottom-sm mb-sm ">
 					<view class="flex-treble   margin-xs radius">
 						<view>{{ item.create_time }}</view>
 						<view>订单号:{{ item.oid }}</view>
 					</view>
-					<view class="flex-sub  margin-xs radius ">
+					<view class="flex-sub  margin-xs radius text-center ">
 						<text class="">{{ item.growth }}</text>
 					</view>
 				</view>

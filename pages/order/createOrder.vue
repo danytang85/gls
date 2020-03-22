@@ -26,7 +26,7 @@
 
 		<view class="goods-section">
 			<view class="g-header b-b">
-				<image class="logo" src="/static/gls_logo.png"></image>
+				<image class="logo" :src="logo"></image>
 				<text class="name">良吉康</text>
 			</view>
 			<!-- 商品列表 -->
@@ -35,7 +35,7 @@
 					<image :src="server+item.images"></image>
 					<view class="right">
 						<text class="title clamp">{{ item.title }}</text>
-						<text class="spec">{{ item.attr_val }}</text>
+						<text class="spec">{{ item.ptname }}</text>
 						<view class="price-box">
 							<view class="price">￥{{ item.price }}</view>
 							<view class="number" v-if="psid == 0">x{{ item.number }}</view>
@@ -129,6 +129,7 @@ export default {
 	data() {
 		return {
 			server:this.apiServer,
+			logo:this.apiServer+"/img/gls_logo.png",
 			psid: 0,
 			maskState: 0, //优惠券面板显示状态
 			desc: '', //备注
@@ -172,7 +173,7 @@ export default {
 				method: 'post'
 			};
 			
-			let param = {psid:option.psid };
+			let param = {psid:option.psid,ptid:option.ptid };
 			http.httpTokenRequest(opts, param).then(
 				res => {
 					//打印请求返回的数据

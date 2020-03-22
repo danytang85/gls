@@ -85,18 +85,7 @@ export default {
 			title: 'Hello',
 			bigIdx: 2,
 			vips: [],
-			tasks: [
-				{
-					icon: '/static/icon_profile.png',
-					name: '完善个人信息',
-					desc: '完善信息获得7积分奖励'
-				},
-				{
-					icon: '/static/icon_friend.png',
-					name: '邀请好友参加',
-					desc: '邀请好友获得7积分奖励'
-				}
-			],
+			tasks: [],
 			welfare: [
 				{
 					icon: 'icon-fenxiang1',

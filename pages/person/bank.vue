@@ -9,15 +9,15 @@
 		<form>
 			<view class="cu-form-group margin-top">
 				<view class="title">户名</view>
-				<input placeholder="" name="noname" :value="noname"  @input="nonameInpur"></input>
+				<input placeholder="真实姓名" name="noname" :value="noname"  @input="nonameInpur"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">银行</view>
-				<input placeholder="" name="input" :value="bankname"  @input="banknameInpur" ></input>
+				<input placeholder="银行名称" name="input" :value="bankname"  @input="banknameInpur" ></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">卡号</view>
-				<input placeholder="" name="input" :value="bankno" @input="banknoInpur" ></input>
+				<input placeholder="银行卡号" name="input" :value="bankno" @input="banknoInpur" ></input>
 			</view>
 		</form>
 		
@@ -121,7 +121,10 @@
 							this.bankno=res.data['bankinfo'].bankno;
 							this.noname=res.data['bankinfo'].noname;
 						} else {
-							
+							uni.hideLoading();
+							this.bankname="";
+							this.bankno="";
+							this.noname="";
 						}
 					},
 					error => {

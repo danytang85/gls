@@ -45,8 +45,9 @@
 
 		<view class="guess-section">
 			<view v-for="(item, index) in goodsList" :key="index" class="guess-item" @click="navToDetailPage(item)">
-				<view class="image-wrapper"><image :src="serverapi + item.images" mode="aspectFill"></image></view>
+				<view class="image-wrapper"><image :src="serverapi + item.headimg" mode="aspectFill"></image></view>
 				<text class="title clamp">{{ item.title }}</text>
+				<text class="text-gray">{{ item.attr_val }}</text>
 				<text class="price">￥{{ item.price }}</text>
 			</view>
 		</view>
@@ -63,8 +64,9 @@
 
 		<view class="guess-section">
 			<view v-for="(item, index) in goodsList2" :key="index" class="guess-item" @click="navToDetailPage(item)">
-				<view class="image-wrapper"><image :src="serverapi + item.images" mode="aspectFill"></image></view>
+				<view class="image-wrapper"><image :src="serverapi + item.headimg" mode="aspectFill"></image></view>
 				<text class="title clamp">{{ item.title }}</text>
+				<text class="text-gray">{{ item.attr_val }}</text>
 				<text class="price">￥{{ item.price }}</text>
 			</view>
 		</view>
@@ -183,33 +185,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* #ifdef MP */
 
-page {
-	.cate-section {
-		position: relative;
-		z-index: 5;
-		border-radius: 16upx 16upx 0 0;
-		margin-top: -20upx;
-	}
-	.carousel-section {
-		padding: 0;
-		.titleNview-placing {
-			padding-top: 0;
-			height: 0;
-		}
-		.carousel {
-			.carousel-item {
-				padding: 0;
-			}
-		}
-		.swiper-dots {
-			left: 45upx;
-			bottom: 40upx;
-		}
-	}
-}
-/* #endif */
 .indexicon {
 	font-size: 40px;
 }
@@ -219,42 +195,7 @@ page {
 .m-t {
 	margin-top: 16upx;
 }
-/* 头部 轮播图 */
-.carousel-section {
-	position: relative;
 
-	.titleNview-placing {
-		height: var(--status-bar-height);
-		padding-top: 0px;
-		box-sizing: content-box;
-	}
-
-	.titleNview-background {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 400upx;
-		transition: 0.4s;
-	}
-}
-.carousel {
-	width: 100%;
-	height: 350upx;
-
-	.carousel-item {
-		width: 100%;
-		height: 100%;
-		padding: 0 28upx;
-		overflow: hidden;
-	}
-
-	image {
-		width: 100%;
-		height: 100%;
-		border-radius: 10upx;
-	}
-}
 
 /* 分类 */
 .cate-section {
@@ -331,7 +272,7 @@ page {
 	}
 	.image-wrapper {
 		width: 100%;
-		height: 330upx;
+		height: 500upx;
 		border-radius: 3px;
 		overflow: hidden;
 		image {

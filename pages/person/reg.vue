@@ -33,17 +33,18 @@
 				</view>
 			</view>
 		</view>
-		<!-- #ifdef MP-WEIXIN -->
 		<!-- 其他登录方式 -->
 		<view class="otherLogin">
-			
-			<button class="cu-btn block margin-tb-sm"  open-type="getUserInfo"  @getuserinfo="weixinlogin">
-				<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
-			</button>
-			
+			<view class="flex  padding justify-center">
+				<view class=" padding-sm margin-xs ">
+					<button class="cu-btn block margin-tb-sm"  open-type="getUserInfo"  @getuserinfo="weixinlogin">
+						<text class="iconfont icon-weixin" style="font-size: 40px; color: #39B54A;"></text>
+					</button>
+					<text class="text-black">微信一键登录</text>
+				</view>
+			</view>
 		</view>
 		
-		<!-- #endif -->
 	</view>
 </template>
 
@@ -454,19 +455,14 @@ export default {
 }
 
 .otherLogin {
-	width: 500upx;
+	
 	height: 95upx;
-	margin: 0 auto;
-	display: flex;
+	margin: 30px auto;
+	text-align: center;
 	justify-content: space-between;
 }
 
-.otherLogin > view {
-	width: 95upx;
-	height: 95upx;
-	background: #fff;
-	border-radius: 95upx;
-}
+
 
 .otherLoginTitle {
 	width: 100%;

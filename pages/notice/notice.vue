@@ -7,7 +7,7 @@
 		</cu-custom>
 		<view class="notice-item" v-for="(item, index) in nlist" :key="index">
 			<text class="time">{{item.create_time}}</text>
-			<view class="content">
+			<view class="content" @click="navTo(item.id)" >
 				<text class="title">{{item.title}}</text>
 				<view class="img-wrapper">
 					<image class="pic" :src="serverapi +item.pic"></image>
@@ -47,14 +47,18 @@
 			this.getnoticelist()
 		},
 		methods: {
-			
+			navTo(id) {
+				uni.navigateTo({
+					url:"./noticeshow?id="+id
+				});
+			},
 		getnoticelist(){
 			let	_that=this;
 			let opts = {
 				url: '/Noticeapi/getlist/',
 				method: 'post'
 			};
-			let param = { };
+			let param = {};
 			http.httpTokenRequest(opts, param).then(
 				res => {
 					//打印请求返回的数据
@@ -74,18 +78,24 @@
 	}
 </script>
 
-<style lang='scss'>
+<style lang="scss">
 	page {
 		background-color: #f7f7f7;
 		padding-bottom: 30upx;
 	}
 
-	.notice-item {
+	.notice-item{
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		.content{
+			width: 710upx;
+			padding: 0 24upx;
+			background-color: #fff;
+			border-radius: 4upx;
+		}
 	}
-
+	
 	.time {
 		display: flex;
 		align-items: center;
